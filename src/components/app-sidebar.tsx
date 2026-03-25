@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils";
 const roleLabels: Record<string, string> = {
   "Platform Admin": "Administrador de plataforma",
   "Revenue Operations": "Operaciones de ingresos",
+  TCM: "Care manager / TCM",
 };
 
 const navigation = [

@@ -77,7 +77,10 @@ async function main() {
       title: clinicianTitle ?? "Clinician",
       credentials: null,
       discipline: discipline ?? null,
-      email: `${slugify(clinicianName)}@synetra.demo`,
+      email:
+        clinicianName === "Enrique Padron"
+          ? "enrique@synetra.app"
+          : `${slugify(clinicianName)}@synetra.demo`,
       timezone: "America/New_York",
       status: "ACTIVE" as const,
       isBillable: true,
@@ -86,6 +89,8 @@ async function main() {
     employeeDirectory.set(key, employee);
     return employee;
   };
+
+  registerEmployee("Enrique Padron", "TCM", "CARE_COORDINATION");
 
   const cases = demoClients.flatMap((client) =>
     client.cases.map((caseRecord) => ({
@@ -421,24 +426,44 @@ async function main() {
   ]);
 
   await prisma.client.createMany({
-    data: demoClients.map((client) => ({
-      id: client.id,
-      externalId: client.externalId,
-      firstName: client.firstName,
-      lastName: client.lastName,
-      preferredName: client.preferredName ?? null,
-      dateOfBirth: new Date(client.dateOfBirth),
-      email: client.email ?? null,
-      phone: client.phone ?? null,
-      city: client.city ?? null,
-      state: client.state ?? null,
-      timezone: client.timezone,
-      status: client.status,
-      riskLevel: client.riskLevel,
-      primaryDiagnosisCode: client.primaryDiagnosisCode ?? null,
-      payerSegment: client.payerSegment ?? null,
-      referralSource: client.referralSource ?? null,
-    })),
+    data: [
+      ...demoClients.map((client) => ({
+        id: client.id,
+        externalId: client.externalId,
+        firstName: client.firstName,
+        lastName: client.lastName,
+        preferredName: client.preferredName ?? null,
+        dateOfBirth: new Date(client.dateOfBirth),
+        email: client.email ?? null,
+        phone: client.phone ?? null,
+        city: client.city ?? null,
+        state: client.state ?? null,
+        timezone: client.timezone,
+        status: client.status,
+        riskLevel: client.riskLevel,
+        primaryDiagnosisCode: client.primaryDiagnosisCode ?? null,
+        payerSegment: client.payerSegment ?? null,
+        referralSource: client.referralSource ?? null,
+      })),
+      {
+        id: "client-enrique-padron-intake",
+        externalId: "SYN-ENR-001",
+        firstName: "Enrique",
+        lastName: "Padron",
+        preferredName: null,
+        dateOfBirth: new Date("1990-05-12T12:00:00.000Z"),
+        email: "enrique.padron.client@synetra.demo",
+        phone: "(305) 555-0190",
+        city: "Miami",
+        state: "FL",
+        timezone: "America/New_York",
+        status: "INTAKE",
+        riskLevel: "LOW",
+        primaryDiagnosisCode: null,
+        payerSegment: "Pending payer",
+        referralSource: "Manual intake for TCM onboarding flow",
+      },
+    ],
   });
 
   await prisma.user.createMany({

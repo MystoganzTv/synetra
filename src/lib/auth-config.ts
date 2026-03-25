@@ -1,6 +1,6 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 
-export type AuthRole = "Platform Admin" | "Revenue Operations";
+export type AuthRole = "Platform Admin" | "Revenue Operations" | "TCM";
 
 export type AuthProfile = {
   email: string;
@@ -21,6 +21,12 @@ export const defaultAuthProfiles: AuthProfile[] = [
     password: "SynetraOps!",
     name: "Morgan Lee",
     role: "Revenue Operations",
+  },
+  {
+    email: "enrique@synetra.app",
+    password: "SynetraTCM!",
+    name: "Enrique Padron",
+    role: "TCM",
   },
 ];
 

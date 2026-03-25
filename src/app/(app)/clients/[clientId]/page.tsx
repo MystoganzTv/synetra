@@ -37,10 +37,15 @@ import { getNow } from "@/lib/time";
 
 export default async function ClientDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ clientId: string }>;
+  searchParams?: Promise<{ created?: string }>;
 }) {
-  const { clientId } = await params;
+  const [{ clientId }, query] = await Promise.all([
+    params,
+    searchParams ?? Promise.resolve({} as { created?: string }),
+  ]);
   const client = await getClient(clientId);
 
   if (!client) {
@@ -69,9 +74,23 @@ export default async function ClientDetailPage({
         billingRecord.status === "PAID",
     )
     .reduce((sum, { billingRecord }) => sum + billingRecord.amountCents, 0);
+  const wasCreated = query.created === "client";
 
   return (
     <div className="space-y-6">
+      {wasCreated ? (
+        <Card className="border-emerald-200 bg-emerald-50">
+          <CardContent className="flex flex-wrap items-center justify-between gap-3 p-5">
+            <p className="text-sm text-emerald-700">
+              Cliente creado. El siguiente paso recomendado es abrir su primer caso.
+            </p>
+            <Button asChild size="sm">
+              <Link href={`/clients/${client.id}/cases/new`}>Crear primer caso</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      ) : null}
+
       <Card className="overflow-hidden bg-white/86">
         <CardContent className="grid gap-6 px-6 py-7 lg:grid-cols-[1.35fr_0.85fr]">
           <div className="space-y-4">
@@ -98,6 +117,9 @@ export default async function ClientDetailPage({
             <div className="flex flex-wrap gap-3">
               <Button asChild>
                 <Link href="/clients">Back to roster</Link>
+              </Button>
+              <Button asChild>
+                <Link href={`/clients/${client.id}/cases/new`}>Nuevo caso</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href="/cases">Open case operations</Link>
@@ -178,32 +200,46 @@ export default async function ClientDetailPage({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {caseContexts.map(({ caseRecord }) => (
-              <div key={caseRecord.id} className="rounded-[24px] border border-border bg-white/70 p-5">
-                <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-                  <div className="space-y-2">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Link
-                        href={`/cases/${caseRecord.id}`}
-                        className="text-lg font-semibold text-foreground transition-colors hover:text-primary"
-                      >
-                        {caseRecord.programName}
-                      </Link>
-                      <StatusBadge value={caseRecord.status} />
+            {caseContexts.length > 0 ? (
+              caseContexts.map(({ caseRecord }) => (
+                <div key={caseRecord.id} className="rounded-[24px] border border-border bg-white/70 p-5">
+                  <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Link
+                          href={`/cases/${caseRecord.id}`}
+                          className="text-lg font-semibold text-foreground transition-colors hover:text-primary"
+                        >
+                          {caseRecord.programName}
+                        </Link>
+                        <StatusBadge value={caseRecord.status} />
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {caseRecord.caseNumber} · {caseRecord.payerName} · Lead {caseRecord.clinicalLead}
+                      </p>
+                      <p className="text-sm leading-6 text-muted-foreground">
+                        {caseRecord.carePlanSummary}
+                      </p>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      {caseRecord.caseNumber} · {caseRecord.payerName} · Lead {caseRecord.clinicalLead}
-                    </p>
-                    <p className="text-sm leading-6 text-muted-foreground">
-                      {caseRecord.carePlanSummary}
-                    </p>
+                    <Button asChild variant="ghost">
+                      <Link href={`/cases/${caseRecord.id}`}>Open case</Link>
+                    </Button>
                   </div>
-                  <Button asChild variant="ghost">
-                    <Link href={`/cases/${caseRecord.id}`}>Open case</Link>
+                </div>
+              ))
+            ) : (
+              <div className="rounded-[24px] border border-dashed border-border bg-accent/40 p-5">
+                <p className="text-lg font-semibold text-foreground">Todavia no hay casos abiertos</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  Este cliente ya existe en cartera. El siguiente paso operativo es abrir el primer caso para empezar a documentar actividad.
+                </p>
+                <div className="mt-4">
+                  <Button asChild>
+                    <Link href={`/clients/${client.id}/cases/new`}>Crear primer caso</Link>
                   </Button>
                 </div>
               </div>
-            ))}
+            )}
           </CardContent>
         </Card>
 

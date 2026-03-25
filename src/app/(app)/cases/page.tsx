@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ClipboardList, ShieldAlert, Users2 } from "lucide-react";
+import { ArrowRight, ClipboardList, Plus, ShieldAlert, Users2 } from "lucide-react";
 
 import { MetricCard } from "@/components/metric-card";
 import { SessionBillingStatusBadge } from "@/components/session-billing-status-badge";
@@ -41,9 +41,17 @@ export default async function CasesPage() {
               Cada caso reúne diseño del programa, cobertura pagadora, liderazgo clínico, volumen de sesiones y exposición posterior de facturación o cumplimiento.
             </p>
           </div>
-          <Button asChild>
-            <Link href="/dashboard">Volver al panel</Link>
-          </Button>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href="/clients">
+                Crear caso desde cliente
+                <Plus className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/dashboard">Volver al panel</Link>
+            </Button>
+          </div>
         </div>
       </div>
 

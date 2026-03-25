@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ShieldAlert, UsersRound, Wallet } from "lucide-react";
+import { ArrowRight, Plus, ShieldAlert, UsersRound, Wallet } from "lucide-react";
 
 import { MetricCard } from "@/components/metric-card";
 import { StatusBadge } from "@/components/status-badge";
@@ -24,7 +24,14 @@ function getInitials(name: string) {
 }
 
 export default async function ClientsPage() {
-  const clients = await getClients();
+  const clients = (await getClients()).sort((left, right) => {
+    if (left.cases.length === 0 && right.cases.length > 0) return -1;
+    if (left.cases.length > 0 && right.cases.length === 0) return 1;
+
+    return `${left.lastName} ${left.firstName}`.localeCompare(
+      `${right.lastName} ${right.firstName}`,
+    );
+  });
   const referenceDate = getNow();
   const compliance = flattenCompliance(clients);
   const highRiskClients = clients.filter(
@@ -33,6 +40,7 @@ export default async function ClientsPage() {
   const payerSegments = new Set(
     clients.map((client) => client.payerSegment).filter(Boolean),
   ).size;
+  const clientsWithoutCases = clients.filter((client) => client.cases.length === 0).length;
 
   return (
     <div className="space-y-6">
@@ -49,13 +57,21 @@ export default async function ClientsPage() {
               Una vista moderna de la cartera con demografía, riesgo, próximo contacto e incidencias de utilización o cumplimiento que importan al equipo.
             </p>
           </div>
-          <Button asChild>
-            <Link href="/dashboard">Volver al panel</Link>
-          </Button>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href="/clients/new">
+                Nuevo cliente
+                <Plus className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/dashboard">Volver al panel</Link>
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-4">
         <MetricCard
           title="Tamaño de cartera"
           value={String(clients.length)}
@@ -73,6 +89,12 @@ export default async function ClientsPage() {
           value={String(payerSegments)}
           hint="Mezcla de cobertura representada en el workspace actual."
           icon={Wallet}
+        />
+        <MetricCard
+          title="Sin caso todavia"
+          value={String(clientsWithoutCases)}
+          hint="Clientes en intake que aun no tienen un episodio abierto."
+          icon={Plus}
         />
       </div>
 
@@ -150,15 +172,24 @@ export default async function ClientsPage() {
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {client.cases.map((caseRecord) => (
-                    <Link
-                      key={caseRecord.id}
-                      href={`/cases/${caseRecord.id}`}
-                      className="rounded-full border border-border bg-white/70 px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {caseRecord.caseNumber} · {caseRecord.programName}
-                    </Link>
-                  ))}
+                  {client.cases.length > 0 ? (
+                    client.cases.map((caseRecord) => (
+                      <Link
+                        key={caseRecord.id}
+                        href={`/cases/${caseRecord.id}`}
+                        className="rounded-full border border-border bg-white/70 px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {caseRecord.caseNumber} · {caseRecord.programName}
+                      </Link>
+                    ))
+                  ) : (
+                    <Button asChild size="sm">
+                      <Link href={`/clients/${client.id}/cases/new`}>
+                        Crear primer caso
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>

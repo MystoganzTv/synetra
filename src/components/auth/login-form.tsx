@@ -10,6 +10,13 @@ import { Input } from "@/components/ui/input";
 const roleLabels: Record<string, string> = {
   "Platform Admin": "Administrador de plataforma",
   "Revenue Operations": "Operaciones de ingresos",
+  TCM: "Care manager / TCM",
+};
+
+const demoPasswordsByEmail: Record<string, string> = {
+  "admin@synetra.app": "SynetraDemo!",
+  "ops@synetra.app": "SynetraOps!",
+  "enrique@synetra.app": "SynetraTCM!",
 };
 
 type DemoUser = {
@@ -113,7 +120,7 @@ export function LoginForm({
                 <p className="mt-1 text-sm text-muted-foreground">{user.name}</p>
                 <p className="mt-3 text-sm text-foreground">{user.email}</p>
                 <p className="text-sm text-foreground">
-                  {user.email === "admin@synetra.app" ? "SynetraDemo!" : "SynetraOps!"}
+                  {demoPasswordsByEmail[user.email] ?? "Credencial protegida"}
                 </p>
               </div>
             ))}

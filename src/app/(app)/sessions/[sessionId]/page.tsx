@@ -15,10 +15,15 @@ import { validateSession } from "@/lib/session-validation";
 
 export default async function SessionDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ sessionId: string }>;
+  searchParams?: Promise<{ created?: string; error?: string }>;
 }) {
-  const { sessionId } = await params;
+  const [{ sessionId }, query] = await Promise.all([
+    params,
+    searchParams ?? Promise.resolve({} as { created?: string; error?: string }),
+  ]);
   const record = await getSession(sessionId);
 
   if (!record) {
@@ -27,9 +32,39 @@ export default async function SessionDetailPage({
 
   const { client, caseRecord, service, authorization, session } = record;
   const validation = validateSession(record);
+  const wasCreated = query.created === "session";
+  const noteCreated = query.created === "note";
+  const noteExistsError = query.error === "note_exists";
 
   return (
     <div className="space-y-6">
+      {wasCreated ? (
+        <Card className="border-emerald-200 bg-emerald-50">
+          <CardContent className="flex flex-wrap items-center justify-between gap-3 p-5">
+            <p className="text-sm text-emerald-700">
+              Actividad creada. El siguiente paso recomendado es documentar la nota.
+            </p>
+            <Button asChild size="sm">
+              <Link href={`/sessions/${session.id}/notes/new`}>Agregar nota</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      ) : null}
+      {noteCreated ? (
+        <Card className="border-emerald-200 bg-emerald-50">
+          <CardContent className="p-5 text-sm text-emerald-700">
+            Nota guardada correctamente.
+          </CardContent>
+        </Card>
+      ) : null}
+      {noteExistsError ? (
+        <Card className="border-amber-200 bg-amber-50">
+          <CardContent className="p-5 text-sm text-amber-700">
+            Esta actividad ya tiene una nota principal asociada.
+          </CardContent>
+        </Card>
+      ) : null}
+
       <Card className="overflow-hidden bg-white/86">
         <CardContent className="grid gap-6 px-6 py-7 lg:grid-cols-[1.35fr_0.85fr]">
           <div className="space-y-4">
@@ -56,6 +91,9 @@ export default async function SessionDetailPage({
             <div className="flex flex-wrap gap-3">
               <Button asChild>
                 <Link href={`/cases/${caseRecord.id}`}>Back to case</Link>
+              </Button>
+              <Button asChild>
+                <Link href={`/sessions/${session.id}/notes/new`}>Agregar nota</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href={`/clients/${client.id}`}>Open client</Link>
@@ -265,6 +303,42 @@ export default async function SessionDetailPage({
                 </p>
                 <p className="text-sm text-muted-foreground">Employee</p>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/82">
+            <CardHeader>
+              <CardTitle>Nota de progreso</CardTitle>
+              <CardDescription>
+                Una sesion puede abrirse rapido y luego cerrarse con una nota estructurada.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {session.progressNotes.length > 0 ? (
+                session.progressNotes.map((progressNote) => (
+                  <div key={progressNote.id} className="rounded-[20px] bg-accent/45 p-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <p className="font-medium text-foreground">{progressNote.authorName}</p>
+                      <StatusBadge value={progressNote.status} />
+                    </div>
+                    <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                      {progressNote.assessment}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <div className="rounded-[20px] border border-dashed border-border bg-white/70 p-4">
+                  <p className="font-medium text-foreground">Todavia no hay nota</p>
+                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                    Crea la nota ahora para dejar la actividad completamente documentada.
+                  </p>
+                  <div className="mt-4">
+                    <Button asChild size="sm">
+                      <Link href={`/sessions/${session.id}/notes/new`}>Crear nota</Link>
+                    </Button>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>

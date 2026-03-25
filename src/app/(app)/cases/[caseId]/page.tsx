@@ -42,10 +42,15 @@ function getCaseBillingStatus(
 
 export default async function CaseDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ caseId: string }>;
+  searchParams?: Promise<{ created?: string }>;
 }) {
-  const { caseId } = await params;
+  const [{ caseId }, query] = await Promise.all([
+    params,
+    searchParams ?? Promise.resolve({} as { created?: string }),
+  ]);
   const [record, documents, forms] = await Promise.all([
     getCase(caseId),
     getDocuments(),
@@ -135,9 +140,23 @@ export default async function CaseDetailPage({
   const expiringDocuments = caseDocuments.filter(
     (document) => document.status === "EXPIRING" || document.status === "EXPIRED",
   ).length;
+  const wasCreated = query.created === "case";
 
   return (
     <div className="space-y-6">
+      {wasCreated ? (
+        <Card className="border-emerald-200 bg-emerald-50">
+          <CardContent className="flex flex-wrap items-center justify-between gap-3 p-5">
+            <p className="text-sm text-emerald-700">
+              Caso creado. Ahora puedes registrar la primera actividad y luego su nota.
+            </p>
+            <Button asChild size="sm">
+              <Link href={`/cases/${caseRecord.id}/sessions/new`}>Agregar actividad</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      ) : null}
+
       <Card className="overflow-hidden bg-white/86">
         <CardContent className="grid gap-6 px-6 py-7 lg:grid-cols-[1.35fr_0.85fr]">
           <div className="space-y-4">
@@ -166,6 +185,9 @@ export default async function CaseDetailPage({
             <div className="flex flex-wrap gap-3">
               <Button asChild>
                 <Link href="/cases">Back to cases</Link>
+              </Button>
+              <Button asChild>
+                <Link href={`/cases/${caseRecord.id}/sessions/new`}>Nueva actividad</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href={`/clients/${client.id}`}>Open client</Link>
@@ -492,6 +514,22 @@ export default async function CaseDetailPage({
           </CardContent>
         </Card>
       </div>
+
+      {sessionFlow.length === 0 ? (
+        <Card className="bg-white/82">
+          <CardHeader>
+            <CardTitle>Sin actividad todavia</CardTitle>
+            <CardDescription>
+              El caso ya existe y el servicio base esta listo. Registra la primera llamada, outreach o coordinacion para empezar la documentacion.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild>
+              <Link href={`/cases/${caseRecord.id}/sessions/new`}>Agregar primera actividad</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      ) : null}
 
       <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
         <Card className="bg-white/82">
