@@ -1,13 +1,17 @@
-# Nexora Deployment
+# Synetra Deployment
 
 ## Current state
 
-- GitHub remote: `https://github.com/MystoganzTv/nexora.git`
-- Netlify site: `mystodev-nexora`
-- Production URL: `https://mystodev-nexora.netlify.app`
+- Application: `Synetra`
+- Netlify site: `synetra`
+- Production URL: `https://synetra.netlify.app`
 - Branches:
   - `main` -> production deploy target
   - `mystodev` -> preview deploy target
+
+## Repository rename note
+
+If your local `origin` remote still points to a pre-rename GitHub URL, update it to the current Synetra repository before your next manual push.
 
 ## Automatic deploy flow
 

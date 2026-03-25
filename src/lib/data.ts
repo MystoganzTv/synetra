@@ -385,7 +385,7 @@ function buildDemoEmployee(
     title: clinicianTitle ?? "Clinician",
     credentials: null,
     discipline: null,
-    email: `${slugify(clinicianName)}@nexora.demo`,
+    email: `${slugify(clinicianName)}@synetra.demo`,
     timezone: "America/New_York",
     status: "ACTIVE",
     isBillable: true,

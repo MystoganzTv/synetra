@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { NexoraLogo } from "@/components/brand/nexora-logo";
+import { SynetraLogo } from "@/components/brand/synetra-logo";
 import { Button } from "@/components/ui/button";
 import { getAuthSession } from "@/lib/auth";
 import { marketingNavigation } from "@/lib/marketing-content";
@@ -24,7 +24,7 @@ export async function MarketingShell({
         <header className="flex flex-col gap-4 rounded-[30px] border border-white/80 bg-white/70 px-5 py-4 shadow-[0_20px_50px_-32px_rgba(18,27,79,0.25)] backdrop-blur lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center justify-between gap-4">
             <Link href="/">
-              <NexoraLogo compact />
+              <SynetraLogo compact />
             </Link>
           </div>
 
@@ -53,7 +53,7 @@ export async function MarketingShell({
         <footer className="mt-10 rounded-[30px] border border-white/80 bg-white/72 px-6 py-8 shadow-[0_20px_50px_-32px_rgba(18,27,79,0.2)] backdrop-blur">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr_0.9fr_0.9fr]">
             <div className="space-y-4">
-              <NexoraLogo compact />
+              <SynetraLogo compact />
               <p className="max-w-sm text-sm leading-7 text-muted-foreground">
                 Synetra is a behavioral health operations platform built to connect scheduling,
                 documentation, authorizations, billing readiness, and compliance in one system.

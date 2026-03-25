@@ -3,7 +3,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export const AUTH_COOKIE_NAME = "nexora_session";
+export const AUTH_COOKIE_NAME = "synetra_session";
 
 const SESSION_DURATION_MS = 1000 * 60 * 60 * 10;
 

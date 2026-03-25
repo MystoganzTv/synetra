@@ -15,7 +15,7 @@ import {
   Users,
 } from "lucide-react";
 
-import { NexoraLogo, NexoraMark } from "@/components/brand/nexora-logo";
+import { SynetraLogo, SynetraMark } from "@/components/brand/synetra-logo";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -57,7 +57,7 @@ export function AppSidebar({
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#1f2e68] bg-[radial-gradient(circle_at_32%_30%,rgba(93,231,255,0.18),transparent_32%),linear-gradient(145deg,#08133d_0%,#0e1e61_60%,#162f90_100%)] shadow-lg shadow-[#1a2466]/20">
-              <NexoraMark className="h-7 w-7" />
+              <SynetraMark className="h-7 w-7" />
             </div>
             <div>
               <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
@@ -97,7 +97,7 @@ export function AppSidebar({
       <aside className="hidden w-[310px] shrink-0 self-start border-r border-b border-border bg-sidebar/90 px-6 py-7 backdrop-blur lg:flex lg:min-h-screen lg:flex-col">
         <div className="space-y-3">
           <div className="rounded-[28px] border border-[#1f2e68] bg-[radial-gradient(circle_at_24%_38%,rgba(91,231,255,0.16),transparent_26%),radial-gradient(circle_at_68%_38%,rgba(226,121,255,0.16),transparent_28%),linear-gradient(145deg,#071238_0%,#0d1c57_55%,#152f93_100%)] px-5 py-5 shadow-[0_22px_40px_-28px_rgba(27,41,102,0.65)]">
-            <NexoraLogo inverse className="justify-start" />
+            <SynetraLogo inverse className="justify-start" />
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.34em] text-muted-foreground">

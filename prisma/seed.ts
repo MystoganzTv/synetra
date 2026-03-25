@@ -76,7 +76,7 @@ async function main() {
       title: clinicianTitle ?? "Clinician",
       credentials: null,
       discipline: discipline ?? null,
-      email: `${slugify(clinicianName)}@nexora.demo`,
+      email: `${slugify(clinicianName)}@synetra.demo`,
       timezone: "America/New_York",
       status: "ACTIVE" as const,
       isBillable: true,

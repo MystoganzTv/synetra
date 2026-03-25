@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
-export function NexoraMark({ className }: { className?: string }) {
+export function SynetraMark({ className }: { className?: string }) {
   return (
     <div className={cn("relative h-12 w-12 overflow-hidden rounded-2xl", className)}>
       <Image
@@ -17,7 +17,7 @@ export function NexoraMark({ className }: { className?: string }) {
   );
 }
 
-export function NexoraWordmark({
+export function SynetraWordmark({
   className,
   inverse = false,
 }: {
@@ -39,7 +39,7 @@ export function NexoraWordmark({
   );
 }
 
-export function NexoraLogo({
+export function SynetraLogo({
   className,
   compact = false,
 }: {

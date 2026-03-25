@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ArrowRight, LockKeyhole, ShieldCheck, Sparkles } from "lucide-react";
 
-import { NexoraLogo } from "@/components/brand/nexora-logo";
+import { SynetraLogo } from "@/components/brand/synetra-logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -35,7 +35,7 @@ export default async function LoginPage({
       <div className="relative mx-auto grid min-h-screen w-full max-w-[1380px] items-center gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[1.02fr_0.98fr] lg:px-10">
         <div className="space-y-8">
           <Link href="/" className="inline-flex">
-            <NexoraLogo />
+            <SynetraLogo />
           </Link>
 
           <div className="space-y-4">
