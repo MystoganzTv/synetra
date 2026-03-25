@@ -7,21 +7,21 @@ export default async function TermsPage() {
     <MarketingShell>
       <div className="space-y-6">
         <MarketingPageHero
-          eyebrow="Terms"
-          title="Terms page placeholder for a complete SaaS marketing footprint."
-          description="This page completes the public information architecture of the site. It should still be reviewed and finalized legally before using it as live contractual language."
+          eyebrow="Terminos"
+          title="Resumen de terminos de uso de Synetra."
+          description="Esta pagina completa la arquitectura publica del sitio, pero debe revisarse y aprobarse legalmente antes de utilizarse como lenguaje contractual definitivo."
         />
 
         <Card className="bg-white/78">
           <CardContent className="space-y-5 p-6 text-sm leading-8 text-muted-foreground">
             <p>
-              Synetra’s public site should include terms that define acceptable use, access
-              expectations, limitations, intellectual property, and other core platform conditions.
+              El sitio publico de Synetra debe incluir terminos que definan uso aceptable,
+              expectativas de acceso, limitaciones, propiedad intelectual y condiciones generales
+              de la plataforma.
             </p>
             <p>
-              This placeholder is intentionally conservative. It establishes the route and site
-              structure now, while signaling that legal review is still required before production
-              customer use.
+              Por ahora esta pagina funciona como resumen informativo. Antes de usarla con clientes
+              reales debe sustituirse por una version legal final revisada para produccion.
             </p>
           </CardContent>
         </Card>

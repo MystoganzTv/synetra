@@ -42,9 +42,9 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {[
                 { label: "Sobre nosotros", href: "/about" },
-                { label: "Casos de estudio", href: "/solutions" },
-                { label: "Blog", href: "/resources" },
-                { label: "Contacto", href: "/login" },
+                { label: "Para equipos", href: "/solutions" },
+                { label: "Recursos", href: "/resources" },
+                { label: "Contacto", href: "/contacto" },
               ].map((item) => (
                 <li key={item.label}>
                   <Link href={item.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
@@ -83,8 +83,8 @@ export default function Footer() {
             <Link href="/legal/privacy" className="text-xs text-muted-foreground transition-colors hover:text-foreground">
               Privacidad
             </Link>
-            <Link href="/compliance" className="text-xs text-muted-foreground transition-colors hover:text-foreground">
-              HIPAA
+            <Link href="/contacto" className="text-xs text-muted-foreground transition-colors hover:text-foreground">
+              Contacto
             </Link>
           </div>
         </div>

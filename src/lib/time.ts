@@ -1,4 +1,5 @@
-export const APP_TIMEZONE = process.env.NEXORA_TIMEZONE || "America/New_York";
+export const APP_TIMEZONE =
+  process.env.SYNETRA_TIMEZONE || process.env.NEXORA_TIMEZONE || "America/New_York";
 
 function pad(value: number) {
   return String(value).padStart(2, "0");

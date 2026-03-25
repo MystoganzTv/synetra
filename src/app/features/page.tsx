@@ -11,9 +11,9 @@ export default async function FeaturesPage() {
     <MarketingShell>
       <div className="space-y-6">
         <MarketingPageHero
-          eyebrow="Features"
-          title="A behavioral health platform organized around operational reality."
-          description="Synetra connects scheduling, documentation, authorizations, billing readiness, and compliance so each operational signal stays attached to the record that created it."
+          eyebrow="Funciones"
+          title="Una plataforma organizada alrededor de la realidad operativa."
+          description="Synetra conecta programacion, documentacion, autorizaciones, facturacion y cumplimiento para que cada senal operativa permanezca unida al registro que la genera."
         />
 
         <div className="grid gap-4 lg:grid-cols-2">
@@ -42,18 +42,18 @@ export default async function FeaturesPage() {
           <CardContent className="flex flex-col gap-4 p-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="space-y-2">
               <p className="text-sm font-semibold text-foreground">
-                See the product architecture in action
+                Ve la arquitectura del producto en accion
               </p>
               <p className="text-sm leading-7 text-muted-foreground">
-                Explore the live command center, case operations pages, scheduling layer, and validation flow.
+                Recorre el command center, las paginas de caso, la capa de programacion y el flujo de validacion.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
               <Button asChild>
-                <Link href="/login">Open product access</Link>
+                <Link href="/contacto">Solicitar demo</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/pricing">View pricing approach</Link>
+                <Link href="/pricing">Ver enfoque de precios</Link>
               </Button>
             </div>
           </CardContent>

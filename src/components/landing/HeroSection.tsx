@@ -53,7 +53,7 @@ export default function HeroSection({
                 size="lg"
                 className="h-12 rounded-full px-8 text-sm font-medium gap-2 shadow-[0_24px_60px_-28px_rgba(49,88,255,0.6)]"
               >
-                <Link href={dashboardHref}>
+                <Link href="/contacto">
                   Agendar demo <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -63,8 +63,8 @@ export default function HeroSection({
                 variant="outline"
                 className="h-12 rounded-full border-border/60 bg-white/75 px-8 text-sm font-medium gap-2 shadow-[0_20px_45px_-36px_rgba(17,24,39,0.45)] backdrop-blur"
               >
-                <Link href="/login">
-                  <Play className="h-4 w-4" /> Ver demo
+                <Link href={dashboardHref}>
+                  <Play className="h-4 w-4" /> Ver producto
                 </Link>
               </Button>
             </div>

@@ -5,6 +5,7 @@ import {
   type ServiceDiscipline,
 } from "@prisma/client";
 
+import { defaultAuthProfiles, hashPassword } from "../src/lib/auth-config";
 import { demoClients, demoStandaloneSessions } from "../src/lib/demo-data";
 import {
   demoDocuments,
@@ -402,6 +403,7 @@ async function main() {
   const employees = Array.from(employeeDirectory.values());
 
   await prisma.$transaction([
+    prisma.user.deleteMany(),
     prisma.document.deleteMany(),
     prisma.formPacket.deleteMany(),
     prisma.groupSession.deleteMany(),
@@ -436,6 +438,16 @@ async function main() {
       primaryDiagnosisCode: client.primaryDiagnosisCode ?? null,
       payerSegment: client.payerSegment ?? null,
       referralSource: client.referralSource ?? null,
+    })),
+  });
+
+  await prisma.user.createMany({
+    data: defaultAuthProfiles.map((user) => ({
+      email: user.email.toLowerCase(),
+      name: user.name,
+      passwordHash: hashPassword(user.password),
+      role: user.role,
+      status: "ACTIVE",
     })),
   });
 

@@ -6,11 +6,7 @@ import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-type CTASectionProps = {
-  dashboardHref: string;
-};
-
-export default function CTASection({ dashboardHref }: CTASectionProps) {
+export default function CTASection() {
   return (
     <section className="relative overflow-hidden py-20 md:py-28">
       <div className="absolute inset-0 bg-gradient-to-br from-[#121b45] via-[#233f98] to-[#3158ff]" />
@@ -39,7 +35,7 @@ export default function CTASection({ dashboardHref }: CTASectionProps) {
               variant="contrast"
               className="h-12 rounded-full px-8 font-medium"
             >
-              <Link href={dashboardHref}>
+              <Link href="/contacto">
                 Agendar demo <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
@@ -48,7 +44,7 @@ export default function CTASection({ dashboardHref }: CTASectionProps) {
               size="lg"
               className="h-12 rounded-full bg-white/18 px-8 font-medium text-white shadow-none hover:bg-white/24"
             >
-              <Link href="/login">Contactar ventas</Link>
+              <Link href="/contacto">Contactar ventas</Link>
             </Button>
           </div>
         </motion.div>

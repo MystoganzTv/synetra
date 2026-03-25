@@ -19,12 +19,16 @@ export function isProductionEnvironment() {
   return process.env.NODE_ENV === "production";
 }
 
+function getDemoModeFlag() {
+  return process.env.SYNETRA_ENABLE_DEMO_DATA ?? process.env.NEXORA_ENABLE_DEMO_DATA;
+}
+
 export function isDemoModeEnabled() {
-  return !isProductionEnvironment() && process.env.NEXORA_ENABLE_DEMO_DATA === "true";
+  return !isProductionEnvironment() && getDemoModeFlag() === "true";
 }
 
 export function assertDemoModeAllowed(scope: string) {
-  if (isProductionEnvironment() && process.env.NEXORA_ENABLE_DEMO_DATA === "true") {
+  if (isProductionEnvironment() && getDemoModeFlag() === "true") {
     throw new DataAccessError(
       "PRODUCTION_DEMO_MODE_FORBIDDEN",
       scope,

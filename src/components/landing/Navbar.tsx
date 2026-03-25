@@ -49,7 +49,9 @@ export default function Navbar({ dashboardHref, signedIn }: NavbarProps) {
             <Link href="/login">{signedIn ? "Abrir panel" : "Iniciar sesion"}</Link>
           </Button>
           <Button asChild size="sm" className="rounded-full px-5">
-            <Link href={dashboardHref}>{signedIn ? "Ir al dashboard" : "Agendar demo"}</Link>
+            <Link href={signedIn ? dashboardHref : "/contacto"}>
+              {signedIn ? "Ir al dashboard" : "Agendar demo"}
+            </Link>
           </Button>
         </div>
 
@@ -82,7 +84,9 @@ export default function Navbar({ dashboardHref, signedIn }: NavbarProps) {
                   <Link href="/login">{signedIn ? "Abrir panel" : "Iniciar sesion"}</Link>
                 </Button>
                 <Button asChild size="sm" className="w-full rounded-full">
-                  <Link href={dashboardHref}>{signedIn ? "Ir al dashboard" : "Agendar demo"}</Link>
+                  <Link href={signedIn ? dashboardHref : "/contacto"}>
+                    {signedIn ? "Ir al dashboard" : "Agendar demo"}
+                  </Link>
                 </Button>
               </div>
             </div>

@@ -7,22 +7,22 @@ export default async function PrivacyPage() {
     <MarketingShell>
       <div className="space-y-6">
         <MarketingPageHero
-          eyebrow="Privacy"
-          title="Privacy page placeholder for a production-ready public site."
-          description="This page gives Synetra the public-site structure buyers expect. It should still be reviewed and finalized with legal counsel before production use."
+          eyebrow="Privacidad"
+          title="Resumen de privacidad de Synetra."
+          description="Esta pagina resume de forma general como deberia comunicarse el tratamiento de informacion del sitio y del producto. Debe revisarse y aprobarse legalmente antes de uso contractual."
         />
 
         <Card className="bg-white/78">
           <CardContent className="space-y-5 p-6 text-sm leading-8 text-muted-foreground">
             <p>
-              Synetra is intended to support behavioral health operational workflows. Public-site
-              privacy language should describe what information is collected, how it is used, and how
-              users can contact the organization regarding privacy requests.
+              Synetra esta orientado a operaciones de salud conductual. La politica publica de
+              privacidad debe explicar que informacion se recopila, como se utiliza y como pueden
+              ejercerse solicitudes relacionadas con privacidad y datos.
             </p>
             <p>
-              Before going live for real customer onboarding, this page should be replaced with a
-              reviewed privacy policy that reflects your actual data practices, third-party services,
-              contact methods, and retention policies.
+              Antes de utilizar esta pagina como documento definitivo para onboarding real, debe
+              sustituirse por una politica revisada que refleje practicas reales de datos, servicios
+              de terceros, metodos de contacto y politicas de retencion.
             </p>
           </CardContent>
         </Card>

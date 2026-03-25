@@ -8,9 +8,9 @@ export default async function PricingPage() {
     <MarketingShell>
       <div className="space-y-6">
         <MarketingPageHero
-          eyebrow="Pricing"
-          title="Commercial structure for teams buying an operating platform, not a toy dashboard."
-          description="Synetra pricing is positioned around implementation scope, workflow complexity, and operational depth. The site should explain the model clearly even before a live sales conversation."
+          eyebrow="Precios"
+          title="Estructura comercial para equipos que compran una plataforma operativa, no un dashboard decorativo."
+          description="El pricing de Synetra se define segun alcance de implementacion, complejidad del flujo y profundidad operativa."
         />
 
         <div className="grid gap-4 lg:grid-cols-3">

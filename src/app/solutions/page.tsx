@@ -8,9 +8,9 @@ export default async function SolutionsPage() {
     <MarketingShell>
       <div className="space-y-6">
         <MarketingPageHero
-          eyebrow="Who we serve"
-          title="Built for teams that run behavioral health operations, not just screens."
-          description="Synetra is structured for the people who own scheduling, documentation quality, authorizations, revenue readiness, and cross-team follow-through."
+          eyebrow="Para equipos"
+          title="Construido para equipos que operan salud conductual, no solo para llenar pantallas."
+          description="Synetra esta estructurado para quienes son responsables de programacion, calidad documental, autorizaciones, facturacion y seguimiento transversal."
         />
 
         <div className="grid gap-4 lg:grid-cols-3">

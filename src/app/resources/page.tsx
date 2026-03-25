@@ -8,9 +8,9 @@ export default async function ResourcesPage() {
     <MarketingShell>
       <div className="space-y-6">
         <MarketingPageHero
-          eyebrow="Resources"
-          title="Resources and proof that support the buying conversation."
-          description="A serious public site needs more than product hero copy. It needs launch guides, workflow explainers, implementation notes, and proof-oriented materials that educate buyers."
+          eyebrow="Recursos"
+          title="Recursos y material comercial que fortalecen la conversacion de compra."
+          description="Un sitio serio necesita mas que un hero bonito. Necesita guias, explicaciones de workflow, notas de implementacion y material que eduque al comprador."
         />
 
         <div className="grid gap-4">
@@ -30,7 +30,7 @@ export default async function ResourcesPage() {
                     <div key={item} className="rounded-[22px] border border-border bg-white/72 p-5">
                       <p className="font-semibold text-foreground">{item}</p>
                       <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                        Structured to make the public site feel like a real category player, not a one-page prototype.
+                        Pensado para que el sitio publico se sienta como una categoria seria y no como un one-pager improvisado.
                       </p>
                     </div>
                   ))}
@@ -43,4 +43,3 @@ export default async function ResourcesPage() {
     </MarketingShell>
   );
 }
-

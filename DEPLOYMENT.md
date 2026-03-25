@@ -45,8 +45,8 @@ Generate it from Netlify:
 Already set:
 
 - `AUTH_SECRET`
-- `NEXORA_ENABLE_DEMO_DATA`
-- `NEXORA_TIMEZONE`
+- `SYNETRA_ENABLE_DEMO_DATA`
+- `SYNETRA_TIMEZONE`
 
 Still required:
 
@@ -56,6 +56,17 @@ Recommended scopes/contexts:
 
 - contexts: `production`, `branch-deploy`, `deploy-preview`
 - scopes: default all scopes is acceptable for this app
+
+## Legacy env compatibility
+
+The code now reads `SYNETRA_*` env vars first.
+
+Temporary fallback still exists for:
+
+- `NEXORA_ENABLE_DEMO_DATA`
+- `NEXORA_TIMEZONE`
+
+You can migrate existing deploy environments to the new names without breaking running builds.
 
 ## Cloud Postgres
 

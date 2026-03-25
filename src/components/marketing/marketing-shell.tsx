@@ -38,11 +38,11 @@ export async function MarketingShell({
 
           <div className="flex flex-wrap gap-3">
             <Button asChild variant="ghost">
-              <Link href="/login">Sign in</Link>
+              <Link href="/login">Iniciar sesion</Link>
             </Button>
             <Button asChild>
-              <Link href={session ? "/dashboard" : "/login"}>
-                {session ? "Open command center" : "Request access"}
+              <Link href={session ? "/dashboard" : "/contacto"}>
+                {session ? "Abrir panel" : "Solicitar demo"}
               </Link>
             </Button>
           </div>
@@ -55,35 +55,35 @@ export async function MarketingShell({
             <div className="space-y-4">
               <SynetraLogo compact />
               <p className="max-w-sm text-sm leading-7 text-muted-foreground">
-                Synetra is a behavioral health operations platform built to connect scheduling,
-                documentation, authorizations, billing readiness, and compliance in one system.
+                Synetra es una plataforma operativa para salud conductual que conecta
+                programacion, documentacion, autorizaciones, facturacion y cumplimiento en un solo sistema.
               </p>
             </div>
 
             <div className="space-y-3">
-              <p className="text-sm font-semibold text-foreground">Platform</p>
+              <p className="text-sm font-semibold text-foreground">Plataforma</p>
               <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-                <Link href="/features">Features</Link>
-                <Link href="/solutions">Who We Serve</Link>
-                <Link href="/pricing">Pricing</Link>
+                <Link href="/features">Funciones</Link>
+                <Link href="/solutions">Para equipos</Link>
+                <Link href="/pricing">Precios</Link>
               </div>
             </div>
 
             <div className="space-y-3">
-              <p className="text-sm font-semibold text-foreground">Resources</p>
+              <p className="text-sm font-semibold text-foreground">Recursos</p>
               <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-                <Link href="/resources">Resources</Link>
+                <Link href="/resources">Recursos</Link>
                 <Link href="/faq">FAQ</Link>
-                <Link href="/about">About</Link>
+                <Link href="/about">Sobre Synetra</Link>
               </div>
             </div>
 
             <div className="space-y-3">
               <p className="text-sm font-semibold text-foreground">Legal</p>
               <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-                <Link href="/legal/privacy">Privacy</Link>
-                <Link href="/legal/terms">Terms</Link>
-                <Link href="/login">Product access</Link>
+                <Link href="/legal/privacy">Privacidad</Link>
+                <Link href="/legal/terms">Terminos</Link>
+                <Link href="/contacto">Contacto</Link>
               </div>
             </div>
           </div>

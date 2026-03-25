@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
 
-  const user = validateCredentials(email, password);
+  const user = await validateCredentials(email, password);
 
   if (!user) {
     return NextResponse.redirect(new URL("/login?error=invalid_credentials", request.url));

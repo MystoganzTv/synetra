@@ -9,8 +9,8 @@ export default async function FaqPage() {
       <div className="space-y-6">
         <MarketingPageHero
           eyebrow="FAQ"
-          title="Answer the hard questions before the demo call."
-          description="A complete public site should reduce ambiguity for buyers. FAQ is part of the product story, not an afterthought."
+          title="Responde las preguntas duras antes de la llamada comercial."
+          description="Un sitio completo debe reducir ambiguedad para el comprador. El FAQ forma parte de la historia del producto."
         />
 
         <div className="grid gap-4">
@@ -29,4 +29,3 @@ export default async function FaqPage() {
     </MarketingShell>
   );
 }
-

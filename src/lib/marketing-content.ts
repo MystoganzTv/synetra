@@ -1,84 +1,85 @@
 export const marketingNavigation = [
-  { href: "/features", label: "Features" },
-  { href: "/solutions", label: "Who We Serve" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/resources", label: "Resources" },
+  { href: "/features", label: "Funciones" },
+  { href: "/solutions", label: "Para equipos" },
+  { href: "/pricing", label: "Precios" },
+  { href: "/resources", label: "Recursos" },
   { href: "/faq", label: "FAQ" },
-  { href: "/about", label: "About" },
+  { href: "/about", label: "Sobre Synetra" },
+  { href: "/contacto", label: "Contacto" },
 ];
 
 export const featureHighlights = [
   {
-    title: "Operational scheduling",
+    title: "Programacion operativa",
     description:
-      "Day and week views keep sessions, groups, staff utilization, and follow-up work visible in one operating layer.",
+      "Vistas diarias y semanales mantienen sesiones, grupos, utilizacion del equipo y trabajo pendiente visibles en una sola capa operativa.",
     bullets: [
-      "Calendar by employee, service, and location",
-      "Operational scheduling posture, not just appointment lists",
-      "Session detail with billing and note readiness context",
+      "Calendario por profesional, servicio y ubicacion",
+      "Logica operativa, no solo lista de citas",
+      "Detalle de sesion con contexto de notas y facturacion",
     ],
   },
   {
-    title: "Case-centered documentation",
+    title: "Documentacion centrada en el caso",
     description:
-      "Notes, forms, documents, and compliance stay attached to the client → case → service → authorization hierarchy.",
+      "Notas, formularios, documentos y cumplimiento permanecen unidos a la jerarquia cliente → caso → servicio → autorizacion.",
     bullets: [
-      "Progress notes tied directly to rendered sessions",
-      "Intake and legal packet completion tracking",
-      "Case pages that act like operational command centers",
+      "Progress notes ligadas a sesiones realmente prestadas",
+      "Seguimiento de formularios de intake y legales",
+      "Paginas de caso que funcionan como centro operativo",
     ],
   },
   {
-    title: "Revenue readiness controls",
+    title: "Control de facturacion lista",
     description:
-      "Synetra validates sessions before claims move downstream, so operational teams can act before reimbursement slips.",
+      "Synetra valida sesiones antes de que los reclamos avancen, para que el equipo corrija riesgos antes de perder reembolso.",
     bullets: [
-      "Authorization active/range/unit validation",
-      "Missing-note and pending-signature detection",
-      "Ready to bill, at risk, and not billable classification",
+      "Validacion por autorizacion, rango y unidades",
+      "Deteccion de notas faltantes o pendientes de firma",
+      "Clasificacion en listo para facturar, en riesgo y no facturable",
     ],
   },
   {
-    title: "Compliance visibility",
+    title: "Visibilidad de cumplimiento",
     description:
-      "Required documents, expiring authorizations, unresolved QA items, and held sessions surface as work queues instead of surprises.",
+      "Documentos requeridos, autorizaciones por vencer, hallazgos de QA y sesiones retenidas aparecen como colas de trabajo y no como sorpresas.",
     bullets: [
-      "Compliance center by severity and owner",
-      "Required-document coverage at case level",
-      "Reports and operational issue aggregation",
+      "Centro de cumplimiento por severidad y responsable",
+      "Cobertura documental a nivel de caso",
+      "Reportes y agregacion de incidencias operativas",
     ],
   },
 ];
 
 export const solutionPersonas = [
   {
-    title: "Founders and operators",
+    title: "Fundadores y operadores",
     description:
-      "Get control of intake, scheduling, revenue risk, and team follow-through before the operation becomes noisy.",
+      "Obtengan control sobre intake, programacion, riesgo de ingresos y seguimiento del equipo antes de que la operacion se vuelva caotica.",
     outcomes: [
-      "Know what is billable today",
-      "Reduce operational blind spots",
-      "Scale with cleaner workflow discipline",
+      "Saber que es facturable hoy",
+      "Reducir puntos ciegos operativos",
+      "Escalar con mejores procesos",
     ],
   },
   {
-    title: "Clinical directors",
+    title: "Directores clinicos",
     description:
-      "Run clinical oversight with better visibility into authorizations, incomplete notes, quality signals, and program readiness.",
+      "Lleven la supervision clinica con mejor visibilidad sobre autorizaciones, notas incompletas, calidad y estado del programa.",
     outcomes: [
-      "Audit documentation posture by case",
-      "Prioritize supervision and follow-up",
-      "Keep care operations anchored to the record",
+      "Auditar documentacion por caso",
+      "Priorizar supervision y follow-up",
+      "Mantener la operacion anclada al expediente",
     ],
   },
   {
-    title: "Revenue and compliance teams",
+    title: "Equipos de ingresos y cumplimiento",
     description:
-      "Work from real billing-readiness signals instead of chasing claims after denials and documentation gaps appear.",
+      "Trabajen con senales reales de billing readiness en vez de perseguir reclamos despues de denegaciones y vacios documentales.",
     outcomes: [
-      "Catch missing authorizations early",
-      "Hold risky sessions before submission",
-      "See revenue exposure with operational context",
+      "Detectar autorizaciones faltantes a tiempo",
+      "Retener sesiones riesgosas antes del envio",
+      "Ver exposicion de ingresos con contexto operativo",
     ],
   },
 ];
@@ -86,68 +87,68 @@ export const solutionPersonas = [
 export const pricingTiers = [
   {
     name: "Growth",
-    price: "Custom",
+    price: "A medida",
     description:
-      "For newer and growing behavioral health organizations that need one connected operating layer.",
+      "Para organizaciones de salud conductual en crecimiento que necesitan una sola capa operativa conectada.",
     items: [
-      "Clients, cases, services, authorizations, sessions, and notes",
-      "Scheduling, document tracking, forms, and compliance center",
-      "Operational dashboard, reports, and billing readiness checks",
+      "Clientes, casos, servicios, autorizaciones, sesiones y notas",
+      "Programacion, seguimiento documental, formularios y cumplimiento",
+      "Dashboard operativo, reportes y validacion de facturacion",
     ],
   },
   {
     name: "Operations Plus",
-    price: "Custom",
+    price: "A medida",
     description:
-      "For multi-program teams that need deeper implementation support and process standardization.",
+      "Para equipos multi-programa que necesitan mayor soporte de implementacion y estandarizacion operativa.",
     items: [
-      "Everything in Growth",
-      "Implementation mapping for operational workflows",
-      "Environment setup, migration planning, and data governance support",
+      "Todo lo incluido en Growth",
+      "Mapeo de flujos operativos e implementacion",
+      "Configuracion de entorno, migracion y gobierno de datos",
     ],
   },
   {
     name: "Enterprise",
-    price: "Custom",
+    price: "A medida",
     description:
-      "For larger organizations that need custom controls, rollout planning, and cross-team governance.",
+      "Para organizaciones grandes que necesitan controles personalizados, rollout y gobierno transversal.",
     items: [
-      "Everything in Operations Plus",
-      "Advanced rollout planning and stakeholder onboarding",
-      "Custom reporting, data policies, and deployment support",
+      "Todo lo incluido en Operations Plus",
+      "Planificacion avanzada de rollout y onboarding",
+      "Reportes personalizados, politicas de datos y soporte de despliegue",
     ],
   },
 ];
 
 export const resourceCollections = [
   {
-    title: "Launch guides",
+    title: "Guias de lanzamiento",
     description:
-      "Planning material for teams replacing disconnected scheduling, notes, and claims workflows.",
+      "Material de planificacion para equipos que reemplazan flujos desconectados de agenda, notas y reclamos.",
     items: [
-      "Operational readiness checklist",
-      "Case hierarchy implementation guide",
-      "Billing-readiness rollout worksheet",
+      "Checklist de readiness operativo",
+      "Guia de implementacion de jerarquia de casos",
+      "Worksheet de rollout para billing readiness",
     ],
   },
   {
-    title: "Workflow playbooks",
+    title: "Playbooks operativos",
     description:
-      "Reference material for clinical ops, revenue ops, and compliance leads inside growing practices.",
+      "Material de referencia para clinical ops, revenue ops y responsables de cumplimiento en practicas en crecimiento.",
     items: [
-      "Handling expiring authorizations",
-      "Resolving held sessions before claims submission",
-      "Building a case review cadence",
+      "Manejo de autorizaciones por vencer",
+      "Resolucion de sesiones retenidas antes del envio",
+      "Cadencia de revision por caso",
     ],
   },
   {
-    title: "Proof and education",
+    title: "Material comercial y educativo",
     description:
-      "Content that explains how Synetra thinks about operational correctness, not just interface polish.",
+      "Contenido que explica como Synetra piensa la operacion, no solo la interfaz.",
     items: [
-      "Implementation notes",
-      "Operational architecture explainers",
-      "Product walkthroughs and demo narratives",
+      "Notas de implementacion",
+      "Explicaciones de arquitectura operativa",
+      "Recorridos de producto y narrativa de demo",
     ],
   },
 ];
@@ -156,44 +157,44 @@ export const faqItems = [
   {
     question: "What is Synetra built for?",
     answer:
-      "Synetra is built for behavioral health operations teams that need scheduling, documentation, authorization oversight, billing readiness, and compliance to stay connected in one system.",
+      "Synetra esta construido para equipos de salud conductual que necesitan mantener conectados programacion, documentacion, autorizaciones, facturacion y cumplimiento.",
   },
   {
     question: "Is Synetra just a dashboard?",
     answer:
-      "No. The dashboard is only the surface. The core model ties sessions, services, authorizations, progress notes, billing posture, and compliance issues together so teams can actually act on what they see.",
+      "No. El dashboard es solo la superficie. El modelo central une sesiones, servicios, autorizaciones, notas, facturacion y cumplimiento para que el equipo pueda actuar sobre lo que ve.",
   },
   {
     question: "Who is Synetra for inside an organization?",
     answer:
-      "Founders, operators, clinical directors, revenue teams, and compliance leads can all use Synetra because the product is built around operational flow, not a single department’s view.",
+      "Fundadores, operadores, directores clinicos, equipos de ingresos y responsables de cumplimiento pueden usar Synetra porque el producto esta construido alrededor del flujo operativo, no de un solo departamento.",
   },
   {
     question: "How does Synetra handle billing readiness?",
     answer:
-      "Each session is validated against linked client, case, service, authorization, employee, units, date range, attendance, and note completion. That produces operational statuses like ready to bill, at risk, and not billable.",
+      "Cada sesion se valida contra cliente, caso, servicio, autorizacion, profesional, unidades, rango de fechas, asistencia y notas. Eso genera estados operativos como listo para facturar, en riesgo y no facturable.",
   },
   {
     question: "Can Synetra support real data and production deployment?",
     answer:
-      "Yes. The application is structured around Next.js, Prisma, PostgreSQL, typed domain mapping, and environment-based data safety. It is meant to evolve into a real production system, not stay as a toy demo.",
+      "Si. La aplicacion esta estructurada con Next.js, Prisma, PostgreSQL, mapeo tipado del dominio y control por entornos. Esta pensada para evolucionar a produccion real, no para quedarse como demo decorativa.",
   },
 ];
 
 export const aboutPrinciples = [
   {
-    title: "Operations before ornament",
+    title: "Operacion antes que ornamento",
     description:
-      "Synetra is designed to make the work legible: what is scheduled, what is missing, what is blocked, and what needs follow-through.",
+      "Synetra esta disenado para volver legible el trabajo: que esta programado, que falta, que esta bloqueado y que requiere seguimiento.",
   },
   {
-    title: "Clinical context stays attached",
+    title: "El contexto clinico no se suelta",
     description:
-      "We do not want billing, documentation, and compliance floating separately from the case and service that created them.",
+      "No queremos que facturacion, documentacion y cumplimiento floten separados del caso y del servicio que los origino.",
   },
   {
-    title: "Production-style architecture",
+    title: "Arquitectura lista para produccion",
     description:
-      "The product foundation prioritizes type safety, real relations, environment control, Prisma-backed data models, and operational validation logic.",
+      "La base del producto prioriza type safety, relaciones reales, control por entornos, modelos Prisma y logica de validacion operativa.",
   },
 ];

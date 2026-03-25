@@ -3,26 +3,13 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { defaultAuthProfiles, type AuthRole, verifyPassword } from "@/lib/auth-config";
+import { prisma } from "@/lib/db";
+import { isDemoModeEnabled } from "@/lib/data-source";
+
 export const AUTH_COOKIE_NAME = "synetra_session";
 
 const SESSION_DURATION_MS = 1000 * 60 * 60 * 10;
-
-const demoUsers = [
-  {
-    email: "admin@synetra.app",
-    password: "SynetraDemo!",
-    name: "Avery Chen",
-    role: "Platform Admin",
-  },
-  {
-    email: "ops@synetra.app",
-    password: "SynetraOps!",
-    name: "Morgan Lee",
-    role: "Revenue Operations",
-  },
-];
-
-export type AuthRole = (typeof demoUsers)[number]["role"];
 
 export interface AuthSession {
   email: string;
@@ -82,20 +69,53 @@ function decodeSession(token: string): AuthSession | null {
 }
 
 export function getDemoUsers() {
-  return demoUsers.map(({ email, name, role }) => ({ email, name, role }));
+  return defaultAuthProfiles.map(({ email, name, role }) => ({ email, name, role }));
 }
 
-export function validateCredentials(email: string, password: string) {
+export async function validateCredentials(email: string, password: string) {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  if (process.env.DATABASE_URL) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { email: normalizedEmail },
+        select: {
+          email: true,
+          name: true,
+          role: true,
+          status: true,
+          passwordHash: true,
+        },
+      });
+
+      if (user?.status === "ACTIVE" && verifyPassword(password, user.passwordHash)) {
+        return {
+          email: user.email,
+          name: user.name,
+          role: user.role as AuthRole,
+        };
+      }
+    } catch (error) {
+      console.error("[auth] Database-backed login check failed", error);
+    }
+  }
+
+  if (!isDemoModeEnabled()) {
+    return null;
+  }
+
   return (
-    demoUsers.find(
-      (user) =>
-        user.email.toLowerCase() === email.trim().toLowerCase() &&
-        user.password === password,
+    defaultAuthProfiles.find(
+      (user) => user.email.toLowerCase() === normalizedEmail && user.password === password,
     ) ?? null
   );
 }
 
-export function createSessionForUser(user: Omit<(typeof demoUsers)[number], "password">) {
+export function createSessionForUser(user: {
+  email: string;
+  name: string;
+  role: AuthRole;
+}) {
   return encodeSession({
     email: user.email,
     name: user.name,

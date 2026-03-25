@@ -8,9 +8,9 @@ export default async function AboutPage() {
     <MarketingShell>
       <div className="space-y-6">
         <MarketingPageHero
-          eyebrow="About"
-          title="Synetra is designed around operational clarity in behavioral health."
-          description="The product direction is simple: keep the clinical thread intact while making operational work visible, actionable, and scalable."
+          eyebrow="Sobre Synetra"
+          title="Synetra esta diseniado alrededor de la claridad operativa en salud conductual."
+          description="La direccion del producto es simple: mantener el hilo clinico intacto mientras el trabajo operativo se vuelve visible, accionable y escalable."
         />
 
         <div className="grid gap-4 lg:grid-cols-3">

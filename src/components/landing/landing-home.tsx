@@ -46,7 +46,7 @@ export function LandingHome({ signedIn }: LandingHomeProps) {
           dataHeight={864}
         />
         <TestimonialsSection />
-        <CTASection dashboardHref={dashboardHref} />
+        <CTASection />
         <Footer />
       </div>
     </main>
