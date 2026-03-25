@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button, tactilePressClassName } from "@/components/ui/button";
 
 import SynetraLogo from "./synetra-logo";
 
@@ -45,10 +45,10 @@ export default function Navbar({ dashboardHref, signedIn }: NavbarProps) {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button asChild variant="ghost" size="sm" className="text-muted-foreground">
+          <Button asChild variant="ghost" size="sm" className={`text-muted-foreground ${tactilePressClassName}`}>
             <Link href="/login">{signedIn ? "Abrir panel" : "Iniciar sesion"}</Link>
           </Button>
-          <Button asChild size="sm" className="rounded-full px-5">
+          <Button asChild size="sm" className={`rounded-full px-5 hover:brightness-[1.03] ${tactilePressClassName}`}>
             <Link href={signedIn ? dashboardHref : "/contacto"}>
               {signedIn ? "Ir al dashboard" : "Agendar demo"}
             </Link>
@@ -80,10 +80,10 @@ export default function Navbar({ dashboardHref, signedIn }: NavbarProps) {
                 </a>
               ))}
               <div className="flex flex-col gap-2 pt-3">
-                <Button asChild variant="outline" size="sm" className="w-full">
+                <Button asChild variant="outline" size="sm" className={`w-full hover:brightness-[1.02] ${tactilePressClassName}`}>
                   <Link href="/login">{signedIn ? "Abrir panel" : "Iniciar sesion"}</Link>
                 </Button>
-                <Button asChild size="sm" className="w-full rounded-full">
+                <Button asChild size="sm" className={`w-full rounded-full hover:brightness-[1.03] ${tactilePressClassName}`}>
                   <Link href={signedIn ? dashboardHref : "/contacto"}>
                     {signedIn ? "Ir al dashboard" : "Agendar demo"}
                   </Link>

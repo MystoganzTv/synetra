@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { MarketingPageHero } from "@/components/marketing/marketing-page-hero";
 import { MarketingShell } from "@/components/marketing/marketing-shell";
-import { Button } from "@/components/ui/button";
+import { Button, tactilePressClassName } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { featureHighlights } from "@/lib/marketing-content";
 
@@ -49,10 +49,10 @@ export default async function FeaturesPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Button asChild>
+              <Button asChild className={`hover:brightness-[1.03] ${tactilePressClassName}`}>
                 <Link href="/contacto">Solicitar demo</Link>
               </Button>
-              <Button asChild variant="outline">
+              <Button asChild variant="outline" className={`hover:brightness-[1.02] ${tactilePressClassName}`}>
                 <Link href="/pricing">Ver enfoque de precios</Link>
               </Button>
             </div>

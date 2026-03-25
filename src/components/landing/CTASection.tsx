@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button, tactilePressClassName } from "@/components/ui/button";
 
 export default function CTASection() {
   return (
@@ -33,7 +33,7 @@ export default function CTASection() {
               asChild
               size="lg"
               variant="contrast"
-              className="h-12 rounded-full px-8 font-medium"
+              className={`h-12 rounded-full px-8 font-medium hover:brightness-[1.02] ${tactilePressClassName}`}
             >
               <Link href="/contacto">
                 Agendar demo <ArrowRight className="h-4 w-4" />
@@ -42,7 +42,7 @@ export default function CTASection() {
             <Button
               asChild
               size="lg"
-              className="h-12 rounded-full bg-white/18 px-8 font-medium text-white shadow-none hover:bg-white/24"
+              className={`h-12 rounded-full bg-white/18 px-8 font-medium text-white shadow-none hover:bg-white/24 ${tactilePressClassName}`}
             >
               <Link href="/contacto">Contactar ventas</Link>
             </Button>

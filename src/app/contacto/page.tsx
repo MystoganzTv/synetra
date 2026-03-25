@@ -3,7 +3,7 @@ import { CalendarDays, Mail, MessageSquareText } from "lucide-react";
 
 import { MarketingPageHero } from "@/components/marketing/marketing-page-hero";
 import { MarketingShell } from "@/components/marketing/marketing-shell";
-import { Button } from "@/components/ui/button";
+import { Button, tactilePressClassName } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 const salesEmail = "ventas@synetra.app";
@@ -48,12 +48,12 @@ export default async function ContactPage() {
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <Button asChild>
+                <Button asChild className={`hover:brightness-[1.03] ${tactilePressClassName}`}>
                   <a href={`mailto:${salesEmail}?subject=Solicitar%20demo%20de%20Synetra`}>
                     Solicitar demo por email
                   </a>
                 </Button>
-                <Button asChild variant="outline">
+                <Button asChild variant="outline" className={`hover:brightness-[1.02] ${tactilePressClassName}`}>
                   <Link href="/features">Ver funciones</Link>
                 </Button>
               </div>

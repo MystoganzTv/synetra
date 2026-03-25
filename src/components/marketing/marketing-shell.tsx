@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { SynetraLogo } from "@/components/brand/synetra-logo";
-import { Button } from "@/components/ui/button";
+import { Button, tactilePressClassName } from "@/components/ui/button";
 import { getAuthSession } from "@/lib/auth";
 import { marketingNavigation } from "@/lib/marketing-content";
 
@@ -30,17 +30,17 @@ export async function MarketingShell({
 
           <nav className="flex flex-wrap gap-2 lg:justify-center">
             {marketingNavigation.map((item) => (
-              <Button key={item.href} asChild variant="ghost" className="rounded-full">
+              <Button key={item.href} asChild variant="ghost" className={`rounded-full ${tactilePressClassName}`}>
                 <Link href={item.href}>{item.label}</Link>
               </Button>
             ))}
           </nav>
 
           <div className="flex flex-wrap gap-3">
-            <Button asChild variant="ghost">
+            <Button asChild variant="ghost" className={tactilePressClassName}>
               <Link href="/login">Iniciar sesion</Link>
             </Button>
-            <Button asChild>
+            <Button asChild className={`hover:brightness-[1.03] ${tactilePressClassName}`}>
               <Link href={session ? "/dashboard" : "/contacto"}>
                 {session ? "Abrir panel" : "Solicitar demo"}
               </Link>

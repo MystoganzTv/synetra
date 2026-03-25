@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { Button, tactilePressClassName } from "@/components/ui/button";
 
 type HeroSectionProps = {
   heroImage: string;
@@ -51,7 +51,7 @@ export default function HeroSection({
               <Button
                 asChild
                 size="lg"
-                className="h-12 rounded-full px-8 text-sm font-medium gap-2 shadow-[0_24px_60px_-28px_rgba(49,88,255,0.6)]"
+                className={`h-12 gap-2 rounded-full px-8 text-sm font-medium shadow-[0_24px_60px_-28px_rgba(49,88,255,0.6)] hover:brightness-[1.03] ${tactilePressClassName}`}
               >
                 <Link href="/contacto">
                   Agendar demo <ArrowRight className="h-4 w-4" />
@@ -61,7 +61,7 @@ export default function HeroSection({
                 asChild
                 size="lg"
                 variant="outline"
-                className="h-12 rounded-full border-border/60 bg-white/75 px-8 text-sm font-medium gap-2 shadow-[0_20px_45px_-36px_rgba(17,24,39,0.45)] backdrop-blur"
+                className={`h-12 gap-2 rounded-full border-border/60 bg-white/75 px-8 text-sm font-medium shadow-[0_20px_45px_-36px_rgba(17,24,39,0.45)] backdrop-blur hover:brightness-[1.02] ${tactilePressClassName}`}
               >
                 <Link href={dashboardHref}>
                   <Play className="h-4 w-4" /> Ver producto
