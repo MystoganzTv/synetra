@@ -1,0 +1,43 @@
+name: Netlify Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - mystodev
+  workflow_dispatch:
+
+env:
+  NETLIFY_SITE_ID: 991c3f84-1ba3-4703-aa7f-3a4d8e98d546
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Deploy preview for mystodev
+        if: github.ref_name == 'mystodev'
+        run: npx netlify deploy --build --alias mystodev
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
+      - name: Deploy production for main
+        if: github.ref_name == 'main'
+        run: npx netlify deploy --build --prod
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
