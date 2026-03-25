@@ -11,10 +11,10 @@ export async function POST(request: Request) {
   const user = await validateCredentials(email, password);
 
   if (!user) {
-    return NextResponse.redirect(new URL("/login?error=invalid_credentials", request.url));
+    return NextResponse.redirect(new URL("/login?error=invalid_credentials", request.url), 303);
   }
 
-  const response = NextResponse.redirect(new URL("/dashboard", request.url));
+  const response = NextResponse.redirect(new URL("/dashboard", request.url), 303);
   const cookieStore = await cookies();
   const token = createSessionForUser({
     email: user.email,
