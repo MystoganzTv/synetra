@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight, LockKeyhole, ShieldCheck, Sparkles } from "lucide-react";
 
 import { SynetraLogo } from "@/components/brand/synetra-logo";
-import { Button } from "@/components/ui/button";
+import { Button, tactilePressClassName } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { isDemoModeEnabled } from "@/lib/data-source";
@@ -154,7 +154,7 @@ export default async function LoginPage({
 
             <Link
               href="/"
-              className="flex items-center justify-center gap-2 rounded-[18px] border border-[#cdd9ff] bg-[#eef3ff] px-4 py-3 text-sm font-semibold text-[#1b2b67] transition-colors hover:border-[#b8c8ff] hover:bg-[#e6edff] hover:text-[#142257]"
+              className={`flex items-center justify-center gap-2 rounded-[18px] border border-[#cdd9ff] bg-[#eef3ff] px-4 py-3 text-sm font-semibold text-[#1b2b67] transition-colors hover:border-[#b8c8ff] hover:bg-[#e6edff] hover:text-[#142257] ${tactilePressClassName}`}
             >
               <ArrowLeft className="h-4 w-4" />
               Volver al inicio
