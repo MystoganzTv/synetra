@@ -116,7 +116,7 @@ export default async function LoginPage({
               <Button
                 type="submit"
                 size="lg"
-                className="h-12 w-full cursor-pointer rounded-2xl bg-[linear-gradient(180deg,#4060ff_0%,#2c49d8_100%)] shadow-[0_16px_32px_-18px_rgba(36,63,178,0.75),inset_0_1px_0_rgba(255,255,255,0.24)] transition-[transform,box-shadow,filter] duration-150 hover:-translate-y-0.5 hover:brightness-[1.03] hover:shadow-[0_20px_36px_-18px_rgba(36,63,178,0.82),inset_0_1px_0_rgba(255,255,255,0.26)] active:translate-y-[2px] active:scale-[0.992] active:brightness-95 active:shadow-[0_8px_18px_-14px_rgba(20,34,87,0.8),inset_0_4px_10px_rgba(15,27,88,0.34)]"
+                className="h-12 w-full cursor-pointer rounded-2xl bg-[linear-gradient(180deg,#4060ff_0%,#2c49d8_100%)] shadow-[0_16px_32px_-18px_rgba(36,63,178,0.75),inset_0_1px_0_rgba(255,255,255,0.24)] transition-[transform,box-shadow,filter] duration-150 hover:brightness-[1.03] hover:shadow-[0_18px_34px_-18px_rgba(36,63,178,0.82),inset_0_1px_0_rgba(255,255,255,0.26)] active:translate-y-[2px] active:scale-[0.992] active:brightness-95 active:shadow-[0_8px_18px_-14px_rgba(20,34,87,0.8),inset_0_4px_10px_rgba(15,27,88,0.34)]"
               >
                 Sign in
                 <ArrowRight className="h-4 w-4" />
