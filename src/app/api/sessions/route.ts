@@ -13,16 +13,20 @@ import {
   parseDateTimeInput,
   sessionStatusOptions,
 } from "@/lib/ops-create";
+import { getPublicRedirectUrl } from "@/lib/request";
 
 export async function POST(request: Request) {
   const session = await getAuthSession();
 
   if (!session) {
-    return NextResponse.redirect(new URL("/login", request.url), 303);
+    return NextResponse.redirect(getPublicRedirectUrl(request, "/login"), 303);
   }
 
   if (!process.env.DATABASE_URL) {
-    return NextResponse.redirect(new URL("/cases?error=unavailable", request.url), 303);
+    return NextResponse.redirect(
+      getPublicRedirectUrl(request, "/cases?error=unavailable"),
+      303,
+    );
   }
 
   const formData = await request.formData();
@@ -50,7 +54,7 @@ export async function POST(request: Request) {
 
   if (!clientId || !caseId || !serviceId || !scheduledStart || !scheduledEnd) {
     return NextResponse.redirect(
-      new URL(`/cases/${caseId}/sessions/new?error=invalid`, request.url),
+      getPublicRedirectUrl(request, `/cases/${caseId}/sessions/new?error=invalid`),
       303,
     );
   }
@@ -80,10 +84,13 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[sessions] Failed to create session", error);
     return NextResponse.redirect(
-      new URL(`/cases/${caseId}/sessions/new?error=unavailable`, request.url),
+      getPublicRedirectUrl(request, `/cases/${caseId}/sessions/new?error=unavailable`),
       303,
     );
   }
 
-  return NextResponse.redirect(new URL(`/sessions/${sessionId}?created=session`, request.url), 303);
+  return NextResponse.redirect(
+    getPublicRedirectUrl(request, `/sessions/${sessionId}?created=session`),
+    303,
+  );
 }

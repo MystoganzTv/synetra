@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 
 import { AUTH_COOKIE_NAME } from "@/lib/auth";
+import { getPublicRedirectUrl } from "@/lib/request";
 
 export async function POST(request: Request) {
-  const response = NextResponse.redirect(new URL("/login", request.url), 303);
+  const response = NextResponse.redirect(getPublicRedirectUrl(request, "/login"), 303);
 
   response.cookies.set({
     name: AUTH_COOKIE_NAME,

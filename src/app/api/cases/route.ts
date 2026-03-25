@@ -16,16 +16,20 @@ import {
   parseDateInput,
   unitTypeOptions,
 } from "@/lib/ops-create";
+import { getPublicRedirectUrl } from "@/lib/request";
 
 export async function POST(request: Request) {
   const session = await getAuthSession();
 
   if (!session) {
-    return NextResponse.redirect(new URL("/login", request.url), 303);
+    return NextResponse.redirect(getPublicRedirectUrl(request, "/login"), 303);
   }
 
   if (!process.env.DATABASE_URL) {
-    return NextResponse.redirect(new URL("/clients?error=unavailable", request.url), 303);
+    return NextResponse.redirect(
+      getPublicRedirectUrl(request, "/clients?error=unavailable"),
+      303,
+    );
   }
 
   const formData = await request.formData();
@@ -56,7 +60,7 @@ export async function POST(request: Request) {
 
   if (!clientId || !programName || !payerName || !clinicalLead || !location || !startDate) {
     return NextResponse.redirect(
-      new URL(`/clients/${clientId}/cases/new?error=invalid`, request.url),
+      getPublicRedirectUrl(request, `/clients/${clientId}/cases/new?error=invalid`),
       303,
     );
   }
@@ -127,10 +131,13 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[cases] Failed to create case", error);
     return NextResponse.redirect(
-      new URL(`/clients/${clientId}/cases/new?error=unavailable`, request.url),
+      getPublicRedirectUrl(request, `/clients/${clientId}/cases/new?error=unavailable`),
       303,
     );
   }
 
-  return NextResponse.redirect(new URL(`/cases/${caseId}?created=case`, request.url), 303);
+  return NextResponse.redirect(
+    getPublicRedirectUrl(request, `/cases/${caseId}?created=case`),
+    303,
+  );
 }

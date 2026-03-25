@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/db";
+import { getPublicRedirectUrl } from "@/lib/request";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
 
@@ -26,12 +27,15 @@ export async function POST(request: Request) {
   const message = getStringField(formData, "message", 3000);
 
   if (!fullName || !workEmail || !organization || !message || !EMAIL_REGEX.test(workEmail)) {
-    return NextResponse.redirect(new URL("/contacto?error=invalid", request.url), 303);
+    return NextResponse.redirect(getPublicRedirectUrl(request, "/contacto?error=invalid"), 303);
   }
 
   if (!process.env.DATABASE_URL) {
     console.error("[contact] DATABASE_URL is required to persist incoming leads.");
-    return NextResponse.redirect(new URL("/contacto?error=unavailable", request.url), 303);
+    return NextResponse.redirect(
+      getPublicRedirectUrl(request, "/contacto?error=unavailable"),
+      303,
+    );
   }
 
   try {
@@ -48,8 +52,11 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("[contact] Failed to persist contact lead", error);
-    return NextResponse.redirect(new URL("/contacto?error=unavailable", request.url), 303);
+    return NextResponse.redirect(
+      getPublicRedirectUrl(request, "/contacto?error=unavailable"),
+      303,
+    );
   }
 
-  return NextResponse.redirect(new URL("/contacto?submitted=1", request.url), 303);
+  return NextResponse.redirect(getPublicRedirectUrl(request, "/contacto?submitted=1"), 303);
 }

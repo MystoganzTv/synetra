@@ -12,16 +12,20 @@ import {
   parseDateInput,
   riskLevelOptions,
 } from "@/lib/ops-create";
+import { getPublicRedirectUrl } from "@/lib/request";
 
 export async function POST(request: Request) {
   const session = await getAuthSession();
 
   if (!session) {
-    return NextResponse.redirect(new URL("/login", request.url), 303);
+    return NextResponse.redirect(getPublicRedirectUrl(request, "/login"), 303);
   }
 
   if (!process.env.DATABASE_URL) {
-    return NextResponse.redirect(new URL("/clients/new?error=unavailable", request.url), 303);
+    return NextResponse.redirect(
+      getPublicRedirectUrl(request, "/clients/new?error=unavailable"),
+      303,
+    );
   }
 
   const formData = await request.formData();
@@ -40,7 +44,10 @@ export async function POST(request: Request) {
   const riskLevel = getEnumField(formData, "riskLevel", riskLevelOptions, "LOW");
 
   if (!firstName || !lastName || !dateOfBirth) {
-    return NextResponse.redirect(new URL("/clients/new?error=invalid", request.url), 303);
+    return NextResponse.redirect(
+      getPublicRedirectUrl(request, "/clients/new?error=invalid"),
+      303,
+    );
   }
 
   const clientId = createEntityId("client");
@@ -68,8 +75,14 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("[clients] Failed to create client", error);
-    return NextResponse.redirect(new URL("/clients/new?error=unavailable", request.url), 303);
+    return NextResponse.redirect(
+      getPublicRedirectUrl(request, "/clients/new?error=unavailable"),
+      303,
+    );
   }
 
-  return NextResponse.redirect(new URL(`/clients/${clientId}?created=client`, request.url), 303);
+  return NextResponse.redirect(
+    getPublicRedirectUrl(request, `/clients/${clientId}?created=client`),
+    303,
+  );
 }

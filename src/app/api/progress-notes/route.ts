@@ -8,16 +8,20 @@ import {
   getStringField,
   noteStatusOptions,
 } from "@/lib/ops-create";
+import { getPublicRedirectUrl } from "@/lib/request";
 
 export async function POST(request: Request) {
   const session = await getAuthSession();
 
   if (!session) {
-    return NextResponse.redirect(new URL("/login", request.url), 303);
+    return NextResponse.redirect(getPublicRedirectUrl(request, "/login"), 303);
   }
 
   if (!process.env.DATABASE_URL) {
-    return NextResponse.redirect(new URL("/progress-notes?error=unavailable", request.url), 303);
+    return NextResponse.redirect(
+      getPublicRedirectUrl(request, "/progress-notes?error=unavailable"),
+      303,
+    );
   }
 
   const formData = await request.formData();
@@ -32,7 +36,7 @@ export async function POST(request: Request) {
 
   if (!sessionId || !subjective || !objective || !assessment || !plan) {
     return NextResponse.redirect(
-      new URL(`/sessions/${sessionId}/notes/new?error=invalid`, request.url),
+      getPublicRedirectUrl(request, `/sessions/${sessionId}/notes/new?error=invalid`),
       303,
     );
   }
@@ -45,7 +49,7 @@ export async function POST(request: Request) {
 
     if (existing) {
       return NextResponse.redirect(
-        new URL(`/sessions/${sessionId}?error=note_exists`, request.url),
+        getPublicRedirectUrl(request, `/sessions/${sessionId}?error=note_exists`),
         303,
       );
     }
@@ -81,10 +85,13 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[progress-notes] Failed to create note", error);
     return NextResponse.redirect(
-      new URL(`/sessions/${sessionId}/notes/new?error=unavailable`, request.url),
+      getPublicRedirectUrl(request, `/sessions/${sessionId}/notes/new?error=unavailable`),
       303,
     );
   }
 
-  return NextResponse.redirect(new URL(`/sessions/${sessionId}?created=note`, request.url), 303);
+  return NextResponse.redirect(
+    getPublicRedirectUrl(request, `/sessions/${sessionId}?created=note`),
+    303,
+  );
 }

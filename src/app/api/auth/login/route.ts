@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { AUTH_COOKIE_NAME, createSessionForUser, validateCredentials } from "@/lib/auth";
+import { getPublicRedirectUrl } from "@/lib/request";
 
 export async function POST(request: Request) {
   const formData = await request.formData();
@@ -11,10 +12,13 @@ export async function POST(request: Request) {
   const user = await validateCredentials(email, password);
 
   if (!user) {
-    return NextResponse.redirect(new URL("/login?error=invalid_credentials", request.url), 303);
+    return NextResponse.redirect(
+      getPublicRedirectUrl(request, "/login?error=invalid_credentials"),
+      303,
+    );
   }
 
-  const response = NextResponse.redirect(new URL("/dashboard", request.url), 303);
+  const response = NextResponse.redirect(getPublicRedirectUrl(request, "/dashboard"), 303);
   const cookieStore = await cookies();
   const token = createSessionForUser({
     email: user.email,
