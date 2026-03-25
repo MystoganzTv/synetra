@@ -11,10 +11,10 @@ const options: Array<{
   value: SessionBillingFilterValue;
   label: string;
 }> = [
-  { value: "ALL", label: "All" },
-  { value: "READY_TO_BILL", label: "Ready to bill" },
-  { value: "AT_RISK", label: "At risk" },
-  { value: "NOT_BILLABLE", label: "Not billable" },
+  { value: "ALL", label: "Todo" },
+  { value: "READY_TO_BILL", label: "Listo para cobrar" },
+  { value: "AT_RISK", label: "En riesgo" },
+  { value: "NOT_BILLABLE", label: "No facturable" },
 ];
 
 export function SessionBillingFilter({

@@ -52,6 +52,10 @@ Still required:
 
 - `DATABASE_URL`
 
+Optional but recommended for commercial flow:
+
+- `CALENDLY_URL`
+
 Recommended scopes/contexts:
 
 - contexts: `production`, `branch-deploy`, `deploy-preview`
@@ -67,6 +71,10 @@ Temporary fallback still exists for:
 - `NEXORA_TIMEZONE`
 
 You can migrate existing deploy environments to the new names without breaking running builds.
+
+## Authentication safety
+
+`AUTH_SECRET` is optional only in local development. Production now requires it.
 
 ## Cloud Postgres
 

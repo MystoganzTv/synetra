@@ -30,40 +30,40 @@ export default async function CasesPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          Cases
+          Casos
         </p>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Case operations across care delivery and utilization
+              Operación de casos entre atención y utilización
             </h1>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              Each case rolls up program design, payer coverage, clinician ownership, session volume, and downstream billing or compliance exposure.
+              Cada caso reúne diseño del programa, cobertura pagadora, liderazgo clínico, volumen de sesiones y exposición posterior de facturación o cumplimiento.
             </p>
           </div>
           <Button asChild>
-            <Link href="/dashboard">Back to dashboard</Link>
+            <Link href="/dashboard">Volver al panel</Link>
           </Button>
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <MetricCard
-          title="Case Volume"
+          title="Volumen de casos"
           value={String(cases.length)}
-          hint="Open and historical episodes in the tenant."
+          hint="Episodios abiertos e históricos dentro del tenant."
           icon={ClipboardList}
         />
         <MetricCard
-          title="Active / Hold"
+          title="Activos / en pausa"
           value={`${activeCases} / ${holdCases}`}
-          hint="Operational mix of currently active versus paused episodes."
+          hint="Mezcla operativa de episodios activos frente a pausados."
           icon={ShieldAlert}
         />
         <MetricCard
-          title="Clinical Leads"
+          title="Líderes clínicos"
           value={String(distinctLeads)}
-          hint="Distinct lead owners represented in the current roster."
+          hint="Responsables clínicos distintos representados en la cartera actual."
           icon={Users2}
         />
       </div>
@@ -108,12 +108,12 @@ export default async function CasesPage() {
                       {caseRecord.payerName}
                     </p>
                     <p className="text-sm leading-6 text-muted-foreground">
-                      Lead {caseRecord.clinicalLead} · {caseRecord.location}
+                      Responsable {caseRecord.clinicalLead} · {caseRecord.location}
                     </p>
                   </div>
                   <Button asChild variant="ghost">
                     <Link href={`/cases/${caseRecord.id}`}>
-                      Open case
+                      Abrir caso
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
@@ -122,15 +122,15 @@ export default async function CasesPage() {
                 <div className="grid gap-3 md:grid-cols-3">
                   <div className="rounded-[22px] bg-accent/70 p-4">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Next session
+                      Próxima sesión
                     </p>
                     <p className="mt-2 text-sm font-semibold text-foreground">
-                      {nextSession ? formatDateTime(nextSession.scheduledStart) : "No future session"}
+                      {nextSession ? formatDateTime(nextSession.scheduledStart) : "Sin sesión futura"}
                     </p>
                   </div>
                   <div className="rounded-[22px] bg-accent/70 p-4">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Open compliance
+                      Cumplimiento abierto
                     </p>
                     <p className="mt-2 text-sm font-semibold text-foreground">
                       {openCompliance}
@@ -138,28 +138,28 @@ export default async function CasesPage() {
                   </div>
                   <div className="rounded-[22px] bg-accent/70 p-4">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Highest auth risk
+                      Mayor riesgo de autorización
                     </p>
                     <p className="mt-2 text-sm font-semibold text-foreground">
                       {highestAuthRisk
                         ? formatPercent(getAuthorizationUtilization(highestAuthRisk))
-                        : "No auths"}
+                        : "Sin autorizaciones"}
                     </p>
                   </div>
                   <div className="rounded-[22px] bg-accent/70 p-4 md:col-span-3">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Next session billing
+                      Facturación de la próxima sesión
                     </p>
                     <div className="mt-2 flex items-center justify-between gap-3">
                       <p className="text-sm font-semibold text-foreground">
-                        {nextSession ? formatDateTime(nextSession.scheduledStart) : "No future session"}
+                        {nextSession ? formatDateTime(nextSession.scheduledStart) : "Sin sesión futura"}
                       </p>
                       {nextSessionContext ? (
                         <SessionBillingStatusBadge
                           status={validateSession(nextSessionContext).billingStatus}
                         />
                       ) : (
-                        <span className="text-sm text-muted-foreground">No session</span>
+                        <span className="text-sm text-muted-foreground">Sin sesión</span>
                       )}
                     </div>
                   </div>
@@ -167,7 +167,7 @@ export default async function CasesPage() {
 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Overall authorization utilization</span>
+                    <span className="text-muted-foreground">Utilización general de autorizaciones</span>
                     <span className="font-medium text-foreground">
                       {formatPercent(utilization)}
                     </span>

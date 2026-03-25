@@ -49,14 +49,14 @@ export default async function DashboardPage() {
             <div className="space-y-3">
               <div className="inline-flex items-center rounded-full border border-white/12 bg-white/[0.045] px-3 py-1">
                 <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-white/70">
-                  Operational snapshot
+                  Estado operativo
                 </p>
               </div>
               <h1 className="max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Synetra brings behavioral health operations into one modern command center.
+                Synetra reúne la operación de salud conductual en un centro de control moderno.
               </h1>
               <p className="max-w-2xl text-base leading-8 text-white/80">
-                Connected client, case, authorization, session, note, billing, and compliance workflows with clearer operational visibility.
+                Flujos conectados de clientes, casos, autorizaciones, sesiones, notas, facturación y cumplimiento con visibilidad operativa más clara.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -66,7 +66,7 @@ export default async function DashboardPage() {
                 className="h-11 !border-white/45 !bg-[rgba(248,250,255,0.98)] !px-5 !text-[#182454] shadow-md shadow-[#081238]/14 hover:!bg-white"
               >
                 <Link href="/clients">
-                  Open clients
+                  Abrir clientes
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -75,30 +75,30 @@ export default async function DashboardPage() {
                 variant="outline"
                 className="h-11 border-white/14 bg-[rgba(8,18,56,0.18)] px-5 text-white shadow-none hover:bg-[rgba(8,18,56,0.32)]"
               >
-                <Link href="/compliance">Open compliance center</Link>
+                <Link href="/compliance">Abrir centro de cumplimiento</Link>
               </Button>
             </div>
           </div>
 
           <div className="rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.09),rgba(255,255,255,0.05))] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm">
             <div className="space-y-3">
-              <p className="text-sm font-medium text-white/74">As of</p>
+              <p className="text-sm font-medium text-white/74">Actualizado al</p>
               <p className="mt-2 text-2xl font-semibold text-white">
                 {formatDate(dashboard.referenceDate)}
               </p>
               <p className="mt-2 text-sm leading-6 text-white/72">
-                Current workspace data across service delivery, authorizations, notes, claims, and QA signals.
+                Datos actuales del workspace sobre prestación de servicios, autorizaciones, notas, reclamos y señales de control.
               </p>
             </div>
             <div className="my-5 h-px bg-white/10" />
             <div className="space-y-3">
-              <p className="text-sm font-medium text-white/74">Documentation completion</p>
+              <p className="text-sm font-medium text-white/74">Documentación completada</p>
               <div className="flex items-end justify-between gap-4">
                 <p className="text-3xl font-semibold tracking-tight text-white">
                   {formatPercent(dashboard.documentationCompletion)}
                 </p>
                 <p className="max-w-[13rem] text-right text-sm leading-6 text-white/68">
-                  based on signed vs pending notes
+                  según notas firmadas frente a pendientes
                 </p>
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-white/10">
@@ -114,39 +114,39 @@ export default async function DashboardPage() {
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <MetricCard
-          title="Active Clients"
+          title="Clientes activos"
           value={String(dashboard.activeClients)}
-          hint="Current treatment roster with active care episodes."
+          hint="Cartera actual de tratamiento con episodios de atención activos."
           icon={Users2}
         />
         <MetricCard
-          title="Active Cases"
+          title="Casos activos"
           value={String(dashboard.activeCases)}
-          hint="Open behavioral health programs under service delivery."
+          hint="Programas abiertos de salud conductual en prestación de servicios."
           icon={Activity}
         />
         <MetricCard
-          title="Unsigned Notes"
+          title="Notas sin firma"
           value={String(dashboard.unsignedNotes)}
-          hint="Draft or pending-signature notes needing follow-through."
+          hint="Notas en borrador o pendientes de firma que requieren seguimiento."
           icon={FileWarning}
         />
         <MetricCard
-          title="Claims Ready or In Flight"
+          title="Reclamos listos o en curso"
           value={formatCurrency(dashboard.submittedRevenue)}
-          hint="Current billed value across ready, submitted, and paid claims."
+          hint="Valor actual entre reclamos listos, enviados y pagados."
           icon={DollarSign}
         />
         <MetricCard
-          title="Billing Ready"
+          title="Listo para facturar"
           value={formatPercent(operational.summary.readinessRate)}
-          hint="Share of sessions ready for claim submission without blockers."
+          hint="Porcentaje de sesiones listas para pasar a reclamación sin bloqueos."
           icon={BarChart3}
         />
         <MetricCard
-          title="Revenue at Risk"
+          title="Ingresos en riesgo"
           value={formatCurrency(operational.summary.revenueAtRiskCents)}
-          hint="Estimated value held up by non-ready or non-billable sessions."
+          hint="Valor estimado detenido por sesiones no listas o no facturables."
           icon={ShieldAlert}
         />
       </div>
@@ -154,9 +154,9 @@ export default async function DashboardPage() {
       <div className="grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
         <Card className="bg-white/82">
           <CardHeader>
-            <CardTitle>Upcoming Sessions</CardTitle>
+            <CardTitle>Sesiones próximas</CardTitle>
             <CardDescription>
-              Near-term schedule view across clients, cases, and clinicians.
+              Vista de agenda inmediata entre clientes, casos y clínicos.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -173,7 +173,7 @@ export default async function DashboardPage() {
                   caseLabel: caseRecord.programName,
                   serviceLabel: service
                     ? `${service.serviceCode} ${service.title}`
-                    : "Unlinked service",
+                    : "Servicio sin vincular",
                   scheduledStartLabel: formatDateTime(session.scheduledStart),
                   location: session.location,
                   clinicianLabel: `${getSessionEmployeeName(session)}, ${getSessionEmployeeTitle(session)}`,
@@ -191,13 +191,13 @@ export default async function DashboardPage() {
             <CardHeader>
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <CardTitle>Operational Intelligence</CardTitle>
+                  <CardTitle>Inteligencia operativa</CardTitle>
                   <CardDescription>
-                    Issues automatically detected by operational rules.
+                    Incidencias detectadas automáticamente por reglas operativas.
                   </CardDescription>
                 </div>
                 <Button asChild variant="ghost">
-                  <Link href="/reports">View reports</Link>
+                  <Link href="/reports">Ver reportes</Link>
                 </Button>
               </div>
             </CardHeader>
@@ -223,9 +223,9 @@ export default async function DashboardPage() {
 
           <Card className="bg-white/82">
             <CardHeader>
-              <CardTitle>Authorization Risk</CardTitle>
+              <CardTitle>Riesgo de autorización</CardTitle>
               <CardDescription>
-                Expiring or high-utilization authorizations needing action.
+                Autorizaciones por vencer o con uso alto que requieren acción.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -265,9 +265,9 @@ export default async function DashboardPage() {
 
           <Card className="bg-white/82">
             <CardHeader>
-              <CardTitle>Compliance Queue</CardTitle>
+              <CardTitle>Cola de cumplimiento</CardTitle>
               <CardDescription>
-                Open items requiring clinical, utilization, or revenue follow-up.
+                Elementos abiertos que requieren seguimiento clínico, de utilización o de ingresos.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -295,9 +295,9 @@ export default async function DashboardPage() {
       <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
         <Card className="bg-white/82">
           <CardHeader>
-            <CardTitle>Clinical Lead Capacity</CardTitle>
+            <CardTitle>Capacidad por líder clínico</CardTitle>
             <CardDescription>
-              Case load and near-term sessions by care lead.
+              Carga de casos y sesiones de corto plazo por líder de atención.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
@@ -306,15 +306,15 @@ export default async function DashboardPage() {
                 <p className="font-semibold text-foreground">{lead.lead}</p>
                 <div className="mt-4 grid grid-cols-3 gap-3 text-sm">
                   <div>
-                    <p className="text-muted-foreground">Cases</p>
+                    <p className="text-muted-foreground">Casos</p>
                     <p className="mt-1 text-xl font-semibold">{lead.activeCases}</p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">Clients</p>
+                    <p className="text-muted-foreground">Clientes</p>
                     <p className="mt-1 text-xl font-semibold">{lead.activeClients}</p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">7-day sessions</p>
+                    <p className="text-muted-foreground">Sesiones a 7 días</p>
                     <p className="mt-1 text-xl font-semibold">{lead.sessionsNext7Days}</p>
                   </div>
                 </div>
@@ -325,9 +325,9 @@ export default async function DashboardPage() {
 
         <Card className="bg-white/82">
           <CardHeader>
-            <CardTitle>Billing Readiness Snapshot</CardTitle>
+            <CardTitle>Resumen de preparación de facturación</CardTitle>
             <CardDescription>
-              Sessions with the lowest operational score before reaching claim.
+              Sesiones con menor puntaje operativo antes de llegar a reclamación.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">

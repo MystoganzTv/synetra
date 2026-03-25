@@ -70,10 +70,10 @@ export function DashboardUpcomingSessions({
             </div>
             <div className="flex flex-col gap-2">
               <Button asChild variant="ghost" className="justify-start lg:justify-center">
-                <Link href={`/sessions/${item.sessionId}`}>Open session</Link>
+                <Link href={`/sessions/${item.sessionId}`}>Abrir sesión</Link>
               </Button>
               <Button asChild variant="ghost" className="justify-start lg:justify-center">
-                <Link href={`/cases/${item.caseId}`}>Open case</Link>
+                <Link href={`/cases/${item.caseId}`}>Abrir caso</Link>
               </Button>
             </div>
           </div>
@@ -81,9 +81,9 @@ export function DashboardUpcomingSessions({
       ))}
       {filteredItems.length === 0 ? (
         <div className="rounded-[24px] border border-border bg-white/70 p-5">
-          <p className="font-semibold text-foreground">No sessions match this filter</p>
+          <p className="font-semibold text-foreground">No hay sesiones para este filtro</p>
           <p className="mt-2 text-sm text-muted-foreground">
-            Change the billing filter to see other upcoming sessions.
+            Cambia el filtro de facturación para ver otras sesiones próximas.
           </p>
         </div>
       ) : null}

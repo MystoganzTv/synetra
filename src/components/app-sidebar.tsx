@@ -19,17 +19,22 @@ import { SynetraLogo, SynetraMark } from "@/components/brand/synetra-logo";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
+const roleLabels: Record<string, string> = {
+  "Platform Admin": "Administrador de plataforma",
+  "Revenue Operations": "Operaciones de ingresos",
+};
+
 const navigation = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/clients", label: "Clients", icon: UsersRound },
-  { href: "/cases", label: "Cases", icon: ClipboardList },
-  { href: "/groups", label: "Groups", icon: Users },
-  { href: "/calendar", label: "Calendar", icon: CalendarDays },
-  { href: "/documents", label: "Documents", icon: FolderKanban },
-  { href: "/forms", label: "Forms", icon: Files },
-  { href: "/progress-notes", label: "Notes", icon: ClipboardPen },
-  { href: "/compliance", label: "Compliance", icon: ShieldAlert },
-  { href: "/reports", label: "Reports", icon: BarChart3 },
+  { href: "/dashboard", label: "Panel", icon: LayoutDashboard },
+  { href: "/clients", label: "Clientes", icon: UsersRound },
+  { href: "/cases", label: "Casos", icon: ClipboardList },
+  { href: "/groups", label: "Grupos", icon: Users },
+  { href: "/calendar", label: "Calendario", icon: CalendarDays },
+  { href: "/documents", label: "Documentos", icon: FolderKanban },
+  { href: "/forms", label: "Formularios", icon: Files },
+  { href: "/progress-notes", label: "Notas", icon: ClipboardPen },
+  { href: "/compliance", label: "Cumplimiento", icon: ShieldAlert },
+  { href: "/reports", label: "Reportes", icon: BarChart3 },
 ];
 
 export function AppSidebar({
@@ -61,14 +66,14 @@ export function AppSidebar({
             </div>
             <div>
               <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-                Behavioral health OS
+                Capa operativa
               </p>
               <h1 className="text-base font-semibold text-foreground">
-                Operations
+                Operaciones
               </h1>
             </div>
           </div>
-          <Badge variant="success">{summary.activeClients} active clients</Badge>
+          <Badge variant="success">{summary.activeClients} clientes activos</Badge>
         </div>
         <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
           {navigation.map(({ href, label, icon: Icon }) => {
@@ -101,13 +106,13 @@ export function AppSidebar({
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.34em] text-muted-foreground">
-              Operations layer
+              Capa operativa
             </p>
             <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
-              Behavioral health operations
+              Operaciones de salud conductual
             </h1>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Intelligent scheduling, documentation, billing readiness, and compliance workflows in one operating layer.
+              Programación inteligente, documentación, preparación de facturación y cumplimiento dentro de una sola capa operativa.
             </p>
           </div>
         </div>
@@ -145,29 +150,29 @@ export function AppSidebar({
 
           <div className="mt-8 rounded-[28px] border border-border bg-white/82 p-5 shadow-[0_18px_45px_-30px_rgba(21,31,84,0.22)]">
             <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
-              Workflow watch
+              Estado del flujo
             </p>
             <div className="mt-4 space-y-4 text-sm">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Unsigned notes</span>
+                <span className="text-muted-foreground">Notas sin firma</span>
                 <span className="font-semibold text-foreground">
                   {summary.unsignedNotes}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Auths at risk</span>
+                <span className="text-muted-foreground">Autorizaciones en riesgo</span>
                 <span className="font-semibold text-foreground">
                   {summary.expiringAuthorizations}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Claims on hold</span>
+                <span className="text-muted-foreground">Reclamos en espera</span>
                 <span className="font-semibold text-foreground">
                   {summary.claimsOnHold}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Open compliance</span>
+                <span className="text-muted-foreground">Cumplimiento abierto</span>
                 <span className="font-semibold text-foreground">
                   {summary.openCompliance}
                 </span>
@@ -176,25 +181,27 @@ export function AppSidebar({
           </div>
 
           <div className="mt-5 rounded-[28px] border border-[#1d2f83] bg-[linear-gradient(145deg,#09123a_0%,#132a85_62%,#314ff0_100%)] px-5 py-6 text-primary-foreground shadow-[0_18px_45px_-32px_rgba(22,35,98,0.58)]">
-            <p className="text-sm font-semibold">Production-ready foundation</p>
+            <p className="text-sm font-semibold">Base lista para producción</p>
             <p className="mt-2 text-sm leading-6 text-primary-foreground/80">
-              Prisma-backed schema, realistic behavioral health hierarchy, and route structure ready for real workflows.
+              Esquema respaldado por Prisma, jerarquía realista de salud conductual y estructura de rutas lista para flujos operativos reales.
             </p>
           </div>
 
           <div className="mt-5 rounded-[28px] border border-border bg-white/82 p-5 shadow-[0_18px_45px_-30px_rgba(21,31,84,0.18)]">
             <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
-              Signed in
+              Sesión activa
             </p>
             <p className="mt-3 text-sm font-semibold text-foreground">{user.name}</p>
-            <p className="mt-1 text-sm text-muted-foreground">{user.role}</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {roleLabels[user.role] ?? user.role}
+            </p>
             <p className="mt-1 text-sm text-muted-foreground">{user.email}</p>
             <form action="/api/auth/logout" method="post" className="mt-4">
               <button
                 type="submit"
                 className="w-full rounded-2xl border border-border bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/80"
               >
-                Sign out
+                Cerrar sesión
               </button>
             </form>
           </div>

@@ -9,6 +9,11 @@ import { Input } from "@/components/ui/input";
 import { isDemoModeEnabled } from "@/lib/data-source";
 import { getAuthSession, getDemoUsers } from "@/lib/auth";
 
+const roleLabels: Record<string, string> = {
+  "Platform Admin": "Administrador de plataforma",
+  "Revenue Operations": "Operaciones de ingresos",
+};
+
 export default async function LoginPage({
   searchParams,
 }: {
@@ -42,40 +47,41 @@ export default async function LoginPage({
 
           <div className="space-y-4">
             <p className="text-xs font-medium uppercase tracking-[0.34em] text-muted-foreground">
-              Secure operator access
+              Acceso seguro de operadores
             </p>
             <h1 className="max-w-2xl text-5xl font-semibold tracking-tight text-foreground">
-              Sign in to the Synetra command center.
+              Entra al centro operativo de Synetra.
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-              Access scheduling, client operations, session validation, billing readiness, and compliance queues from a single operating surface.
+              Accede a programación, operaciones de clientes, validación de sesiones,
+              preparación de facturación y colas de cumplimiento desde una sola superficie.
             </p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="rounded-[24px] border border-border bg-white/76 p-5">
               <ShieldCheck className="h-5 w-5 text-primary" />
-              <p className="mt-3 font-semibold text-foreground">Protected routes</p>
+              <p className="mt-3 font-semibold text-foreground">Rutas protegidas</p>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Internal modules are gated behind a signed session cookie.
+                Los módulos internos quedan protegidos detrás de una sesión firmada.
               </p>
             </div>
             <div className="rounded-[24px] border border-border bg-white/76 p-5">
               <LockKeyhole className="h-5 w-5 text-primary" />
-              <p className="mt-3 font-semibold text-foreground">Session-based</p>
+              <p className="mt-3 font-semibold text-foreground">Sesión persistente</p>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                Login and logout already behave like a real app flow.
+                El ingreso y la salida ya se comportan como un flujo real de producto.
               </p>
             </div>
             <div className="rounded-[24px] border border-border bg-white/76 p-5">
               <Sparkles className="h-5 w-5 text-primary" />
               <p className="mt-3 font-semibold text-foreground">
-                {showDemoAccess ? "Demo-ready" : "Acceso real"}
+                {showDemoAccess ? "Listo para demo" : "Acceso real"}
               </p>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 {showDemoAccess
-                  ? "Use the provided access profiles while we wire a full identity layer."
-                  : "Sign in with a database-backed operator account for this workspace."}
+                  ? "Usa los accesos de demostración mientras habilitamos la capa completa de identidad."
+                  : "Ingresa con una cuenta real respaldada por la base de datos de este workspace."}
               </p>
             </div>
           </div>
@@ -83,11 +89,11 @@ export default async function LoginPage({
 
         <Card className="relative z-10 overflow-hidden border-none bg-[linear-gradient(145deg,rgba(255,255,255,0.82)_0%,rgba(248,250,255,0.94)_100%)] shadow-[0_30px_80px_-42px_rgba(25,38,104,0.3)]">
           <CardHeader className="px-7 pt-7 sm:px-8 sm:pt-8">
-            <CardTitle className="text-2xl">Login</CardTitle>
+            <CardTitle className="text-2xl">Iniciar sesión</CardTitle>
             <CardDescription>
               {showDemoAccess
-                ? "Use a demo operator profile to enter the product."
-                : "Use your Synetra operator account to enter the product."}
+                ? "Usa un perfil de demostración para entrar al producto."
+                : "Usa tu cuenta operativa de Synetra para entrar al producto."}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6 px-7 pb-7 sm:px-8 sm:pb-8">
@@ -100,16 +106,16 @@ export default async function LoginPage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="password" className="text-sm font-medium text-foreground">
-                  Password
+                  Contraseña
                 </label>
-                <Input id="password" name="password" type="password" placeholder="Enter password" required />
+                <Input id="password" name="password" type="password" placeholder="Ingresa tu contraseña" required />
               </div>
 
               {error ? (
                 <div className="rounded-[20px] border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
                   {showDemoAccess
-                    ? "The email or password is incorrect for this demo workspace."
-                    : "The email or password is incorrect for this workspace."}
+                    ? "El email o la contraseña no corresponden a este workspace demo."
+                    : "El email o la contraseña no corresponden a este workspace."}
                 </div>
               ) : null}
 
@@ -118,7 +124,7 @@ export default async function LoginPage({
                 size="lg"
                 className="h-12 w-full cursor-pointer rounded-2xl bg-[linear-gradient(180deg,#4060ff_0%,#2c49d8_100%)] shadow-[0_16px_32px_-18px_rgba(36,63,178,0.75),inset_0_1px_0_rgba(255,255,255,0.24)] transition-[transform,box-shadow,filter] duration-150 hover:brightness-[1.03] hover:shadow-[0_18px_34px_-18px_rgba(36,63,178,0.82),inset_0_1px_0_rgba(255,255,255,0.26)] active:translate-y-[2px] active:scale-[0.992] active:brightness-95 active:shadow-[0_8px_18px_-14px_rgba(20,34,87,0.8),inset_0_4px_10px_rgba(15,27,88,0.34)]"
               >
-                Sign in
+                Iniciar sesión
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </form>
@@ -126,12 +132,14 @@ export default async function LoginPage({
             {showDemoAccess ? (
               <div className="rounded-[24px] border border-border bg-accent/50 p-5">
                 <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
-                  Demo access
+                  Acceso demo
                 </p>
                 <div className="mt-4 space-y-3">
                   {demoUsers.map((user) => (
                     <div key={user.email} className="rounded-[20px] border border-border bg-white/80 p-4">
-                      <p className="font-semibold text-foreground">{user.role}</p>
+                      <p className="font-semibold text-foreground">
+                        {roleLabels[user.role] ?? user.role}
+                      </p>
                       <p className="mt-1 text-sm text-muted-foreground">{user.name}</p>
                       <p className="mt-3 text-sm text-foreground">{user.email}</p>
                       <p className="text-sm text-foreground">
@@ -144,10 +152,10 @@ export default async function LoginPage({
             ) : (
               <div className="rounded-[24px] border border-border bg-accent/50 p-5">
                 <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
-                  Workspace access
+                  Acceso del workspace
                 </p>
                 <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                  If you need an account or credential reset, contact your Synetra workspace administrator.
+                  Si necesitas una cuenta nueva o restablecer credenciales, contacta al administrador de tu workspace Synetra.
                 </p>
               </div>
             )}

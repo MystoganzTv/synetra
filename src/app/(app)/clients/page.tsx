@@ -38,40 +38,40 @@ export default async function ClientsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          Clients
+          Clientes
         </p>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Client roster with operational context
+              Cartera de clientes con contexto operativo
             </h1>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              A modern roster view for demographics, risk, next touchpoint, and the downstream utilization or compliance issues that matter to care teams.
+              Una vista moderna de la cartera con demografía, riesgo, próximo contacto e incidencias de utilización o cumplimiento que importan al equipo.
             </p>
           </div>
           <Button asChild>
-            <Link href="/dashboard">Back to dashboard</Link>
+            <Link href="/dashboard">Volver al panel</Link>
           </Button>
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <MetricCard
-          title="Roster Size"
+          title="Tamaño de cartera"
           value={String(clients.length)}
-          hint="Includes active, hold, and discharged clients in the current workspace."
+          hint="Incluye clientes activos, en pausa y dados de alta en el workspace actual."
           icon={UsersRound}
         />
         <MetricCard
-          title="Moderate / High Risk"
+          title="Riesgo moderado / alto"
           value={String(highRiskClients)}
-          hint="Clients requiring tighter oversight or escalation visibility."
+          hint="Clientes que requieren más seguimiento o visibilidad de escalamiento."
           icon={ShieldAlert}
         />
         <MetricCard
-          title="Payer Segments"
+          title="Segmentos pagadores"
           value={String(payerSegments)}
-          hint="Coverage mix represented in the current workspace."
+          hint="Mezcla de cobertura representada en el workspace actual."
           icon={Wallet}
         />
       </div>
@@ -105,14 +105,14 @@ export default async function ClientsPage() {
                         <StatusBadge value={client.riskLevel} />
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        {client.externalId} · {calculateAge(client.dateOfBirth)} years old ·{" "}
+                        {client.externalId} · {calculateAge(client.dateOfBirth)} años ·{" "}
                         {[client.city, client.state].filter(Boolean).join(", ")}
                       </p>
                     </div>
                   </div>
                   <Button asChild variant="ghost">
                     <Link href={`/clients/${client.id}`}>
-                      Open record
+                      Abrir expediente
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
@@ -121,29 +121,29 @@ export default async function ClientsPage() {
                 <div className="grid gap-3 md:grid-cols-4">
                   <div className="rounded-[22px] bg-accent/70 p-4">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Diagnosis
+                      Diagnóstico
                     </p>
                     <p className="mt-2 font-semibold text-foreground">
-                      {client.primaryDiagnosisCode ?? "Pending"}
+                      {client.primaryDiagnosisCode ?? "Pendiente"}
                     </p>
                   </div>
                   <div className="rounded-[22px] bg-accent/70 p-4">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Active cases
+                      Casos activos
                     </p>
                     <p className="mt-2 font-semibold text-foreground">{activeCases}</p>
                   </div>
                   <div className="rounded-[22px] bg-accent/70 p-4">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Next session
+                      Próxima sesión
                     </p>
                     <p className="mt-2 text-sm font-semibold text-foreground">
-                      {nextSession ? formatDateTime(nextSession.scheduledStart) : "No future visits"}
+                      {nextSession ? formatDateTime(nextSession.scheduledStart) : "Sin visitas futuras"}
                     </p>
                   </div>
                   <div className="rounded-[22px] bg-accent/70 p-4">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Open QA items
+                      QA abierta
                     </p>
                     <p className="mt-2 font-semibold text-foreground">{openCompliance}</p>
                   </div>

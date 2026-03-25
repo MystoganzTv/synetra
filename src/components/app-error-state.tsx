@@ -8,7 +8,7 @@ export function AppErrorState({
   title,
   description,
   primaryHref = "/dashboard",
-  primaryLabel = "Back to dashboard",
+  primaryLabel = "Volver al panel",
 }: {
   title: string;
   description: string;
@@ -24,7 +24,7 @@ export function AppErrorState({
           </div>
           <div className="space-y-3">
             <p className="text-xs uppercase tracking-[0.32em] text-muted-foreground">
-              Live data unavailable
+              Datos no disponibles
             </p>
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">{title}</h1>
             <p className="text-sm leading-7 text-muted-foreground">{description}</p>
@@ -36,7 +36,7 @@ export function AppErrorState({
             <Button asChild variant="outline">
               <Link href="/reports">
                 <RefreshCcw className="h-4 w-4" />
-                Open reports
+                Abrir reportes
               </Link>
             </Button>
           </div>

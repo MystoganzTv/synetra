@@ -20,6 +20,25 @@ model User {
   updatedAt    DateTime @updatedAt
 }
 
+model ContactLead {
+  id           String   @id @default(cuid())
+  fullName     String
+  workEmail    String
+  organization String
+  role         String?
+  phone        String?
+  teamSize     String?
+  message      String
+  source       String   @default("marketing_contact_form")
+  status       String   @default("NEW")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([status])
+  @@index([workEmail])
+}
+
 enum ClientStatus {
   LEAD
   INTAKE

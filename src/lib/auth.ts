@@ -19,7 +19,17 @@ export interface AuthSession {
 }
 
 function getAuthSecret() {
-  return process.env.AUTH_SECRET || "synetra-local-dev-secret";
+  const configuredSecret = process.env.AUTH_SECRET?.trim();
+
+  if (configuredSecret) {
+    return configuredSecret;
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("[auth] AUTH_SECRET is required in production.");
+  }
+
+  return "synetra-local-dev-secret";
 }
 
 function sign(value: string) {
