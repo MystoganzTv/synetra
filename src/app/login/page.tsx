@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowRight, LockKeyhole, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, LockKeyhole, ShieldCheck, Sparkles } from "lucide-react";
 
 import { SynetraLogo } from "@/components/brand/synetra-logo";
 import { Button } from "@/components/ui/button";
@@ -148,15 +148,13 @@ export default async function LoginPage({
               </div>
             )}
 
-            <p className="text-sm font-medium text-foreground/72">
-              Need the public overview instead?{" "}
-              <Link
-                href="/"
-                className="font-semibold text-primary underline decoration-primary/30 underline-offset-4 transition-colors hover:text-primary/80"
-              >
-                Back to landing page
-              </Link>
-            </p>
+            <Link
+              href="/"
+              className="flex items-center justify-center gap-2 rounded-[18px] border border-[#cdd9ff] bg-[#eef3ff] px-4 py-3 text-sm font-semibold text-[#1b2b67] transition-colors hover:border-[#b8c8ff] hover:bg-[#e6edff] hover:text-[#142257]"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Volver al inicio
+            </Link>
           </CardContent>
         </Card>
       </div>
