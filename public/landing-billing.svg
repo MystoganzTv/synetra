@@ -1,0 +1,94 @@
+<svg width="1400" height="980" viewBox="0 0 1400 980" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="room" x1="180" y1="110" x2="1210" y2="880" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E8ECF8"/>
+      <stop offset="0.54" stop-color="#D7DDEA"/>
+      <stop offset="1" stop-color="#C8D0E2"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="292" y1="192" x2="1116" y2="734" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDFEFF"/>
+      <stop offset="1" stop-color="#EEF3FF"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="298" y1="240" x2="790" y2="240" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4057EB"/>
+      <stop offset="1" stop-color="#7B54FF"/>
+    </linearGradient>
+    <filter id="blur" x="0" y="0" width="1400" height="980" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+    <filter id="shadow" x="120" y="70" width="1120" height="770" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feOffset dy="18"/>
+      <feGaussianBlur stdDeviation="24"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0941176 0 0 0 0 0.133333 0 0 0 0 0.262745 0 0 0 0.22 0"/>
+      <feBlend in2="SourceGraphic" result="shape"/>
+    </filter>
+  </defs>
+  <rect width="1400" height="980" rx="48" fill="#F3F5FB"/>
+  <g opacity="0.55" filter="url(#blur)">
+    <rect x="110" y="110" width="300" height="620" rx="38" fill="url(#room)"/>
+    <rect x="990" y="150" width="250" height="590" rx="34" fill="url(#room)"/>
+    <rect x="520" y="90" width="300" height="96" rx="24" fill="#FFFFFF"/>
+  </g>
+  <rect x="0" y="818" width="1400" height="162" fill="#EFF2FA"/>
+  <g filter="url(#shadow)">
+    <rect x="182" y="154" width="1036" height="640" rx="28" fill="#202430"/>
+    <rect x="224" y="196" width="952" height="556" rx="18" fill="url(#screen)"/>
+  </g>
+  <rect x="570" y="804" width="260" height="22" rx="11" fill="#AEB7CB"/>
+  <rect x="512" y="826" width="376" height="26" rx="13" fill="#CBD3E3"/>
+  <text x="700" y="305" text-anchor="middle" fill="url(#blue)" font-family="Arial, Helvetica, sans-serif" font-size="40" font-weight="700" letter-spacing="1.5">MEDICAL BILLING ANALYTICS</text>
+  <rect x="278" y="352" width="96" height="286" rx="10" fill="#4256E5"/>
+  <rect x="400" y="352" width="664" height="92" rx="14" fill="#FFFFFF"/>
+  <rect x="400" y="472" width="322" height="210" rx="16" fill="#FFFFFF"/>
+  <rect x="742" y="472" width="322" height="210" rx="16" fill="#FFFFFF"/>
+  <rect x="1088" y="352" width="58" height="330" rx="14" fill="#FFFFFF" fill-opacity="0.58"/>
+
+  <circle cx="329" cy="388" r="6" fill="#EEF2FF"/>
+  <circle cx="329" cy="442" r="6" fill="#EEF2FF"/>
+  <circle cx="329" cy="496" r="6" fill="#EEF2FF"/>
+  <circle cx="329" cy="550" r="6" fill="#EEF2FF"/>
+  <circle cx="329" cy="604" r="6" fill="#EEF2FF"/>
+  <rect x="294" y="406" width="48" height="4" rx="2" fill="#EEF2FF"/>
+  <rect x="294" y="460" width="48" height="4" rx="2" fill="#EEF2FF"/>
+  <rect x="294" y="514" width="48" height="4" rx="2" fill="#EEF2FF"/>
+  <rect x="294" y="568" width="48" height="4" rx="2" fill="#EEF2FF"/>
+  <rect x="294" y="622" width="48" height="4" rx="2" fill="#EEF2FF"/>
+
+  <rect x="430" y="374" width="170" height="14" rx="7" fill="#CBD4EA"/>
+  <rect x="430" y="405" width="590" height="8" rx="4" fill="#EEF2FB"/>
+  <rect x="430" y="420" width="590" height="8" rx="4" fill="#EEF2FB"/>
+  <rect x="430" y="435" width="590" height="8" rx="4" fill="#EEF2FB"/>
+
+  <rect x="438" y="456" width="78" height="16" rx="8" fill="#EDF2FF"/>
+  <rect x="554" y="456" width="84" height="16" rx="8" fill="#EDF2FF"/>
+  <rect x="678" y="456" width="84" height="16" rx="8" fill="#EDF2FF"/>
+  <rect x="794" y="456" width="84" height="16" rx="8" fill="#EDF2FF"/>
+  <rect x="906" y="456" width="84" height="16" rx="8" fill="#EDF2FF"/>
+
+  <circle cx="466" cy="400" r="8" fill="#8DDA6B"/>
+  <circle cx="584" cy="400" r="8" fill="#8DDA6B"/>
+  <circle cx="704" cy="400" r="8" fill="#A3B0F5"/>
+  <circle cx="826" cy="400" r="8" fill="#8DDA6B"/>
+  <circle cx="944" cy="400" r="8" fill="#8DDA6B"/>
+
+  <circle cx="562" cy="578" r="82" fill="#F3F6FF"/>
+  <path d="M562 496C607.287 496 644 532.713 644 578C644 623.287 607.287 660 562 660C516.713 660 480 623.287 480 578C480 532.713 516.713 496 562 496ZM562 534C537.699 534 518 553.699 518 578C518 602.301 537.699 622 562 622C586.301 622 606 602.301 606 578C606 553.699 586.301 534 562 534Z" fill="#3B45B5"/>
+  <path d="M562 496C625.961 496 678 548.039 678 612H640C640 569.026 604.974 534 562 534V496Z" fill="#8DDA6B"/>
+  <text x="562" y="575" text-anchor="middle" fill="#232737" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">98%</text>
+  <text x="562" y="605" text-anchor="middle" fill="#7B8398" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing="0.8">COLLECTION RATE</text>
+
+  <rect x="770" y="514" width="266" height="82" rx="14" fill="#F5F7FE"/>
+  <rect x="770" y="612" width="266" height="52" rx="14" fill="#F5F7FE"/>
+  <rect x="788" y="530" width="128" height="10" rx="5" fill="#B3BEDA"/>
+  <polyline points="810,575 852,548 896,562 940,524 1002,538" fill="none" stroke="#8DDA6B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="810,586 856,573 900,582 944,555 1002,547" fill="none" stroke="#4454DF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="788" y="626" width="100" height="10" rx="5" fill="#B3BEDA"/>
+  <circle cx="906" cy="638" r="7" fill="#8DDA6B"/>
+  <circle cx="936" cy="638" r="7" fill="#4454DF"/>
+  <circle cx="966" cy="638" r="7" fill="#FF9D68"/>
+
+  <rect x="770" y="700" width="78" height="14" rx="7" fill="#CBD4EA"/>
+  <rect x="770" y="722" width="118" height="22" rx="11" fill="#EAF0FF"/>
+  <rect x="902" y="722" width="118" height="22" rx="11" fill="#EAF0FF"/>
+  <rect x="1034" y="722" width="90" height="22" rx="11" fill="#EAF0FF"/>
+</svg>
