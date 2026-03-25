@@ -148,8 +148,14 @@ export default async function LoginPage({
               </div>
             )}
 
-            <p className="text-sm text-muted-foreground">
-              Need the public overview instead? <Link href="/" className="font-medium text-primary hover:underline">Back to landing page</Link>
+            <p className="text-sm font-medium text-foreground/72">
+              Need the public overview instead?{" "}
+              <Link
+                href="/"
+                className="font-semibold text-primary underline decoration-primary/30 underline-offset-4 transition-colors hover:text-primary/80"
+              >
+                Back to landing page
+              </Link>
             </p>
           </CardContent>
         </Card>
