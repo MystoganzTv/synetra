@@ -53,7 +53,7 @@ export default async function DashboardPage() {
                 </p>
               </div>
               <h1 className="max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Nexora brings behavioral health operations into one modern command center.
+                Synetra brings behavioral health operations into one modern command center.
               </h1>
               <p className="max-w-2xl text-base leading-8 text-white/80">
                 Connected client, case, authorization, session, note, billing, and compliance workflows with clearer operational visibility.

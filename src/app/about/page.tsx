@@ -9,7 +9,7 @@ export default async function AboutPage() {
       <div className="space-y-6">
         <MarketingPageHero
           eyebrow="About"
-          title="Nexora is designed around operational clarity in behavioral health."
+          title="Synetra is designed around operational clarity in behavioral health."
           description="The product direction is simple: keep the clinical thread intact while making operational work visible, actionable, and scalable."
         />
 
@@ -31,4 +31,3 @@ export default async function AboutPage() {
     </MarketingShell>
   );
 }
-

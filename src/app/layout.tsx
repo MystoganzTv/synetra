@@ -14,9 +14,9 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nexora",
+  title: "Synetra",
   description:
-    "Nexora is a modern behavioral health operations platform for clients, cases, authorizations, scheduling, documentation, billing, and compliance.",
+    "Synetra is a modern behavioral health operations platform for clients, cases, authorizations, scheduling, documentation, billing, and compliance.",
 };
 
 export default function RootLayout({

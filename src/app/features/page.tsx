@@ -13,7 +13,7 @@ export default async function FeaturesPage() {
         <MarketingPageHero
           eyebrow="Features"
           title="A behavioral health platform organized around operational reality."
-          description="Nexora connects scheduling, documentation, authorizations, billing readiness, and compliance so each operational signal stays attached to the record that created it."
+          description="Synetra connects scheduling, documentation, authorizations, billing readiness, and compliance so each operational signal stays attached to the record that created it."
         />
 
         <div className="grid gap-4 lg:grid-cols-2">
@@ -62,4 +62,3 @@ export default async function FeaturesPage() {
     </MarketingShell>
   );
 }
-

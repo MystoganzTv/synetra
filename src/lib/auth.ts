@@ -9,14 +9,14 @@ const SESSION_DURATION_MS = 1000 * 60 * 60 * 10;
 
 const demoUsers = [
   {
-    email: "admin@nexora.app",
-    password: "NexoraDemo!",
+    email: "admin@synetra.app",
+    password: "SynetraDemo!",
     name: "Avery Chen",
     role: "Platform Admin",
   },
   {
-    email: "ops@nexora.app",
-    password: "NexoraOps!",
+    email: "ops@synetra.app",
+    password: "SynetraOps!",
     name: "Morgan Lee",
     role: "Revenue Operations",
   },
@@ -32,7 +32,7 @@ export interface AuthSession {
 }
 
 function getAuthSecret() {
-  return process.env.AUTH_SECRET || "nexora-local-dev-secret";
+  return process.env.AUTH_SECRET || "synetra-local-dev-secret";
 }
 
 function sign(value: string) {

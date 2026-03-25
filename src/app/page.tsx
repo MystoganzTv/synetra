@@ -83,7 +83,7 @@ export default async function HomePage() {
                 Run scheduling, documentation, billing readiness, and compliance from one operating layer.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-                Nexora is designed for behavioral health teams that need more than a pretty dashboard.
+                Synetra is designed for behavioral health teams that need more than a pretty dashboard.
                 It turns client, case, authorization, session, and note data into daily operational control.
               </p>
             </div>
@@ -91,7 +91,7 @@ export default async function HomePage() {
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg" className="h-12 rounded-2xl px-6">
                 <Link href={session ? "/dashboard" : "/login"}>
-                  {session ? "Continue to dashboard" : "Sign in to Nexora"}
+                  {session ? "Continue to dashboard" : "Sign in to Synetra"}
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -126,7 +126,7 @@ export default async function HomePage() {
             <CardContent className="space-y-8 px-7 py-8 sm:px-8 sm:py-9">
               <div className="space-y-3">
                 <p className="text-xs uppercase tracking-[0.34em] text-white/72">
-                  Why teams move to Nexora
+                  Why teams move to Synetra
                 </p>
                 <h2 className="text-3xl font-semibold tracking-tight">
                   Operational clarity without losing the clinical thread.
@@ -215,7 +215,7 @@ export default async function HomePage() {
             <CardContent className="space-y-5 p-6">
               <div className="space-y-2">
                 <p className="text-xs font-medium uppercase tracking-[0.32em] text-muted-foreground">
-                  Who Nexora serves
+                  Who Synetra serves
                 </p>
                 <h2 className="text-3xl font-semibold tracking-tight text-foreground">
                   Different teams, one operational source of truth.

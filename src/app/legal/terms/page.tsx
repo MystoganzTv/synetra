@@ -15,7 +15,7 @@ export default async function TermsPage() {
         <Card className="bg-white/78">
           <CardContent className="space-y-5 p-6 text-sm leading-8 text-muted-foreground">
             <p>
-              Nexora’s public site should include terms that define acceptable use, access
+              Synetra’s public site should include terms that define acceptable use, access
               expectations, limitations, intellectual property, and other core platform conditions.
             </p>
             <p>

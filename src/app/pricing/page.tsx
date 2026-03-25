@@ -10,7 +10,7 @@ export default async function PricingPage() {
         <MarketingPageHero
           eyebrow="Pricing"
           title="Commercial structure for teams buying an operating platform, not a toy dashboard."
-          description="Nexora pricing is positioned around implementation scope, workflow complexity, and operational depth. The site should explain the model clearly even before a live sales conversation."
+          description="Synetra pricing is positioned around implementation scope, workflow complexity, and operational depth. The site should explain the model clearly even before a live sales conversation."
         />
 
         <div className="grid gap-4 lg:grid-cols-3">
@@ -43,4 +43,3 @@ export default async function PricingPage() {
     </MarketingShell>
   );
 }
-

@@ -9,13 +9,13 @@ export default async function PrivacyPage() {
         <MarketingPageHero
           eyebrow="Privacy"
           title="Privacy page placeholder for a production-ready public site."
-          description="This page gives Nexora the public-site structure buyers expect. It should still be reviewed and finalized with legal counsel before production use."
+          description="This page gives Synetra the public-site structure buyers expect. It should still be reviewed and finalized with legal counsel before production use."
         />
 
         <Card className="bg-white/78">
           <CardContent className="space-y-5 p-6 text-sm leading-8 text-muted-foreground">
             <p>
-              Nexora is intended to support behavioral health operational workflows. Public-site
+              Synetra is intended to support behavioral health operational workflows. Public-site
               privacy language should describe what information is collected, how it is used, and how
               users can contact the organization regarding privacy requests.
             </p>
@@ -30,4 +30,3 @@ export default async function PrivacyPage() {
     </MarketingShell>
   );
 }
-

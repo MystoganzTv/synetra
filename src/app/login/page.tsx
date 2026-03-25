@@ -43,7 +43,7 @@ export default async function LoginPage({
               Secure operator access
             </p>
             <h1 className="max-w-2xl text-5xl font-semibold tracking-tight text-foreground">
-              Sign in to the Nexora command center.
+              Sign in to the Synetra command center.
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
               Access scheduling, client operations, session validation, billing readiness, and compliance queues from a single operating surface.
@@ -88,7 +88,7 @@ export default async function LoginPage({
                 <label htmlFor="email" className="text-sm font-medium text-foreground">
                   Email
                 </label>
-                <Input id="email" name="email" type="email" placeholder="admin@nexora.app" required />
+                <Input id="email" name="email" type="email" placeholder="admin@synetra.app" required />
               </div>
               <div className="space-y-2">
                 <label htmlFor="password" className="text-sm font-medium text-foreground">
@@ -120,7 +120,7 @@ export default async function LoginPage({
                     <p className="mt-1 text-sm text-muted-foreground">{user.name}</p>
                     <p className="mt-3 text-sm text-foreground">{user.email}</p>
                     <p className="text-sm text-foreground">
-                      {user.email === "admin@nexora.app" ? "NexoraDemo!" : "NexoraOps!"}
+                      {user.email === "admin@synetra.app" ? "SynetraDemo!" : "SynetraOps!"}
                     </p>
                   </div>
                 ))}

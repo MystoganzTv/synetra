@@ -55,7 +55,7 @@ export async function MarketingShell({
             <div className="space-y-4">
               <NexoraLogo compact />
               <p className="max-w-sm text-sm leading-7 text-muted-foreground">
-                Nexora is a behavioral health operations platform built to connect scheduling,
+                Synetra is a behavioral health operations platform built to connect scheduling,
                 documentation, authorizations, billing readiness, and compliance in one system.
               </p>
             </div>
@@ -92,4 +92,3 @@ export async function MarketingShell({
     </main>
   );
 }
-

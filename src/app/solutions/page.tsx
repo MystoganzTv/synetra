@@ -10,7 +10,7 @@ export default async function SolutionsPage() {
         <MarketingPageHero
           eyebrow="Who we serve"
           title="Built for teams that run behavioral health operations, not just screens."
-          description="Nexora is structured for the people who own scheduling, documentation quality, authorizations, revenue readiness, and cross-team follow-through."
+          description="Synetra is structured for the people who own scheduling, documentation quality, authorizations, revenue readiness, and cross-team follow-through."
         />
 
         <div className="grid gap-4 lg:grid-cols-3">
@@ -40,4 +40,3 @@ export default async function SolutionsPage() {
     </MarketingShell>
   );
 }
-

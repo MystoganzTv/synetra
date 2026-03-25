@@ -31,7 +31,7 @@ export const featureHighlights = [
   {
     title: "Revenue readiness controls",
     description:
-      "Nexora validates sessions before claims move downstream, so operational teams can act before reimbursement slips.",
+      "Synetra validates sessions before claims move downstream, so operational teams can act before reimbursement slips.",
     bullets: [
       "Authorization active/range/unit validation",
       "Missing-note and pending-signature detection",
@@ -143,7 +143,7 @@ export const resourceCollections = [
   {
     title: "Proof and education",
     description:
-      "Content that explains how Nexora thinks about operational correctness, not just interface polish.",
+      "Content that explains how Synetra thinks about operational correctness, not just interface polish.",
     items: [
       "Implementation notes",
       "Operational architecture explainers",
@@ -154,27 +154,27 @@ export const resourceCollections = [
 
 export const faqItems = [
   {
-    question: "What is Nexora built for?",
+    question: "What is Synetra built for?",
     answer:
-      "Nexora is built for behavioral health operations teams that need scheduling, documentation, authorization oversight, billing readiness, and compliance to stay connected in one system.",
+      "Synetra is built for behavioral health operations teams that need scheduling, documentation, authorization oversight, billing readiness, and compliance to stay connected in one system.",
   },
   {
-    question: "Is Nexora just a dashboard?",
+    question: "Is Synetra just a dashboard?",
     answer:
       "No. The dashboard is only the surface. The core model ties sessions, services, authorizations, progress notes, billing posture, and compliance issues together so teams can actually act on what they see.",
   },
   {
-    question: "Who is Nexora for inside an organization?",
+    question: "Who is Synetra for inside an organization?",
     answer:
-      "Founders, operators, clinical directors, revenue teams, and compliance leads can all use Nexora because the product is built around operational flow, not a single department’s view.",
+      "Founders, operators, clinical directors, revenue teams, and compliance leads can all use Synetra because the product is built around operational flow, not a single department’s view.",
   },
   {
-    question: "How does Nexora handle billing readiness?",
+    question: "How does Synetra handle billing readiness?",
     answer:
       "Each session is validated against linked client, case, service, authorization, employee, units, date range, attendance, and note completion. That produces operational statuses like ready to bill, at risk, and not billable.",
   },
   {
-    question: "Can Nexora support real data and production deployment?",
+    question: "Can Synetra support real data and production deployment?",
     answer:
       "Yes. The application is structured around Next.js, Prisma, PostgreSQL, typed domain mapping, and environment-based data safety. It is meant to evolve into a real production system, not stay as a toy demo.",
   },
@@ -184,7 +184,7 @@ export const aboutPrinciples = [
   {
     title: "Operations before ornament",
     description:
-      "Nexora is designed to make the work legible: what is scheduled, what is missing, what is blocked, and what needs follow-through.",
+      "Synetra is designed to make the work legible: what is scheduled, what is missing, what is blocked, and what needs follow-through.",
   },
   {
     title: "Clinical context stays attached",
@@ -197,4 +197,3 @@ export const aboutPrinciples = [
       "The product foundation prioritizes type safety, real relations, environment control, Prisma-backed data models, and operational validation logic.",
   },
 ];
-
