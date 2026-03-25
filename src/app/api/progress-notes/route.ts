@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { getSession } from "@/lib/data";
 import {
   createEntityId,
   getEnumField,
@@ -42,6 +43,15 @@ export async function POST(request: Request) {
   }
 
   try {
+    const sessionContext = await getSession(sessionId);
+
+    if (!sessionContext) {
+      return NextResponse.redirect(
+        getPublicRedirectUrl(request, "/progress-notes?error=forbidden"),
+        303,
+      );
+    }
+
     const existing = await prisma.progressNote.findFirst({
       where: { sessionId },
       select: { id: true },

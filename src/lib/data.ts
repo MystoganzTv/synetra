@@ -1,5 +1,7 @@
 import type { Prisma } from "@prisma/client";
 
+import type { AuthSession } from "@/lib/auth";
+import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { demoClients as rawDemoClients, demoStandaloneSessions } from "@/lib/demo-data";
 import { DataAccessError, assertDemoModeAllowed, isDemoModeEnabled, logQueryFailure } from "@/lib/data-source";
@@ -342,6 +344,7 @@ function mapClient(record: PrismaClientGraph): ClientRecord {
   return {
     id: record.id,
     externalId: record.externalId,
+    ownerEmail: record.ownerEmail,
     firstName: record.firstName,
     lastName: record.lastName,
     preferredName: record.preferredName,
@@ -358,6 +361,59 @@ function mapClient(record: PrismaClientGraph): ClientRecord {
     referralSource: record.referralSource,
     cases: record.cases.map(mapCase),
   };
+}
+
+function isElevatedRole(session: AuthSession | null) {
+  return (
+    !session ||
+    session.role === "Platform Admin" ||
+    session.role === "Revenue Operations"
+  );
+}
+
+function clientMatchesTcmAccess(client: ClientRecord, session: AuthSession) {
+  const normalizedEmail = session.email.trim().toLowerCase();
+  const normalizedName = session.name.trim().toLowerCase();
+
+  if (client.ownerEmail?.trim().toLowerCase() === normalizedEmail) {
+    return true;
+  }
+
+  return client.cases.some((caseRecord) => {
+    if (caseRecord.clinicalLead.trim().toLowerCase() === normalizedName) {
+      return true;
+    }
+
+    const standaloneMatch =
+      caseRecord.sessions?.some(
+        (caseSession) => caseSession.employee?.email?.trim().toLowerCase() === normalizedEmail,
+      ) ?? false;
+
+    if (standaloneMatch) {
+      return true;
+    }
+
+    return caseRecord.services.some((service) =>
+      service.authorizations.some((authorization) =>
+        authorization.sessions.some(
+          (authorizationSession) =>
+            authorizationSession.employee?.email?.trim().toLowerCase() === normalizedEmail,
+        ),
+      ),
+    );
+  });
+}
+
+function filterClientsForSession(clients: ClientRecord[], session: AuthSession | null) {
+  if (!session || isElevatedRole(session)) {
+    return clients;
+  }
+
+  if (session.role !== "TCM") {
+    return clients;
+  }
+
+  return clients.filter((client) => clientMatchesTcmAccess(client, session));
 }
 
 function buildDemoEmployee(
@@ -498,7 +554,12 @@ async function fetchClientsFromPrisma() {
 }
 
 export async function getClients() {
-  return fetchClientsFromPrisma();
+  const [clients, session] = await Promise.all([
+    fetchClientsFromPrisma(),
+    getAuthSession(),
+  ]);
+
+  return filterClientsForSession(clients, session);
 }
 
 export async function getClient(clientId: string) {

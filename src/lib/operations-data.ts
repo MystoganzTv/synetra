@@ -1,5 +1,6 @@
 import type { Prisma } from "@prisma/client";
 
+import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { DataAccessError, assertDemoModeAllowed, isDemoModeEnabled, logQueryFailure } from "@/lib/data-source";
 import { getClients } from "@/lib/data";
@@ -21,6 +22,10 @@ import {
 } from "@/lib/domain";
 import { APP_TIMEZONE, getDateKey, getNow, getWeekDateKeys } from "@/lib/time";
 import { demoDocuments, demoFormPackets, demoGroups } from "@/lib/operations-demo-data";
+
+function shouldScopeOperationalData(role?: string | null) {
+  return role === "TCM";
+}
 
 function toIsoString(value: Date | null | undefined) {
   return value ? value.toISOString() : null;
@@ -106,6 +111,53 @@ async function fetchGroupsFromPrisma() {
   }
 
   try {
+    const session = await getAuthSession();
+    if (!shouldScopeOperationalData(session?.role)) {
+      const groups = await prisma.group.findMany({
+        include: {
+          memberships: true,
+          sessions: true,
+        },
+        orderBy: [{ status: "asc" }, { name: "asc" }],
+      });
+
+      return groups.map<GroupRecord>((group) => ({
+        id: group.id,
+        name: group.name,
+        track: group.track,
+        serviceLine: group.serviceLine,
+        status: group.status,
+        facilitatorName: group.facilitatorName,
+        coFacilitatorName: group.coFacilitatorName,
+        location: group.location,
+        schedulePattern: group.schedulePattern,
+        maxCapacity: group.maxCapacity,
+        clinicalFocus: group.clinicalFocus,
+        memberships: group.memberships.map((membership) => ({
+          id: membership.id,
+          clientId: membership.clientId,
+          caseId: membership.caseId,
+          joinedAt: membership.joinedAt.toISOString(),
+          status: membership.status,
+          participationGoal: membership.participationGoal,
+          attendanceRate: membership.attendanceRate,
+        })),
+        sessions: group.sessions.map((sessionRecord) => ({
+          id: sessionRecord.id,
+          scheduledStart: sessionRecord.scheduledStart.toISOString(),
+          scheduledEnd: sessionRecord.scheduledEnd.toISOString(),
+          facilitatorName: sessionRecord.facilitatorName,
+          location: sessionRecord.location,
+          status: sessionRecord.status,
+          noteCompletionPercent: sessionRecord.noteCompletionPercent,
+          attendanceCount: sessionRecord.attendanceCount,
+          notesDue: sessionRecord.notesDue,
+        })),
+      }));
+    }
+
+    const clients = await getClients();
+    const accessibleClientIds = new Set(clients.map((client) => client.id));
     const groups = await prisma.group.findMany({
       include: {
         memberships: true,
@@ -114,39 +166,49 @@ async function fetchGroupsFromPrisma() {
       orderBy: [{ status: "asc" }, { name: "asc" }],
     });
 
-    return groups.map<GroupRecord>((group) => ({
-      id: group.id,
-      name: group.name,
-      track: group.track,
-      serviceLine: group.serviceLine,
-      status: group.status,
-      facilitatorName: group.facilitatorName,
-      coFacilitatorName: group.coFacilitatorName,
-      location: group.location,
-      schedulePattern: group.schedulePattern,
-      maxCapacity: group.maxCapacity,
-      clinicalFocus: group.clinicalFocus,
-      memberships: group.memberships.map((membership) => ({
-        id: membership.id,
-        clientId: membership.clientId,
-        caseId: membership.caseId,
-        joinedAt: membership.joinedAt.toISOString(),
-        status: membership.status,
-        participationGoal: membership.participationGoal,
-        attendanceRate: membership.attendanceRate,
-      })),
-      sessions: group.sessions.map((session) => ({
-        id: session.id,
-        scheduledStart: session.scheduledStart.toISOString(),
-        scheduledEnd: session.scheduledEnd.toISOString(),
-        facilitatorName: session.facilitatorName,
-        location: session.location,
-        status: session.status,
-        noteCompletionPercent: session.noteCompletionPercent,
-        attendanceCount: session.attendanceCount,
-        notesDue: session.notesDue,
-      })),
-    }));
+    return groups
+      .map<GroupRecord>((group) => {
+        const memberships = group.memberships.filter((membership) =>
+          accessibleClientIds.has(membership.clientId),
+        );
+
+        return {
+          id: group.id,
+          name: group.name,
+          track: group.track,
+          serviceLine: group.serviceLine,
+          status: group.status,
+          facilitatorName: group.facilitatorName,
+          coFacilitatorName: group.coFacilitatorName,
+          location: group.location,
+          schedulePattern: group.schedulePattern,
+          maxCapacity: group.maxCapacity,
+          clinicalFocus: group.clinicalFocus,
+          memberships: memberships.map((membership) => ({
+            id: membership.id,
+            clientId: membership.clientId,
+            caseId: membership.caseId,
+            joinedAt: membership.joinedAt.toISOString(),
+            status: membership.status,
+            participationGoal: membership.participationGoal,
+            attendanceRate: membership.attendanceRate,
+          })),
+          sessions: memberships.length
+            ? group.sessions.map((session) => ({
+                id: session.id,
+                scheduledStart: session.scheduledStart.toISOString(),
+                scheduledEnd: session.scheduledEnd.toISOString(),
+                facilitatorName: session.facilitatorName,
+                location: session.location,
+                status: session.status,
+                noteCompletionPercent: session.noteCompletionPercent,
+                attendanceCount: session.attendanceCount,
+                notesDue: session.notesDue,
+              }))
+            : [],
+        };
+      })
+      .filter((group) => group.memberships.length > 0);
   } catch (error) {
     logQueryFailure(scope, error);
     throw new DataAccessError("PRISMA_QUERY_FAILED", scope, "Unable to load groups.");
@@ -170,27 +232,58 @@ async function fetchDocumentsFromPrisma() {
   }
 
   try {
+    const session = await getAuthSession();
+    const clients = await getClients();
+    const accessibleClientIds = new Set(clients.map((client) => client.id));
     const documents = await prisma.document.findMany({
       orderBy: [{ status: "asc" }, { title: "asc" }],
     });
 
-    return documents.map<DocumentRecord>((document) => ({
-      id: document.id,
-      clientId: document.clientId,
-      caseId: document.caseId,
-      groupId: document.groupId,
-      formPacketId: document.formPacketId,
-      title: document.title,
-      category: document.category,
-      status: document.status,
-      owner: document.owner,
-      effectiveDate: toIsoString(document.effectiveDate),
-      expiresAt: toIsoString(document.expiresAt),
-      source: document.source,
-      requiresSignature: document.requiresSignature,
-      signedAt: toIsoString(document.signedAt),
-      tags: document.tags,
-    }));
+    if (!shouldScopeOperationalData(session?.role)) {
+      return documents.map<DocumentRecord>((document) => ({
+        id: document.id,
+        clientId: document.clientId,
+        caseId: document.caseId,
+        groupId: document.groupId,
+        formPacketId: document.formPacketId,
+        title: document.title,
+        category: document.category,
+        status: document.status,
+        owner: document.owner,
+        effectiveDate: toIsoString(document.effectiveDate),
+        expiresAt: toIsoString(document.expiresAt),
+        source: document.source,
+        requiresSignature: document.requiresSignature,
+        signedAt: toIsoString(document.signedAt),
+        tags: document.tags,
+      }));
+    }
+
+    return documents
+      .filter((document) => {
+        if (!document.clientId) {
+          return false;
+        }
+
+        return accessibleClientIds.has(document.clientId);
+      })
+      .map<DocumentRecord>((document) => ({
+        id: document.id,
+        clientId: document.clientId,
+        caseId: document.caseId,
+        groupId: document.groupId,
+        formPacketId: document.formPacketId,
+        title: document.title,
+        category: document.category,
+        status: document.status,
+        owner: document.owner,
+        effectiveDate: toIsoString(document.effectiveDate),
+        expiresAt: toIsoString(document.expiresAt),
+        source: document.source,
+        requiresSignature: document.requiresSignature,
+        signedAt: toIsoString(document.signedAt),
+        tags: document.tags,
+      }));
   } catch (error) {
     logQueryFailure(scope, error);
     throw new DataAccessError("PRISMA_QUERY_FAILED", scope, "Unable to load documents.");
@@ -214,24 +307,46 @@ async function fetchFormPacketsFromPrisma() {
   }
 
   try {
+    const session = await getAuthSession();
+    const clients = await getClients();
+    const accessibleClientIds = new Set(clients.map((client) => client.id));
     const packets = await prisma.formPacket.findMany({
       orderBy: [{ dueDate: "asc" }, { title: "asc" }],
     });
 
-    return packets.map<FormPacketRecord>((packet) => ({
-      id: packet.id,
-      clientId: packet.clientId,
-      caseId: packet.caseId,
-      title: packet.title,
-      packetType: packet.packetType,
-      status: packet.status,
-      assignedTo: packet.assignedTo,
-      dueDate: packet.dueDate.toISOString(),
-      completedAt: toIsoString(packet.completedAt),
-      signatureStatus: packet.signatureStatus,
-      completionPercent: packet.completionPercent,
-      sections: mapJsonSections(packet.sections),
-    }));
+    if (!shouldScopeOperationalData(session?.role)) {
+      return packets.map<FormPacketRecord>((packet) => ({
+        id: packet.id,
+        clientId: packet.clientId,
+        caseId: packet.caseId,
+        title: packet.title,
+        packetType: packet.packetType,
+        status: packet.status,
+        assignedTo: packet.assignedTo,
+        dueDate: packet.dueDate.toISOString(),
+        completedAt: toIsoString(packet.completedAt),
+        signatureStatus: packet.signatureStatus,
+        completionPercent: packet.completionPercent,
+        sections: mapJsonSections(packet.sections),
+      }));
+    }
+
+    return packets
+      .filter((packet) => accessibleClientIds.has(packet.clientId))
+      .map<FormPacketRecord>((packet) => ({
+        id: packet.id,
+        clientId: packet.clientId,
+        caseId: packet.caseId,
+        title: packet.title,
+        packetType: packet.packetType,
+        status: packet.status,
+        assignedTo: packet.assignedTo,
+        dueDate: packet.dueDate.toISOString(),
+        completedAt: toIsoString(packet.completedAt),
+        signatureStatus: packet.signatureStatus,
+        completionPercent: packet.completionPercent,
+        sections: mapJsonSections(packet.sections),
+      }));
   } catch (error) {
     logQueryFailure(scope, error);
     throw new DataAccessError("PRISMA_QUERY_FAILED", scope, "Unable to load form packets.");

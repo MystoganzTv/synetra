@@ -11,6 +11,7 @@ import {
   FolderKanban,
   LayoutDashboard,
   ShieldAlert,
+  UserCog,
   UsersRound,
   Users,
 } from "lucide-react";
@@ -56,6 +57,10 @@ export function AppSidebar({
   };
 }) {
   const pathname = usePathname();
+  const navigationItems =
+    user.role === "Platform Admin"
+      ? [...navigation, { href: "/admin", label: "Admin", icon: UserCog }]
+      : navigation;
 
   return (
     <>
@@ -77,7 +82,7 @@ export function AppSidebar({
           <Badge variant="success">{summary.activeClients} clientes activos</Badge>
         </div>
         <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
-          {navigation.map(({ href, label, icon: Icon }) => {
+          {navigationItems.map(({ href, label, icon: Icon }) => {
             const isActive =
               pathname === href || (href !== "/dashboard" && pathname.startsWith(href));
 
@@ -120,7 +125,7 @@ export function AppSidebar({
 
         <div className="mt-8 flex flex-1 flex-col">
           <nav className="space-y-2">
-            {navigation.map(({ href, label, icon: Icon }) => {
+            {navigationItems.map(({ href, label, icon: Icon }) => {
               const isActive =
                 pathname === href || (href !== "/dashboard" && pathname.startsWith(href));
 

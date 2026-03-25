@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { getClient } from "@/lib/data";
 import {
   caseStatusOptions,
   caseTypeOptions,
@@ -72,6 +73,15 @@ export async function POST(request: Request) {
     Boolean(approvedUnits && authorizationEndDate);
 
   try {
+    const client = await getClient(clientId);
+
+    if (!client) {
+      return NextResponse.redirect(
+        getPublicRedirectUrl(request, "/clients?error=forbidden"),
+        303,
+      );
+    }
+
     await prisma.$transaction(async (tx) => {
       await tx.case.create({
         data: {

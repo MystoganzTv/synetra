@@ -430,6 +430,7 @@ async function main() {
       ...demoClients.map((client) => ({
         id: client.id,
         externalId: client.externalId,
+        ownerEmail: null,
         firstName: client.firstName,
         lastName: client.lastName,
         preferredName: client.preferredName ?? null,
@@ -445,24 +446,6 @@ async function main() {
         payerSegment: client.payerSegment ?? null,
         referralSource: client.referralSource ?? null,
       })),
-      {
-        id: "client-enrique-padron-intake",
-        externalId: "SYN-ENR-001",
-        firstName: "Enrique",
-        lastName: "Padron",
-        preferredName: null,
-        dateOfBirth: new Date("1990-05-12T12:00:00.000Z"),
-        email: "enrique.padron.client@synetra.demo",
-        phone: "(305) 555-0190",
-        city: "Miami",
-        state: "FL",
-        timezone: "America/New_York",
-        status: "INTAKE",
-        riskLevel: "LOW",
-        primaryDiagnosisCode: null,
-        payerSegment: "Pending payer",
-        referralSource: "Manual intake for TCM onboarding flow",
-      },
     ],
   });
 

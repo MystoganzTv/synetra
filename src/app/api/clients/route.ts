@@ -57,6 +57,7 @@ export async function POST(request: Request) {
       data: {
         id: clientId,
         externalId: createClientExternalId(),
+        ownerEmail: session.role === "TCM" ? session.email : null,
         firstName,
         lastName,
         preferredName,

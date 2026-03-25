@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { getCase } from "@/lib/data";
 import {
   addDays,
   addHours,
@@ -62,6 +63,15 @@ export async function POST(request: Request) {
   const sessionId = createEntityId("session");
 
   try {
+    const caseContext = await getCase(caseId);
+
+    if (!caseContext || caseContext.client.id !== clientId) {
+      return NextResponse.redirect(
+        getPublicRedirectUrl(request, "/cases?error=forbidden"),
+        303,
+      );
+    }
+
     await prisma.session.create({
       data: {
         id: sessionId,

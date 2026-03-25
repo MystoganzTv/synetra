@@ -186,6 +186,7 @@ export interface CaseRecord {
 export interface ClientRecord {
   id: string;
   externalId: string;
+  ownerEmail?: string | null;
   firstName: string;
   lastName: string;
   preferredName?: string | null;

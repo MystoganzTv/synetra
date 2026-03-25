@@ -198,6 +198,7 @@ enum SignatureStatus {
 model Client {
   id                   String       @id
   externalId           String       @unique
+  ownerEmail           String?
   firstName            String
   lastName             String
   preferredName        String?
@@ -222,6 +223,7 @@ model Client {
 
   @@index([lastName, firstName])
   @@index([status])
+  @@index([ownerEmail])
 }
 
 model Employee {
