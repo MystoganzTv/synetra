@@ -35,9 +35,9 @@ export default async function LoginPage({
       </div>
 
       <div className="relative mx-auto grid min-h-screen w-full max-w-[1380px] items-center gap-8 px-5 py-8 sm:px-8 lg:grid-cols-[1.02fr_0.98fr] lg:px-10">
-        <div className="space-y-8">
-          <Link href="/" className="inline-flex">
-            <SynetraLogo />
+        <div className="relative z-0 space-y-8">
+          <Link href="/" className="inline-flex max-w-full">
+            <SynetraLogo compact className="max-w-full" />
           </Link>
 
           <div className="space-y-4">
@@ -81,7 +81,7 @@ export default async function LoginPage({
           </div>
         </div>
 
-        <Card className="overflow-hidden border-none bg-[linear-gradient(145deg,rgba(255,255,255,0.82)_0%,rgba(248,250,255,0.94)_100%)] shadow-[0_30px_80px_-42px_rgba(25,38,104,0.3)]">
+        <Card className="relative z-10 overflow-hidden border-none bg-[linear-gradient(145deg,rgba(255,255,255,0.82)_0%,rgba(248,250,255,0.94)_100%)] shadow-[0_30px_80px_-42px_rgba(25,38,104,0.3)]">
           <CardHeader className="px-7 pt-7 sm:px-8 sm:pt-8">
             <CardTitle className="text-2xl">Login</CardTitle>
             <CardDescription>

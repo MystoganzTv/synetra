@@ -92,7 +92,7 @@ export function SynetraWordmark({
   return (
     <span
       className={cn(
-        "select-none font-semibold uppercase leading-none tracking-[0.16em]",
+        "max-w-full select-none font-semibold uppercase leading-none tracking-[0.12em]",
         inverse ? "text-white" : "text-[#182454]",
         className,
       )}
@@ -112,11 +112,17 @@ export function SynetraLogo({
   compact?: boolean;
 }) {
   return (
-    <div className={cn("inline-flex items-center gap-3", className)} aria-label="Synetra">
-      <SynetraMark className={compact ? "h-9 w-9" : "h-10 w-10"} />
+    <div
+      className={cn("inline-flex max-w-full min-w-0 items-center gap-3", className)}
+      aria-label="Synetra"
+    >
+      <SynetraMark className={compact ? "h-8 w-8" : "h-9 w-9"} />
       <SynetraWordmark
         inverse={inverse}
-        className={compact ? "text-[2rem] sm:text-[2.1rem]" : "text-[2.1rem] sm:text-[2.3rem]"}
+        className={cn(
+          "whitespace-nowrap",
+          compact ? "text-[1.55rem] sm:text-[1.7rem]" : "text-[1.75rem] sm:text-[1.95rem]",
+        )}
       />
     </div>
   );

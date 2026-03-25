@@ -96,8 +96,8 @@ export function AppSidebar({
 
       <aside className="hidden w-[310px] shrink-0 self-start border-r border-b border-border bg-sidebar/90 px-6 py-7 backdrop-blur lg:flex lg:min-h-screen lg:flex-col">
         <div className="space-y-3">
-          <div className="rounded-[28px] border border-[#1f2e68] bg-[radial-gradient(circle_at_24%_38%,rgba(91,231,255,0.16),transparent_26%),radial-gradient(circle_at_68%_38%,rgba(226,121,255,0.16),transparent_28%),linear-gradient(145deg,#071238_0%,#0d1c57_55%,#152f93_100%)] px-5 py-5 shadow-[0_22px_40px_-28px_rgba(27,41,102,0.65)]">
-            <SynetraLogo inverse className="justify-start" />
+          <div className="overflow-hidden rounded-[28px] border border-[#1f2e68] bg-[radial-gradient(circle_at_24%_38%,rgba(91,231,255,0.16),transparent_26%),radial-gradient(circle_at_68%_38%,rgba(226,121,255,0.16),transparent_28%),linear-gradient(145deg,#071238_0%,#0d1c57_55%,#152f93_100%)] px-5 py-5 shadow-[0_22px_40px_-28px_rgba(27,41,102,0.65)]">
+            <SynetraLogo inverse compact className="max-w-full justify-start" />
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.34em] text-muted-foreground">
