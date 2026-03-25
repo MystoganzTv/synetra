@@ -1,0 +1,35 @@
+import * as AvatarPrimitive from "@radix-ui/react-avatar";
+
+import { cn } from "@/lib/utils";
+
+function Avatar({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Root>) {
+  return (
+    <AvatarPrimitive.Root
+      className={cn(
+        "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full border border-white/60",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+function AvatarFallback({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
+  return (
+    <AvatarPrimitive.Fallback
+      className={cn(
+        "flex h-full w-full items-center justify-center bg-primary/10 text-sm font-semibold text-primary",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export { Avatar, AvatarFallback };

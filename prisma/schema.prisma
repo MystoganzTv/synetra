@@ -1,0 +1,484 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ClientStatus {
+  LEAD
+  INTAKE
+  ACTIVE
+  HOLD
+  DISCHARGED
+}
+
+enum RiskLevel {
+  LOW
+  MODERATE
+  HIGH
+}
+
+enum CaseStatus {
+  INTAKE
+  ACTIVE
+  ON_HOLD
+  CLOSED
+}
+
+enum CaseType {
+  ABA
+  MENTAL_HEALTH
+  CARE_COORDINATION
+  SCHOOL_SUPPORT
+}
+
+enum ServiceDiscipline {
+  ABA
+  THERAPY
+  PSYCHIATRY
+  CARE_COORDINATION
+  SKILLS_TRAINING
+}
+
+enum ServiceStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
+enum AuthorizationStatus {
+  REQUESTED
+  ACTIVE
+  EXPIRING
+  EXPIRED
+  DENIED
+}
+
+enum AuthorizationUnitType {
+  UNITS
+  HOURS
+  VISITS
+}
+
+enum SessionStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED_NO_SHOW
+  CANCELLED_LATE
+  DOCUMENTATION_PENDING
+}
+
+enum NoteStatus {
+  DRAFT
+  PENDING_SIGNATURE
+  SIGNED
+  LOCKED
+}
+
+enum BillingStatus {
+  READY
+  SUBMITTED
+  PAID
+  DENIED
+  HOLD
+}
+
+enum ComplianceSeverity {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum ComplianceStatus {
+  OPEN
+  RESOLVED
+  WAIVED
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum GroupStatus {
+  PLANNING
+  ACTIVE
+  ON_HOLD
+  CLOSED
+}
+
+enum GroupMembershipStatus {
+  ACTIVE
+  PENDING
+  PAUSED
+  COMPLETED
+}
+
+enum GroupSessionStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+}
+
+enum DocumentCategory {
+  ASSESSMENT
+  PLAN
+  CONSENT
+  ID
+  AUTHORIZATION
+  CLINICAL
+  LEGAL
+}
+
+enum DocumentStatus {
+  CURRENT
+  EXPIRING
+  EXPIRED
+  PENDING_REVIEW
+  DRAFT
+}
+
+enum FormPacketType {
+  INTAKE
+  CONSENT
+  ROI
+  FINANCIAL
+  SAFETY_PLAN
+}
+
+enum FormPacketStatus {
+  IN_PROGRESS
+  PENDING_SIGNATURE
+  COMPLETED
+  NEEDS_REVIEW
+}
+
+enum SignatureStatus {
+  NOT_STARTED
+  SENT
+  PARTIAL
+  COMPLETE
+}
+
+model Client {
+  id                   String       @id
+  externalId           String       @unique
+  firstName            String
+  lastName             String
+  preferredName        String?
+  dateOfBirth          DateTime
+  email                String?
+  phone                String?
+  city                 String?
+  state                String?
+  timezone             String       @default("America/New_York")
+  status               ClientStatus @default(ACTIVE)
+  riskLevel            RiskLevel    @default(LOW)
+  primaryDiagnosisCode String?
+  payerSegment         String?
+  referralSource       String?
+  cases                Case[]
+  sessions             Session[]
+  documents            Document[]
+  formPackets          FormPacket[]
+  groupMemberships     GroupMembership[]
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+
+  @@index([lastName, firstName])
+  @@index([status])
+}
+
+model Employee {
+  id         String         @id
+  firstName  String
+  lastName   String
+  displayName String
+  title      String
+  credentials String?
+  discipline ServiceDiscipline?
+  email      String?        @unique
+  timezone   String         @default("America/New_York")
+  status     EmployeeStatus @default(ACTIVE)
+  isBillable Boolean        @default(true)
+  sessions   Session[]
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@index([lastName, firstName])
+  @@index([status])
+}
+
+model Case {
+  id               String     @id
+  caseNumber       String     @unique
+  clientId         String
+  client           Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  caseType         CaseType
+  programName      String
+  payerName        String
+  clinicalLead     String
+  renderingProvider String?
+  location         String
+  status           CaseStatus @default(ACTIVE)
+  startDate        DateTime
+  endDate          DateTime?
+  acuityLevel      String
+  carePlanSummary  String?
+  services         Service[]
+  sessions         Session[]
+  documents        Document[]
+  formPackets      FormPacket[]
+  groupMemberships GroupMembership[]
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  @@index([clientId, status])
+  @@index([payerName])
+}
+
+model Service {
+  id                     String                @id
+  caseId                 String
+  case                   Case                  @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  serviceCode            String
+  title                  String
+  discipline             ServiceDiscipline
+  unitType               AuthorizationUnitType
+  defaultUnitsPerSession Int
+  defaultRateCents       Int
+  frequency              String
+  status                 ServiceStatus         @default(ACTIVE)
+  isPrimary              Boolean               @default(false)
+  authorizations         Authorization[]
+  sessions               Session[]
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+
+  @@index([caseId, status])
+  @@index([serviceCode])
+}
+
+model Authorization {
+  id                   String                @id
+  serviceId            String
+  service              Service               @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  authorizationNumber  String                @unique
+  payerName            String
+  approvedUnits        Int
+  usedUnits            Int
+  remainingUnits       Int
+  unitType             AuthorizationUnitType
+  startDate            DateTime
+  endDate              DateTime
+  status               AuthorizationStatus   @default(ACTIVE)
+  utilizationThreshold Int                   @default(85)
+  notes                String?
+  sessions             Session[]
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+
+  @@index([serviceId, status])
+  @@index([endDate])
+}
+
+model Session {
+  id               String        @id
+  clientId         String
+  caseId           String
+  serviceId        String
+  authorizationId  String?
+  employeeId       String?
+  client           Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  case             Case          @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  service          Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  authorization    Authorization? @relation(fields: [authorizationId], references: [id], onDelete: SetNull)
+  employee         Employee?     @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  scheduledStart   DateTime
+  scheduledEnd     DateTime
+  location         String
+  sessionType      String
+  attendanceStatus SessionStatus @default(SCHEDULED)
+  unitsRendered    Int
+  noteStatus       NoteStatus    @default(DRAFT)
+  billingStatus    BillingStatus @default(READY)
+  documentationDueAt DateTime?
+  progressNotes    ProgressNote[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([caseId, scheduledStart])
+  @@index([clientId])
+  @@index([authorizationId])
+  @@index([employeeId])
+}
+
+model ProgressNote {
+  id              String       @id
+  sessionId       String
+  session         Session      @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  authorName      String
+  status          NoteStatus   @default(DRAFT)
+  submittedAt     DateTime?
+  signedAt        DateTime?
+  subjective      String
+  objective       String
+  assessment      String
+  plan            String
+  incidentReported Boolean     @default(false)
+  billingRecords  BillingRecord[]
+  complianceItems ComplianceItem[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([sessionId, status])
+}
+
+model BillingRecord {
+  id             String        @id
+  progressNoteId String
+  progressNote   ProgressNote  @relation(fields: [progressNoteId], references: [id], onDelete: Cascade)
+  claimNumber    String        @unique
+  cptCode        String
+  unitsBilled    Int
+  amountCents    Int
+  status         BillingStatus @default(READY)
+  submittedAt    DateTime?
+  paidAt         DateTime?
+  denialReason   String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([status, submittedAt])
+}
+
+model ComplianceItem {
+  id             String             @id
+  progressNoteId String
+  progressNote   ProgressNote       @relation(fields: [progressNoteId], references: [id], onDelete: Cascade)
+  title          String
+  description    String
+  severity       ComplianceSeverity @default(LOW)
+  status         ComplianceStatus   @default(OPEN)
+  dueDate        DateTime?
+  resolvedAt     DateTime?
+  owner          String
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  @@index([status, severity])
+  @@index([dueDate])
+}
+
+model Group {
+  id               String            @id
+  name             String
+  track            String
+  serviceLine      String
+  status           GroupStatus       @default(PLANNING)
+  facilitatorName  String
+  coFacilitatorName String?
+  location         String
+  schedulePattern  String
+  maxCapacity      Int
+  clinicalFocus    String
+  memberships      GroupMembership[]
+  sessions         GroupSession[]
+  documents        Document[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@index([status])
+}
+
+model GroupMembership {
+  id                String                @id
+  groupId           String
+  clientId          String
+  caseId            String?
+  joinedAt          DateTime
+  status            GroupMembershipStatus @default(ACTIVE)
+  participationGoal String
+  attendanceRate    Int
+  group             Group                 @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  client            Client                @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  case              Case?                 @relation(fields: [caseId], references: [id], onDelete: SetNull)
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+
+  @@index([groupId, status])
+  @@index([clientId])
+}
+
+model GroupSession {
+  id                    String             @id
+  groupId               String
+  scheduledStart        DateTime
+  scheduledEnd          DateTime
+  facilitatorName       String
+  location              String
+  status                GroupSessionStatus @default(SCHEDULED)
+  noteCompletionPercent Int
+  attendanceCount       Int
+  notesDue              Int
+  group                 Group              @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+
+  @@index([groupId, scheduledStart])
+}
+
+model FormPacket {
+  id                String           @id
+  clientId          String
+  caseId            String?
+  title             String
+  packetType        FormPacketType
+  status            FormPacketStatus
+  assignedTo        String
+  dueDate           DateTime
+  completedAt       DateTime?
+  signatureStatus   SignatureStatus  @default(NOT_STARTED)
+  completionPercent Int
+  sections          Json
+  client            Client           @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  case              Case?            @relation(fields: [caseId], references: [id], onDelete: SetNull)
+  documents         Document[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@index([clientId, status])
+  @@index([dueDate])
+}
+
+model Document {
+  id                String           @id
+  clientId          String?
+  caseId            String?
+  groupId           String?
+  formPacketId      String?
+  title             String
+  category          DocumentCategory
+  status            DocumentStatus
+  owner             String
+  effectiveDate     DateTime?
+  expiresAt         DateTime?
+  source            String
+  requiresSignature Boolean          @default(false)
+  signedAt          DateTime?
+  tags              String[]
+  client            Client?          @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  case              Case?            @relation(fields: [caseId], references: [id], onDelete: SetNull)
+  group             Group?           @relation(fields: [groupId], references: [id], onDelete: SetNull)
+  formPacket        FormPacket?      @relation(fields: [formPacketId], references: [id], onDelete: SetNull)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@index([status, expiresAt])
+  @@index([category])
+  @@index([clientId])
+  @@index([caseId])
+}
