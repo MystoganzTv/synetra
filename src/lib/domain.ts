@@ -60,6 +60,15 @@ export type FormPacketStatus =
   | "COMPLETED"
   | "NEEDS_REVIEW";
 export type SignatureStatus = "NOT_STARTED" | "SENT" | "PARTIAL" | "COMPLETE";
+export type TcmTaskStatus = "OPEN" | "IN_PROGRESS" | "DONE";
+export type TcmTaskPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+export type TcmTaskType =
+  | "GENERAL"
+  | "FOLLOW_UP"
+  | "OUTREACH"
+  | "DOCUMENT_REQUEST"
+  | "AUTHORIZATION"
+  | "CARE_PLAN";
 
 export interface BillingRecord {
   id: string;
@@ -101,6 +110,12 @@ export interface ComplianceItem {
 export interface ProgressNoteRecord {
   id: string;
   authorName: string;
+  contactType?: string | null;
+  participants?: string | null;
+  barriers?: string | null;
+  interventions?: string | null;
+  nextStep?: string | null;
+  followUpAt?: string | null;
   status: NoteStatus;
   submittedAt?: string | null;
   signedAt?: string | null;
@@ -294,6 +309,20 @@ export interface FormPacketRecord {
   sections: FormSectionRecord[];
 }
 
+export interface TcmTaskRecord {
+  id: string;
+  clientId: string;
+  caseId?: string | null;
+  ownerEmail: string;
+  title: string;
+  description?: string | null;
+  dueAt: string;
+  status: TcmTaskStatus;
+  priority: TcmTaskPriority;
+  taskType: TcmTaskType;
+  completedAt?: string | null;
+}
+
 export interface CalendarEventRecord {
   id: string;
   startsAt: string;
@@ -337,6 +366,12 @@ export interface BillingContext extends ProgressNoteContext {
 
 export interface ComplianceContext extends ProgressNoteContext {
   complianceItem: ComplianceItem;
+}
+
+export interface TcmTaskContext {
+  client: ClientRecord;
+  caseRecord: CaseRecord | null;
+  task: TcmTaskRecord;
 }
 
 export function getClientDisplayName(client: ClientRecord) {

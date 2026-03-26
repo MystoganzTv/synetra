@@ -28,6 +28,12 @@ export async function POST(request: Request) {
   const formData = await request.formData();
   const sessionId = getStringField(formData, "sessionId", 120);
   const authorName = getStringField(formData, "authorName", 120) || session.name;
+  const contactType = getStringField(formData, "contactType", 120);
+  const participants = getStringField(formData, "participants", 300);
+  const barriers = getStringField(formData, "barriers", 1500);
+  const interventions = getStringField(formData, "interventions", 1500);
+  const nextStep = getStringField(formData, "nextStep", 1500);
+  const followUpAtInput = getStringField(formData, "followUpAt", 40);
   const status = getEnumField(formData, "status", noteStatusOptions, "DRAFT");
   const subjective = getStringField(formData, "subjective", 2000);
   const objective = getStringField(formData, "objective", 2000);
@@ -73,6 +79,12 @@ export async function POST(request: Request) {
           id: createEntityId("note"),
           sessionId,
           authorName,
+          contactType: contactType || null,
+          participants: participants || null,
+          barriers: barriers || null,
+          interventions: interventions || null,
+          nextStep: nextStep || null,
+          followUpAt: followUpAtInput ? new Date(followUpAtInput) : null,
           status,
           submittedAt,
           signedAt,

@@ -46,10 +46,8 @@ export async function POST(request: Request) {
   const carePlanSummary = getOptionalStringField(formData, "carePlanSummary", 1500);
   const renderingProvider = getOptionalStringField(formData, "renderingProvider", 120);
   const serviceCode = getStringField(formData, "serviceCode", 40) || "TCM-001";
-  const serviceTitle =
-    getStringField(formData, "serviceTitle", 120) || "Coordinacion de cuidado";
-  const serviceFrequency =
-    getStringField(formData, "serviceFrequency", 120) || "Seguimiento semanal";
+  const serviceTitle = getStringField(formData, "serviceTitle", 120) || "Care coordination";
+  const serviceFrequency = getStringField(formData, "serviceFrequency", 120) || "Weekly follow-up";
   const defaultUnitsPerSession = getIntegerField(formData, "defaultUnitsPerSession", 1);
   const defaultRateCents = getIntegerField(formData, "defaultRateCents", 13500);
   const unitType = getEnumField(formData, "unitType", unitTypeOptions, "HOURS");
@@ -133,7 +131,7 @@ export async function POST(request: Request) {
             endDate: authorizationEndDate,
             status: "ACTIVE",
             utilizationThreshold: 85,
-            notes: "Autorizacion inicial capturada durante la apertura del caso.",
+            notes: "Initial authorization captured during case opening.",
           },
         });
       }

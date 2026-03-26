@@ -16,6 +16,8 @@ import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { getAuthSession } from "@/lib/auth";
+import { prisma } from "@/lib/db";
 import { getDashboardData } from "@/lib/data";
 import {
   getAuthorizationUtilization,
@@ -29,12 +31,26 @@ import { getOperationalMetrics } from "@/lib/operational-intelligence";
 import { validateSession } from "@/lib/session-validation";
 
 export default async function DashboardPage() {
-  const [dashboard, documents, forms] = await Promise.all([
+  const [session, dashboard, documents, forms] = await Promise.all([
+    getAuthSession(),
     getDashboardData(),
     getDocuments(),
     getFormPackets(),
   ]);
   const operational = getOperationalMetrics(dashboard.clients, documents, forms);
+  const taskItems = process.env.DATABASE_URL
+    ? await prisma.tcmTask.findMany({
+        where:
+          session?.role === "Platform Admin" || session?.role === "Revenue Operations"
+            ? { status: { in: ["OPEN", "IN_PROGRESS"] } }
+            : { ownerEmail: session?.email.toLowerCase(), status: { in: ["OPEN", "IN_PROGRESS"] } },
+        include: {
+          client: { select: { id: true, firstName: true, lastName: true } },
+        },
+        orderBy: [{ priority: "desc" }, { dueAt: "asc" }],
+        take: 5,
+      })
+    : [];
 
   return (
     <div className="space-y-6">
@@ -150,6 +166,40 @@ export default async function DashboardPage() {
           icon={ShieldAlert}
         />
       </div>
+
+      {taskItems.length ? (
+        <Card className="bg-white/82">
+          <CardHeader>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <CardTitle>Follow-up queue</CardTitle>
+                <CardDescription>
+                  The next actions that need attention across your current caseload.
+                </CardDescription>
+              </div>
+              <Button asChild variant="ghost">
+                <Link href="/tasks">Open tasks</Link>
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="grid gap-4 xl:grid-cols-2">
+            {taskItems.map((task) => (
+              <div key={task.id} className="rounded-[24px] border border-border bg-white/70 p-4">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-semibold text-foreground">{task.title}</p>
+                  <StatusBadge value={task.priority} />
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {task.client.firstName} {task.client.lastName} · due {formatDateTime(task.dueAt)}
+                </p>
+                {task.description ? (
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{task.description}</p>
+                ) : null}
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      ) : null}
 
       <div className="grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
         <Card className="bg-white/82">

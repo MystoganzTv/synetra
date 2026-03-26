@@ -94,6 +94,76 @@ function mapJsonSections(value: Prisma.JsonValue | null): FormSectionRecord[] {
   });
 }
 
+async function getAccessibleClientIdsForTcm(session: Awaited<ReturnType<typeof getAuthSession>>) {
+  if (!session || !shouldScopeOperationalData(session.role) || !process.env.DATABASE_URL) {
+    return null;
+  }
+
+  const normalizedEmail = session.email.trim().toLowerCase();
+  const normalizedName = session.name.trim();
+
+  const [ownedClients, leadCases, directSessions, authorizedSessions] = await Promise.all([
+    prisma.client.findMany({
+      where: { ownerEmail: normalizedEmail },
+      select: { id: true },
+    }),
+    prisma.case.findMany({
+      where: {
+        clinicalLead: {
+          equals: normalizedName,
+          mode: "insensitive",
+        },
+      },
+      select: { clientId: true },
+    }),
+    prisma.session.findMany({
+      where: {
+        employee: {
+          is: {
+            email: {
+              equals: normalizedEmail,
+              mode: "insensitive",
+            },
+          },
+        },
+      },
+      select: { clientId: true },
+    }),
+    prisma.authorization.findMany({
+      where: {
+        sessions: {
+          some: {
+            employee: {
+              is: {
+                email: {
+                  equals: normalizedEmail,
+                  mode: "insensitive",
+                },
+              },
+            },
+          },
+        },
+      },
+      select: {
+        service: {
+          select: {
+            case: {
+              select: { clientId: true },
+            },
+          },
+        },
+      },
+    }),
+  ]);
+
+  return new Set([
+    ...ownedClients.map((client) => client.id),
+    ...leadCases.map((caseRecord) => caseRecord.clientId),
+    ...directSessions.map((sessionRecord) => sessionRecord.clientId),
+    ...authorizedSessions.map((authorization) => authorization.service.case.clientId),
+  ]);
+}
+
 async function fetchGroupsFromPrisma() {
   const scope = "groups";
   assertDemoModeAllowed(scope);
@@ -112,6 +182,7 @@ async function fetchGroupsFromPrisma() {
 
   try {
     const session = await getAuthSession();
+    const accessibleClientIds = await getAccessibleClientIdsForTcm(session);
     if (!shouldScopeOperationalData(session?.role)) {
       const groups = await prisma.group.findMany({
         include: {
@@ -156,8 +227,6 @@ async function fetchGroupsFromPrisma() {
       }));
     }
 
-    const clients = await getClients();
-    const accessibleClientIds = new Set(clients.map((client) => client.id));
     const groups = await prisma.group.findMany({
       include: {
         memberships: true,
@@ -169,7 +238,7 @@ async function fetchGroupsFromPrisma() {
     return groups
       .map<GroupRecord>((group) => {
         const memberships = group.memberships.filter((membership) =>
-          accessibleClientIds.has(membership.clientId),
+          accessibleClientIds?.has(membership.clientId),
         );
 
         return {
@@ -233,8 +302,7 @@ async function fetchDocumentsFromPrisma() {
 
   try {
     const session = await getAuthSession();
-    const clients = await getClients();
-    const accessibleClientIds = new Set(clients.map((client) => client.id));
+    const accessibleClientIds = await getAccessibleClientIdsForTcm(session);
     const documents = await prisma.document.findMany({
       orderBy: [{ status: "asc" }, { title: "asc" }],
     });
@@ -268,7 +336,7 @@ async function fetchDocumentsFromPrisma() {
           return false;
         }
 
-        return accessibleClientIds.has(document.clientId);
+        return accessibleClientIds?.has(document.clientId);
       })
       .map<DocumentRecord>((document) => ({
         id: document.id,
@@ -314,8 +382,7 @@ async function fetchFormPacketsFromPrisma() {
 
   try {
     const session = await getAuthSession();
-    const clients = await getClients();
-    const accessibleClientIds = new Set(clients.map((client) => client.id));
+    const accessibleClientIds = await getAccessibleClientIdsForTcm(session);
     const packets = await prisma.formPacket.findMany({
       orderBy: [{ dueDate: "asc" }, { title: "asc" }],
     });
@@ -338,7 +405,7 @@ async function fetchFormPacketsFromPrisma() {
     }
 
     return packets
-      .filter((packet) => accessibleClientIds.has(packet.clientId))
+      .filter((packet) => accessibleClientIds?.has(packet.clientId))
       .map<FormPacketRecord>((packet) => ({
         id: packet.id,
         clientId: packet.clientId,

@@ -15,6 +15,7 @@ import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { prisma } from "@/lib/db";
 import { getCase } from "@/lib/data";
 import {
   flattenBilling,
@@ -45,11 +46,11 @@ export default async function CaseDetailPage({
   searchParams,
 }: {
   params: Promise<{ caseId: string }>;
-  searchParams?: Promise<{ created?: string }>;
+  searchParams?: Promise<{ created?: string; updated?: string }>;
 }) {
   const [{ caseId }, query] = await Promise.all([
     params,
-    searchParams ?? Promise.resolve({} as { created?: string }),
+    searchParams ?? Promise.resolve({} as { created?: string; updated?: string }),
   ]);
   const [record, documents, forms] = await Promise.all([
     getCase(caseId),
@@ -142,6 +143,14 @@ export default async function CaseDetailPage({
   ).length;
   const wasCreated = query.created === "case";
   const documentUploaded = query.created === "document";
+  const wasUpdated = query.updated === "case";
+  const taskRecords = process.env.DATABASE_URL
+    ? await prisma.tcmTask.findMany({
+        where: { caseId: caseRecord.id },
+        orderBy: [{ status: "asc" }, { dueAt: "asc" }],
+        take: 6,
+      })
+    : [];
 
   return (
     <div className="space-y-6">
@@ -161,6 +170,13 @@ export default async function CaseDetailPage({
         <Card className="border-emerald-200 bg-emerald-50">
           <CardContent className="p-5 text-sm text-emerald-700">
             Document uploaded successfully.
+          </CardContent>
+        </Card>
+      ) : null}
+      {wasUpdated ? (
+        <Card className="border-emerald-200 bg-emerald-50">
+          <CardContent className="p-5 text-sm text-emerald-700">
+            Case updated successfully.
           </CardContent>
         </Card>
       ) : null}
@@ -194,8 +210,14 @@ export default async function CaseDetailPage({
               <Button asChild>
                 <Link href="/cases">Back to cases</Link>
               </Button>
+              <Button asChild variant="outline">
+                <Link href={`/cases/${caseRecord.id}/edit`}>Edit / close / transfer</Link>
+              </Button>
               <Button asChild>
                 <Link href={`/cases/${caseRecord.id}/sessions/new`}>New activity</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href={`/tasks/new?clientId=${client.id}&caseId=${caseRecord.id}`}>New follow-up task</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href={`/documents/new?clientId=${client.id}&caseId=${caseRecord.id}`}>
@@ -612,6 +634,45 @@ export default async function CaseDetailPage({
                 <p className="mt-2 text-sm text-muted-foreground">
                   Billing records will appear here as sessions move through claim processing.
                 </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white/82">
+          <CardHeader>
+            <CardTitle>Open tasks</CardTitle>
+            <CardDescription>
+              Follow-up work attached to this case so next actions do not get buried in notes.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {taskRecords.length ? (
+              taskRecords.map((task) => (
+                <div key={task.id} className="rounded-[24px] border border-border bg-white/70 p-5">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-semibold text-foreground">{task.title}</p>
+                    <StatusBadge value={task.status} />
+                  </div>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {task.taskType} · due {formatDateTime(task.dueAt)}
+                  </p>
+                  {task.description ? (
+                    <p className="mt-3 text-sm leading-6 text-muted-foreground">{task.description}</p>
+                  ) : null}
+                </div>
+              ))
+            ) : (
+              <div className="rounded-[24px] border border-dashed border-border bg-accent/35 p-5">
+                <p className="font-semibold text-foreground">No case tasks yet</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  Add follow-up tasks for auth, outreach, and care-plan actions tied to this case.
+                </p>
+                <div className="mt-4">
+                  <Button asChild>
+                    <Link href={`/tasks/new?clientId=${client.id}&caseId=${caseRecord.id}`}>Create first case task</Link>
+                  </Button>
+                </div>
               </div>
             )}
           </CardContent>

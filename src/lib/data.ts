@@ -160,6 +160,12 @@ function mapComplianceItem(record: {
 function mapProgressNote(record: {
   id: string;
   authorName: string;
+  contactType: string | null;
+  participants: string | null;
+  barriers: string | null;
+  interventions: string | null;
+  nextStep: string | null;
+  followUpAt: Date | null;
   status: ProgressNoteRecord["status"];
   submittedAt: Date | null;
   signedAt: Date | null;
@@ -174,6 +180,12 @@ function mapProgressNote(record: {
   return {
     id: record.id,
     authorName: record.authorName,
+    contactType: record.contactType,
+    participants: record.participants,
+    barriers: record.barriers,
+    interventions: record.interventions,
+    nextStep: record.nextStep,
+    followUpAt: toIsoString(record.followUpAt),
     status: record.status,
     submittedAt: toIsoString(record.submittedAt),
     signedAt: toIsoString(record.signedAt),
@@ -371,6 +383,89 @@ function isElevatedRole(session: AuthSession | null) {
   );
 }
 
+function buildClientScopeWhere(session: AuthSession | null): Prisma.ClientWhereInput | undefined {
+  if (!session || isElevatedRole(session) || session.role !== "TCM") {
+    return undefined;
+  }
+
+  const normalizedEmail = session.email.trim().toLowerCase();
+  const normalizedName = session.name.trim();
+
+  return {
+    OR: [
+      { ownerEmail: normalizedEmail },
+      {
+        cases: {
+          some: {
+            clinicalLead: {
+              equals: normalizedName,
+              mode: "insensitive",
+            },
+          },
+        },
+      },
+      {
+        sessions: {
+          some: {
+            employee: {
+              is: {
+                email: {
+                  equals: normalizedEmail,
+                  mode: "insensitive",
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        cases: {
+          some: {
+            sessions: {
+              some: {
+                employee: {
+                  is: {
+                    email: {
+                      equals: normalizedEmail,
+                      mode: "insensitive",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        cases: {
+          some: {
+            services: {
+              some: {
+                authorizations: {
+                  some: {
+                    sessions: {
+                      some: {
+                        employee: {
+                          is: {
+                            email: {
+                              equals: normalizedEmail,
+                              mode: "insensitive",
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    ],
+  };
+}
+
 function clientMatchesTcmAccess(client: ClientRecord, session: AuthSession) {
   const normalizedEmail = session.email.trim().toLowerCase();
   const normalizedName = session.name.trim().toLowerCase();
@@ -520,12 +615,12 @@ function getNormalizedDemoClients() {
   }));
 }
 
-async function fetchClientsFromPrisma() {
+async function fetchClientsFromPrisma(session: AuthSession | null) {
   const scope = "client graph";
   assertDemoModeAllowed(scope);
 
   if (isDemoModeEnabled()) {
-    return getNormalizedDemoClients();
+    return filterClientsForSession(getNormalizedDemoClients(), session);
   }
 
   if (!process.env.DATABASE_URL) {
@@ -538,6 +633,7 @@ async function fetchClientsFromPrisma() {
 
   try {
     const records = await prisma.client.findMany({
+      where: buildClientScopeWhere(session),
       include: clientGraphInclude,
       orderBy: [{ lastName: "asc" }, { firstName: "asc" }],
     });
@@ -554,17 +650,149 @@ async function fetchClientsFromPrisma() {
 }
 
 export async function getClients() {
-  const [clients, session] = await Promise.all([
-    fetchClientsFromPrisma(),
-    getAuthSession(),
-  ]);
+  const session = await getAuthSession();
+  return fetchClientsFromPrisma(session);
+}
 
-  return filterClientsForSession(clients, session);
+async function fetchClientById(clientId: string, session: AuthSession | null) {
+  const scope = "client detail";
+  assertDemoModeAllowed(scope);
+
+  if (isDemoModeEnabled()) {
+    return filterClientsForSession(getNormalizedDemoClients(), session).find(
+      (client) => client.id === clientId,
+    ) ?? null;
+  }
+
+  if (!process.env.DATABASE_URL) {
+    throw new DataAccessError(
+      "DATA_SOURCE_NOT_CONFIGURED",
+      scope,
+      "DATABASE_URL is required when demo mode is disabled.",
+    );
+  }
+
+  const scopedWhere = buildClientScopeWhere(session);
+
+  try {
+    const record = await prisma.client.findFirst({
+      where: scopedWhere ? { AND: [{ id: clientId }, scopedWhere] } : { id: clientId },
+      include: clientGraphInclude,
+    });
+
+    return record ? mapClient(record) : null;
+  } catch (error) {
+    logQueryFailure(scope, error);
+    throw new DataAccessError(
+      "PRISMA_QUERY_FAILED",
+      scope,
+      "Unable to load the client detail from Prisma.",
+    );
+  }
+}
+
+async function fetchClientByCaseId(caseId: string, session: AuthSession | null) {
+  const scope = "case detail";
+  assertDemoModeAllowed(scope);
+
+  if (isDemoModeEnabled()) {
+    return filterClientsForSession(getNormalizedDemoClients(), session).find((client) =>
+      client.cases.some((caseRecord) => caseRecord.id === caseId),
+    ) ?? null;
+  }
+
+  if (!process.env.DATABASE_URL) {
+    throw new DataAccessError(
+      "DATA_SOURCE_NOT_CONFIGURED",
+      scope,
+      "DATABASE_URL is required when demo mode is disabled.",
+    );
+  }
+
+  const scopedWhere = buildClientScopeWhere(session);
+
+  try {
+    const record = await prisma.client.findFirst({
+      where: scopedWhere
+        ? { AND: [{ cases: { some: { id: caseId } } }, scopedWhere] }
+        : { cases: { some: { id: caseId } } },
+      include: clientGraphInclude,
+    });
+
+    return record ? mapClient(record) : null;
+  } catch (error) {
+    logQueryFailure(scope, error);
+    throw new DataAccessError(
+      "PRISMA_QUERY_FAILED",
+      scope,
+      "Unable to load the case detail from Prisma.",
+    );
+  }
+}
+
+async function fetchClientBySessionId(sessionId: string, session: AuthSession | null) {
+  const scope = "session detail";
+  assertDemoModeAllowed(scope);
+
+  if (isDemoModeEnabled()) {
+    return filterClientsForSession(getNormalizedDemoClients(), session).find((client) =>
+      flattenSessions([client]).some((context) => context.session.id === sessionId),
+    ) ?? null;
+  }
+
+  if (!process.env.DATABASE_URL) {
+    throw new DataAccessError(
+      "DATA_SOURCE_NOT_CONFIGURED",
+      scope,
+      "DATABASE_URL is required when demo mode is disabled.",
+    );
+  }
+
+  const scopedWhere = buildClientScopeWhere(session);
+  const baseWhere: Prisma.ClientWhereInput = {
+    OR: [
+      { sessions: { some: { id: sessionId } } },
+      { cases: { some: { sessions: { some: { id: sessionId } } } } },
+      {
+        cases: {
+          some: {
+            services: {
+              some: {
+                authorizations: {
+                  some: {
+                    sessions: {
+                      some: { id: sessionId },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    ],
+  };
+
+  try {
+    const record = await prisma.client.findFirst({
+      where: scopedWhere ? { AND: [baseWhere, scopedWhere] } : baseWhere,
+      include: clientGraphInclude,
+    });
+
+    return record ? mapClient(record) : null;
+  } catch (error) {
+    logQueryFailure(scope, error);
+    throw new DataAccessError(
+      "PRISMA_QUERY_FAILED",
+      scope,
+      "Unable to load the session detail from Prisma.",
+    );
+  }
 }
 
 export async function getClient(clientId: string) {
-  const clients = await getClients();
-  return clients.find((client) => client.id === clientId) ?? null;
+  const session = await getAuthSession();
+  return fetchClientById(clientId, session);
 }
 
 export async function getCases() {
@@ -572,13 +800,25 @@ export async function getCases() {
 }
 
 export async function getCase(caseId: string) {
-  return (await getCases()).find(({ caseRecord }) => caseRecord.id === caseId) ?? null;
+  const session = await getAuthSession();
+  const client = await fetchClientByCaseId(caseId, session);
+
+  if (!client) {
+    return null;
+  }
+
+  return flattenCases([client]).find(({ caseRecord }) => caseRecord.id === caseId) ?? null;
 }
 
 export async function getSession(sessionId: string) {
-  return (
-    flattenSessions(await getClients()).find(({ session }) => session.id === sessionId) ?? null
-  );
+  const session = await getAuthSession();
+  const client = await fetchClientBySessionId(sessionId, session);
+
+  if (!client) {
+    return null;
+  }
+
+  return flattenSessions([client]).find(({ session }) => session.id === sessionId) ?? null;
 }
 
 export async function getDashboardData() {
@@ -681,13 +921,71 @@ export async function getDashboardData() {
 }
 
 export async function getSidebarSummary() {
-  const dashboard = await getDashboardData();
+  if (isDemoModeEnabled() || !process.env.DATABASE_URL) {
+    const dashboard = await getDashboardData();
+
+    return {
+      activeClients: dashboard.activeClients,
+      unsignedNotes: dashboard.unsignedNotes,
+      expiringAuthorizations: dashboard.authorizationsAtRisk.length,
+      claimsOnHold: dashboard.claimsOnHold,
+      openCompliance: dashboard.openCompliance.length,
+    };
+  }
+
+  const session = await getAuthSession();
+  const clientScope = buildClientScopeWhere(session);
+
+  const [activeClients, unsignedNotes, expiringAuthorizations, claimsOnHold, openCompliance] =
+    await Promise.all([
+      prisma.client.count({
+        where: clientScope ? { AND: [clientScope, { status: "ACTIVE" }] } : { status: "ACTIVE" },
+      }),
+      prisma.progressNote.count({
+        where: {
+          status: { in: ["DRAFT", "PENDING_SIGNATURE"] },
+          session: {
+            client: clientScope ?? {},
+          },
+        },
+      }),
+      prisma.authorization.count({
+        where: {
+          status: { in: ["EXPIRING", "EXPIRED"] },
+          service: {
+            case: {
+              client: clientScope ?? {},
+            },
+          },
+        },
+      }),
+      prisma.billingRecord.count({
+        where: {
+          status: { in: ["HOLD", "DENIED"] },
+          progressNote: {
+            session: {
+              client: clientScope ?? {},
+            },
+          },
+        },
+      }),
+      prisma.complianceItem.count({
+        where: {
+          status: "OPEN",
+          progressNote: {
+            session: {
+              client: clientScope ?? {},
+            },
+          },
+        },
+      }),
+    ]);
 
   return {
-    activeClients: dashboard.activeClients,
-    unsignedNotes: dashboard.unsignedNotes,
-    expiringAuthorizations: dashboard.authorizationsAtRisk.length,
-    claimsOnHold: dashboard.claimsOnHold,
-    openCompliance: dashboard.openCompliance.length,
+    activeClients,
+    unsignedNotes,
+    expiringAuthorizations,
+    claimsOnHold,
+    openCompliance,
   };
 }

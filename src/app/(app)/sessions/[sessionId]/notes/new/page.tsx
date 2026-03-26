@@ -128,6 +128,63 @@ export default async function NewProgressNotePage({
                     ))}
                   </select>
                 </div>
+                <div className="space-y-2">
+                  <label htmlFor="contactType" className="text-sm font-medium text-foreground">
+                    Contact type
+                  </label>
+                  <Input
+                    id="contactType"
+                    name="contactType"
+                    defaultValue={record.session.sessionType}
+                    placeholder="Phone call, school coordination, home visit..."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="participants" className="text-sm font-medium text-foreground">
+                    Participants
+                  </label>
+                  <Input
+                    id="participants"
+                    name="participants"
+                    placeholder="Guardian, school counselor, pediatrician..."
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <label htmlFor="barriers" className="text-sm font-medium text-foreground">
+                    Barriers identified
+                  </label>
+                  <Textarea
+                    id="barriers"
+                    name="barriers"
+                    placeholder="Transportation, no response from provider, paperwork delay..."
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <label htmlFor="interventions" className="text-sm font-medium text-foreground">
+                    Interventions completed
+                  </label>
+                  <Textarea
+                    id="interventions"
+                    name="interventions"
+                    placeholder="Calls made, referrals placed, documents requested, school coordination completed..."
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <label htmlFor="nextStep" className="text-sm font-medium text-foreground">
+                    Next step
+                  </label>
+                  <Textarea
+                    id="nextStep"
+                    name="nextStep"
+                    placeholder="Next outreach, responsible party, and what will close the loop."
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="followUpAt" className="text-sm font-medium text-foreground">
+                    Follow-up due
+                  </label>
+                  <Input id="followUpAt" name="followUpAt" type="datetime-local" />
+                </div>
               </div>
 
               <div className="grid gap-4">

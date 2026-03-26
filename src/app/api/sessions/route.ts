@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     parseDateTimeInput(getStringField(formData, "documentationDueAt", 40)) ??
     (scheduledEnd ? addDays(scheduledEnd, 1) : null);
   const location = getStringField(formData, "location", 120) || "Virtual";
-  const sessionType = getStringField(formData, "sessionType", 120) || "Seguimiento TCM";
+  const sessionType = getStringField(formData, "sessionType", 120) || "TCM follow-up";
   const attendanceStatus = getEnumField(
     formData,
     "attendanceStatus",

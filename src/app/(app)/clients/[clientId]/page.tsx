@@ -8,6 +8,7 @@ import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { prisma } from "@/lib/db";
 import { getClient } from "@/lib/data";
 import {
   flattenAuthorizations,
@@ -40,11 +41,11 @@ export default async function ClientDetailPage({
   searchParams,
 }: {
   params: Promise<{ clientId: string }>;
-  searchParams?: Promise<{ created?: string }>;
+  searchParams?: Promise<{ created?: string; updated?: string }>;
 }) {
   const [{ clientId }, query] = await Promise.all([
     params,
-    searchParams ?? Promise.resolve({} as { created?: string }),
+    searchParams ?? Promise.resolve({} as { created?: string; updated?: string }),
   ]);
   const client = await getClient(clientId);
 
@@ -76,6 +77,76 @@ export default async function ClientDetailPage({
     .reduce((sum, { billingRecord }) => sum + billingRecord.amountCents, 0);
   const wasCreated = query.created === "client";
   const documentUploaded = query.created === "document";
+  const wasUpdated = query.updated === "client";
+  const [taskRecords, documentRecords] = process.env.DATABASE_URL
+    ? await Promise.all([
+        prisma.tcmTask.findMany({
+          where: { clientId: client.id },
+          orderBy: [{ status: "asc" }, { dueAt: "asc" }],
+          take: 8,
+          select: {
+            id: true,
+            title: true,
+            dueAt: true,
+            status: true,
+            caseId: true,
+          },
+        }),
+        prisma.document.findMany({
+          where: { clientId: client.id },
+          orderBy: { updatedAt: "desc" },
+          take: 8,
+          select: {
+            id: true,
+            title: true,
+            updatedAt: true,
+            caseId: true,
+            category: true,
+          },
+        }),
+      ])
+    : [[], []];
+  const timeline = [
+    ...caseContexts.map(({ caseRecord }) => ({
+      id: `case-${caseRecord.id}`,
+      at: caseRecord.startDate,
+      title: `Case opened: ${caseRecord.programName}`,
+      detail: caseRecord.caseNumber,
+      href: `/cases/${caseRecord.id}`,
+    })),
+    ...sessions.slice(0, 12).map(({ session, caseRecord }) => ({
+      id: `session-${session.id}`,
+      at: session.scheduledStart,
+      title: `Activity logged: ${session.sessionType}`,
+      detail: `${caseRecord.caseNumber} · ${formatDateTime(session.scheduledStart)}`,
+      href: `/sessions/${session.id}`,
+    })),
+    ...sessions.flatMap(({ session }) =>
+      session.progressNotes.map((progressNote) => ({
+        id: `note-${progressNote.id}`,
+        at: progressNote.submittedAt ?? progressNote.signedAt ?? session.scheduledStart,
+        title: `Progress note: ${progressNote.authorName}`,
+        detail: progressNote.nextStep ?? progressNote.assessment,
+        href: `/sessions/${session.id}`,
+      })),
+    ),
+    ...documentRecords.map((document) => ({
+      id: `document-${document.id}`,
+      at: document.updatedAt.toISOString(),
+      title: `Document updated: ${document.title}`,
+      detail: document.category,
+      href: "/documents",
+    })),
+    ...taskRecords.map((task) => ({
+      id: `task-${task.id}`,
+      at: task.dueAt.toISOString(),
+      title: `Task: ${task.title}`,
+      detail: `${task.status} · due ${formatDateTime(task.dueAt)}`,
+      href: "/tasks",
+    })),
+  ]
+    .sort((left, right) => new Date(right.at).getTime() - new Date(left.at).getTime())
+    .slice(0, 12);
 
   return (
     <div className="space-y-6">
@@ -95,6 +166,13 @@ export default async function ClientDetailPage({
         <Card className="border-emerald-200 bg-emerald-50">
           <CardContent className="p-5 text-sm text-emerald-700">
             Document uploaded successfully.
+          </CardContent>
+        </Card>
+      ) : null}
+      {wasUpdated ? (
+        <Card className="border-emerald-200 bg-emerald-50">
+          <CardContent className="p-5 text-sm text-emerald-700">
+            Client updated successfully.
           </CardContent>
         </Card>
       ) : null}
@@ -126,8 +204,14 @@ export default async function ClientDetailPage({
               <Button asChild>
                 <Link href="/clients">Back to roster</Link>
               </Button>
+              <Button asChild variant="outline">
+                <Link href={`/clients/${client.id}/edit`}>Edit client</Link>
+              </Button>
               <Button asChild>
                 <Link href={`/clients/${client.id}/cases/new`}>New case</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href={`/tasks/new?clientId=${client.id}`}>New follow-up task</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href={`/documents/new?clientId=${client.id}`}>Upload document</Link>
@@ -390,6 +474,42 @@ export default async function ClientDetailPage({
           </CardContent>
         </Card>
       </div>
+
+      <Card className="bg-white/82">
+        <CardHeader>
+          <CardTitle>Client timeline</CardTitle>
+          <CardDescription>
+            A practical feed of case openings, activities, documents, and follow-up tasks.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {timeline.length ? (
+            timeline.map((item) => (
+              <div key={item.id} className="rounded-[24px] border border-border bg-white/70 p-4">
+                <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+                  <div>
+                    <p className="font-semibold text-foreground">{item.title}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">{item.detail}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <p className="text-sm text-muted-foreground">{formatDateTime(item.at)}</p>
+                    <Button asChild variant="ghost" size="sm">
+                      <Link href={item.href}>Open</Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="rounded-[24px] border border-dashed border-border bg-accent/35 p-5">
+              <p className="font-semibold text-foreground">No timeline activity yet</p>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                Once you create cases, activities, tasks, notes, and documents, they will appear here in one running client history.
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

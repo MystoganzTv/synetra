@@ -10,6 +10,9 @@ import type {
   NoteStatus,
   RiskLevel,
   SessionStatus,
+  TcmTaskPriority,
+  TcmTaskStatus,
+  TcmTaskType,
 } from "@prisma/client";
 
 export const clientStatusOptions = ["LEAD", "INTAKE", "ACTIVE", "HOLD"] as const satisfies readonly ClientStatus[];
@@ -20,7 +23,7 @@ export const caseTypeOptions = [
   "MENTAL_HEALTH",
   "SCHOOL_SUPPORT",
 ] as const satisfies readonly CaseType[];
-export const caseStatusOptions = ["INTAKE", "ACTIVE", "ON_HOLD"] as const satisfies readonly CaseStatus[];
+export const caseStatusOptions = ["INTAKE", "ACTIVE", "ON_HOLD", "CLOSED"] as const satisfies readonly CaseStatus[];
 export const unitTypeOptions = ["UNITS", "HOURS", "VISITS"] as const satisfies readonly AuthorizationUnitType[];
 export const sessionStatusOptions = [
   "SCHEDULED",
@@ -43,6 +46,16 @@ export const documentStatusOptions = [
   "DRAFT",
   "EXPIRING",
 ] as const satisfies readonly DocumentStatus[];
+export const taskStatusOptions = ["OPEN", "IN_PROGRESS", "DONE"] as const satisfies readonly TcmTaskStatus[];
+export const taskPriorityOptions = ["LOW", "MEDIUM", "HIGH", "URGENT"] as const satisfies readonly TcmTaskPriority[];
+export const taskTypeOptions = [
+  "GENERAL",
+  "FOLLOW_UP",
+  "OUTREACH",
+  "DOCUMENT_REQUEST",
+  "AUTHORIZATION",
+  "CARE_PLAN",
+] as const satisfies readonly TcmTaskType[];
 
 function pad(value: number) {
   return String(value).padStart(2, "0");

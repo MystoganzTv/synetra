@@ -324,6 +324,37 @@ export default async function SessionDetailPage({
                     <p className="mt-3 text-sm leading-6 text-muted-foreground">
                       {progressNote.assessment}
                     </p>
+                    {progressNote.contactType || progressNote.participants || progressNote.followUpAt ? (
+                      <div className="mt-4 grid gap-3 md:grid-cols-3">
+                        <div className="rounded-[18px] bg-white/70 p-3">
+                          <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Contact type</p>
+                          <p className="mt-1 text-sm text-foreground">{progressNote.contactType ?? "Not captured"}</p>
+                        </div>
+                        <div className="rounded-[18px] bg-white/70 p-3">
+                          <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Participants</p>
+                          <p className="mt-1 text-sm text-foreground">{progressNote.participants ?? "Not captured"}</p>
+                        </div>
+                        <div className="rounded-[18px] bg-white/70 p-3">
+                          <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Follow-up due</p>
+                          <p className="mt-1 text-sm text-foreground">{progressNote.followUpAt ? formatDateTime(progressNote.followUpAt) : "Not set"}</p>
+                        </div>
+                      </div>
+                    ) : null}
+                    {progressNote.barriers ? (
+                      <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                        <span className="font-medium text-foreground">Barriers:</span> {progressNote.barriers}
+                      </p>
+                    ) : null}
+                    {progressNote.interventions ? (
+                      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                        <span className="font-medium text-foreground">Interventions:</span> {progressNote.interventions}
+                      </p>
+                    ) : null}
+                    {progressNote.nextStep ? (
+                      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                        <span className="font-medium text-foreground">Next step:</span> {progressNote.nextStep}
+                      </p>
+                    ) : null}
                   </div>
                 ))
               ) : (

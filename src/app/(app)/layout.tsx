@@ -2,8 +2,6 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { requireAuthSession } from "@/lib/auth";
 import { getSidebarSummary } from "@/lib/data";
 
-export const dynamic = "force-dynamic";
-
 export default async function AppLayout({
   children,
 }: Readonly<{
