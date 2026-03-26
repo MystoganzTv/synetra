@@ -7,10 +7,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getClients, getCases } from "@/lib/data";
-import { formatDate } from "@/lib/format";
+import { formatDate, formatFileSize } from "@/lib/format";
 import { getDocuments, getFormPackets, getGroups } from "@/lib/operations-data";
 
-export default async function DocumentsPage() {
+export default async function DocumentsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ created?: string }>;
+}) {
+  const query = await (
+    searchParams ?? Promise.resolve({} as { created?: string })
+  );
   const [documents, clients, cases, groups, forms] = await Promise.all([
     getDocuments(),
     getClients(),
@@ -31,9 +38,18 @@ export default async function DocumentsPage() {
   const pendingSignature = documents.filter(
     (document) => document.requiresSignature && !document.signedAt,
   ).length;
+  const wasCreated = query.created === "document";
 
   return (
     <div className="space-y-6">
+      {wasCreated ? (
+        <Card className="border-emerald-200 bg-emerald-50">
+          <CardContent className="p-5 text-sm text-emerald-700">
+            Document uploaded successfully.
+          </CardContent>
+        </Card>
+      ) : null}
+
       <div className="flex flex-col gap-3">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
           Documents
@@ -47,9 +63,14 @@ export default async function DocumentsPage() {
               A document center for treatment plans, assessments, releases, consents, and utilization packets, organized around clients, cases, groups, and form workflows.
             </p>
           </div>
-          <Button asChild>
-            <Link href="/dashboard">Back to dashboard</Link>
-          </Button>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href="/documents/new">Upload document</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/dashboard">Back to dashboard</Link>
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -89,7 +110,7 @@ export default async function DocumentsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {documents.map((document) => {
+            {documents.length > 0 ? documents.map((document) => {
               const client = document.clientId ? clientMap.get(document.clientId) : null;
               const caseRecord = document.caseId ? caseMap.get(document.caseId) : null;
               const group = document.groupId ? groupMap.get(document.groupId) : null;
@@ -119,6 +140,11 @@ export default async function DocumentsPage() {
                       <p className="text-muted-foreground">
                         Effective {formatDate(document.effectiveDate)}
                       </p>
+                      {document.fileName ? (
+                        <p className="mt-1 text-muted-foreground">
+                          {document.fileName} · {formatFileSize(document.fileSizeBytes)}
+                        </p>
+                      ) : null}
                     </div>
                   </div>
 
@@ -150,9 +176,28 @@ export default async function DocumentsPage() {
                       </p>
                     </div>
                   </div>
+                  {document.fileName ? (
+                    <div className="mt-4">
+                      <Button asChild variant="outline" size="sm">
+                        <a href={`/api/documents/${document.id}`}>Download file</a>
+                      </Button>
+                    </div>
+                  ) : null}
                 </div>
               );
-            })}
+            }) : (
+              <div className="rounded-[24px] border border-dashed border-border bg-accent/35 p-5">
+                <p className="text-lg font-semibold text-foreground">No documents uploaded yet</p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  Upload assessments, signed consents, IDs, or treatment plans to start building the client document center.
+                </p>
+                <div className="mt-4">
+                  <Button asChild>
+                    <Link href="/documents/new">Upload first document</Link>
+                  </Button>
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 

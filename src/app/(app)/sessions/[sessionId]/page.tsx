@@ -42,10 +42,10 @@ export default async function SessionDetailPage({
         <Card className="border-emerald-200 bg-emerald-50">
           <CardContent className="flex flex-wrap items-center justify-between gap-3 p-5">
             <p className="text-sm text-emerald-700">
-              Actividad creada. El siguiente paso recomendado es documentar la nota.
+              Activity created. The recommended next step is documenting the note.
             </p>
             <Button asChild size="sm">
-              <Link href={`/sessions/${session.id}/notes/new`}>Agregar nota</Link>
+              <Link href={`/sessions/${session.id}/notes/new`}>Add note</Link>
             </Button>
           </CardContent>
         </Card>
@@ -53,14 +53,14 @@ export default async function SessionDetailPage({
       {noteCreated ? (
         <Card className="border-emerald-200 bg-emerald-50">
           <CardContent className="p-5 text-sm text-emerald-700">
-            Nota guardada correctamente.
+            Note saved successfully.
           </CardContent>
         </Card>
       ) : null}
       {noteExistsError ? (
         <Card className="border-amber-200 bg-amber-50">
           <CardContent className="p-5 text-sm text-amber-700">
-            Esta actividad ya tiene una nota principal asociada.
+            This activity already has a primary note attached.
           </CardContent>
         </Card>
       ) : null}
@@ -93,7 +93,7 @@ export default async function SessionDetailPage({
                 <Link href={`/cases/${caseRecord.id}`}>Back to case</Link>
               </Button>
               <Button asChild>
-                <Link href={`/sessions/${session.id}/notes/new`}>Agregar nota</Link>
+                <Link href={`/sessions/${session.id}/notes/new`}>Add note</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href={`/clients/${client.id}`}>Open client</Link>
@@ -308,9 +308,9 @@ export default async function SessionDetailPage({
 
           <Card className="bg-white/82">
             <CardHeader>
-              <CardTitle>Nota de progreso</CardTitle>
+              <CardTitle>Progress note</CardTitle>
               <CardDescription>
-                Una sesion puede abrirse rapido y luego cerrarse con una nota estructurada.
+                A session can be opened quickly and then closed with a structured note.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -328,13 +328,13 @@ export default async function SessionDetailPage({
                 ))
               ) : (
                 <div className="rounded-[20px] border border-dashed border-border bg-white/70 p-4">
-                  <p className="font-medium text-foreground">Todavia no hay nota</p>
+                  <p className="font-medium text-foreground">No note yet</p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    Crea la nota ahora para dejar la actividad completamente documentada.
+                    Create the note now to fully document the activity.
                   </p>
                   <div className="mt-4">
                     <Button asChild size="sm">
-                      <Link href={`/sessions/${session.id}/notes/new`}>Crear nota</Link>
+                      <Link href={`/sessions/${session.id}/notes/new`}>Create note</Link>
                     </Button>
                   </div>
                 </div>

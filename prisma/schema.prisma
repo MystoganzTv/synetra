@@ -495,6 +495,10 @@ model Document {
   groupId           String?
   formPacketId      String?
   title             String
+  fileName          String?
+  fileMimeType      String?
+  fileSizeBytes     Int?
+  fileData          Bytes?
   category          DocumentCategory
   status            DocumentStatus
   owner             String

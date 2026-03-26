@@ -8,11 +8,11 @@ import { clientStatusOptions, riskLevelOptions } from "@/lib/ops-create";
 
 function getErrorMessage(error?: string) {
   if (error === "invalid") {
-    return "Completa nombre, apellido y fecha de nacimiento para abrir el expediente.";
+    return "Complete first name, last name, and date of birth to open the chart.";
   }
 
   if (error === "unavailable") {
-    return "No pudimos guardar el cliente ahora mismo. Revisa la base de datos e intenta otra vez.";
+    return "We could not save the client right now. Check the database and try again.";
   }
 
   return null;
@@ -32,19 +32,19 @@ export default async function NewClientPage({
     <div className="space-y-6">
       <div className="flex flex-col gap-3">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          Alta operativa
+          Client intake
         </p>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Nuevo cliente
+              New client
             </h1>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              Crea el expediente base y luego continua de inmediato con el primer caso, actividad y nota.
+              Create the base chart and then continue immediately with the first case, activity, and note.
             </p>
           </div>
           <Button asChild variant="outline">
-            <Link href="/clients">Volver a clientes</Link>
+            <Link href="/clients">Back to clients</Link>
           </Button>
         </div>
       </div>
@@ -57,9 +57,9 @@ export default async function NewClientPage({
 
       <Card className="bg-white/82">
         <CardHeader>
-          <CardTitle>Datos base del cliente</CardTitle>
+          <CardTitle>Core client details</CardTitle>
           <CardDescription>
-            Mantuvimos este primer paso corto para que puedas abrir casos rapido.
+            This first step stays short so you can open the case quickly.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -67,25 +67,25 @@ export default async function NewClientPage({
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <label htmlFor="firstName" className="text-sm font-medium text-foreground">
-                  Nombre
+                  First name
                 </label>
                 <Input id="firstName" name="firstName" placeholder="Enrique" required />
               </div>
               <div className="space-y-2">
                 <label htmlFor="lastName" className="text-sm font-medium text-foreground">
-                  Apellido
+                  Last name
                 </label>
                 <Input id="lastName" name="lastName" placeholder="Padron" required />
               </div>
               <div className="space-y-2">
                 <label htmlFor="preferredName" className="text-sm font-medium text-foreground">
-                  Nombre preferido
+                  Preferred name
                 </label>
                 <Input id="preferredName" name="preferredName" placeholder="Quique" />
               </div>
               <div className="space-y-2">
                 <label htmlFor="dateOfBirth" className="text-sm font-medium text-foreground">
-                  Fecha de nacimiento
+                  Date of birth
                 </label>
                 <Input id="dateOfBirth" name="dateOfBirth" type="date" required />
               </div>
@@ -97,19 +97,19 @@ export default async function NewClientPage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="phone" className="text-sm font-medium text-foreground">
-                  Telefono
+                  Phone
                 </label>
                 <Input id="phone" name="phone" placeholder="(305) 555-0142" />
               </div>
               <div className="space-y-2">
                 <label htmlFor="city" className="text-sm font-medium text-foreground">
-                  Ciudad
+                  City
                 </label>
                 <Input id="city" name="city" placeholder="Miami" />
               </div>
               <div className="space-y-2">
                 <label htmlFor="state" className="text-sm font-medium text-foreground">
-                  Estado
+                  State
                 </label>
                 <Input id="state" name="state" placeholder="FL" />
               </div>
@@ -118,19 +118,19 @@ export default async function NewClientPage({
                   htmlFor="primaryDiagnosisCode"
                   className="text-sm font-medium text-foreground"
                 >
-                  Diagnostico principal
+                  Primary diagnosis
                 </label>
                 <Input id="primaryDiagnosisCode" name="primaryDiagnosisCode" placeholder="F84.0" />
               </div>
               <div className="space-y-2">
                 <label htmlFor="payerSegment" className="text-sm font-medium text-foreground">
-                  Pagador
+                  Payer
                 </label>
                 <Input id="payerSegment" name="payerSegment" placeholder="Sunshine Health" />
               </div>
               <div className="space-y-2">
                 <label htmlFor="status" className="text-sm font-medium text-foreground">
-                  Estado inicial
+                  Initial status
                 </label>
                 <select
                   id="status"
@@ -147,7 +147,7 @@ export default async function NewClientPage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="riskLevel" className="text-sm font-medium text-foreground">
-                  Riesgo
+                  Risk
                 </label>
                 <select
                   id="riskLevel"
@@ -166,7 +166,7 @@ export default async function NewClientPage({
 
             <div className="space-y-2">
               <label htmlFor="referralSource" className="text-sm font-medium text-foreground">
-                Fuente de referido
+                Referral source
               </label>
               <Textarea
                 id="referralSource"
@@ -178,10 +178,10 @@ export default async function NewClientPage({
 
             <div className="flex flex-wrap gap-3">
               <Button type="submit" size="lg">
-                Guardar cliente
+                Save client
               </Button>
               <Button type="button" asChild variant="outline" size="lg">
-                <Link href="/clients">Cancelar</Link>
+                <Link href="/clients">Cancel</Link>
               </Button>
             </div>
           </form>

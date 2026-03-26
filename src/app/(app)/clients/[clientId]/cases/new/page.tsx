@@ -17,11 +17,11 @@ import { getClientDisplayName } from "@/lib/domain";
 
 function getErrorMessage(error?: string) {
   if (error === "invalid") {
-    return "Completa programa, pagador, responsable, ubicacion y fecha de inicio.";
+    return "Complete program, payer, owner, location, and start date.";
   }
 
   if (error === "unavailable") {
-    return "No pudimos abrir el caso. Revisa la base de datos e intenta otra vez.";
+    return "We could not create the case right now. Check the database and try again.";
   }
 
   return null;
@@ -51,19 +51,19 @@ export default async function NewCasePage({
     <div className="space-y-6">
       <div className="flex flex-col gap-3">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          Apertura de caso
+          Case intake
         </p>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Primer caso para {getClientDisplayName(client)}
+              First case for {getClientDisplayName(client)}
             </h1>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              Este paso crea el caso y su servicio base de coordinacion de cuidado para que puedas registrar actividades de inmediato.
+              This step creates the case and its base care coordination service so you can start documenting activity right away.
             </p>
           </div>
           <Button asChild variant="outline">
-            <Link href={`/clients/${client.id}`}>Volver al cliente</Link>
+            <Link href={`/clients/${client.id}`}>Back to client</Link>
           </Button>
         </div>
       </div>
@@ -76,9 +76,9 @@ export default async function NewCasePage({
 
       <Card className="bg-white/82">
         <CardHeader>
-          <CardTitle>Datos del caso</CardTitle>
+          <CardTitle>Case details</CardTitle>
           <CardDescription>
-            Dejamos precargado el flujo TCM para que el caso nazca listo para seguimiento.
+            The TCM flow is prefilled so the case is ready for follow-up from the start.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -88,7 +88,7 @@ export default async function NewCasePage({
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <label htmlFor="programName" className="text-sm font-medium text-foreground">
-                  Nombre del programa
+                  Program name
                 </label>
                 <Input
                   id="programName"
@@ -99,7 +99,7 @@ export default async function NewCasePage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="payerName" className="text-sm font-medium text-foreground">
-                  Pagador
+                  Payer
                 </label>
                 <Input
                   id="payerName"
@@ -111,7 +111,7 @@ export default async function NewCasePage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="clinicalLead" className="text-sm font-medium text-foreground">
-                  Responsable del caso
+                  Case owner
                 </label>
                 <Input
                   id="clinicalLead"
@@ -123,13 +123,13 @@ export default async function NewCasePage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="location" className="text-sm font-medium text-foreground">
-                  Ubicacion principal
+                  Primary location
                 </label>
                 <Input id="location" name="location" defaultValue={client.city ?? "Virtual"} required />
               </div>
               <div className="space-y-2">
                 <label htmlFor="caseType" className="text-sm font-medium text-foreground">
-                  Tipo de caso
+                  Case type
                 </label>
                 <select
                   id="caseType"
@@ -146,7 +146,7 @@ export default async function NewCasePage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="status" className="text-sm font-medium text-foreground">
-                  Estado inicial
+                  Initial status
                 </label>
                 <select
                   id="status"
@@ -163,7 +163,7 @@ export default async function NewCasePage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="startDate" className="text-sm font-medium text-foreground">
-                  Fecha de inicio
+                  Start date
                 </label>
                 <Input
                   id="startDate"
@@ -175,7 +175,7 @@ export default async function NewCasePage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="acuityLevel" className="text-sm font-medium text-foreground">
-                  Nivel de acuidad
+                  Acuity level
                 </label>
                 <Input id="acuityLevel" name="acuityLevel" defaultValue="Routine" />
               </div>
@@ -189,45 +189,45 @@ export default async function NewCasePage({
 
             <div className="space-y-2">
               <label htmlFor="carePlanSummary" className="text-sm font-medium text-foreground">
-                Resumen del plan
+                Plan summary
               </label>
               <Textarea
                 id="carePlanSummary"
                 name="carePlanSummary"
                 className="min-h-24"
-                placeholder="Barreras actuales, metas del caso, stakeholders y primer enfoque del TCM."
+                placeholder="Current barriers, case goals, stakeholders, and the first TCM focus."
               />
             </div>
 
             <div className="rounded-[24px] border border-border bg-accent/40 p-5">
               <div className="space-y-2">
-                <h2 className="text-lg font-semibold text-foreground">Servicio base del caso</h2>
+                <h2 className="text-lg font-semibold text-foreground">Base service</h2>
                 <p className="text-sm leading-6 text-muted-foreground">
-                  Creamos el primer servicio dentro del mismo paso para que no tengas que pasar por otra pantalla antes de documentar actividad.
+                  We create the first service in the same step so you do not need another screen before documenting activity.
                 </p>
               </div>
               <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 <div className="space-y-2">
                   <label htmlFor="serviceCode" className="text-sm font-medium text-foreground">
-                    Codigo del servicio
+                    Service code
                   </label>
                   <Input id="serviceCode" name="serviceCode" defaultValue="TCM-001" />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="serviceTitle" className="text-sm font-medium text-foreground">
-                    Titulo del servicio
+                    Service title
                   </label>
-                  <Input id="serviceTitle" name="serviceTitle" defaultValue="Coordinacion de cuidado" />
+                  <Input id="serviceTitle" name="serviceTitle" defaultValue="Care coordination" />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="serviceFrequency" className="text-sm font-medium text-foreground">
-                    Frecuencia
+                    Frequency
                   </label>
-                  <Input id="serviceFrequency" name="serviceFrequency" defaultValue="Seguimiento semanal" />
+                  <Input id="serviceFrequency" name="serviceFrequency" defaultValue="Weekly follow-up" />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="unitType" className="text-sm font-medium text-foreground">
-                    Unidad
+                    Unit type
                   </label>
                   <select
                     id="unitType"
@@ -247,7 +247,7 @@ export default async function NewCasePage({
                     htmlFor="defaultUnitsPerSession"
                     className="text-sm font-medium text-foreground"
                   >
-                    Unidades por actividad
+                    Units per activity
                   </label>
                   <Input
                     id="defaultUnitsPerSession"
@@ -259,7 +259,7 @@ export default async function NewCasePage({
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="defaultRateCents" className="text-sm font-medium text-foreground">
-                    Tarifa en centavos
+                    Rate in cents
                   </label>
                   <Input
                     id="defaultRateCents"
@@ -274,9 +274,9 @@ export default async function NewCasePage({
 
             <div className="rounded-[24px] border border-dashed border-border bg-white/70 p-5">
               <div className="space-y-2">
-                <h2 className="text-lg font-semibold text-foreground">Autorizacion inicial opcional</h2>
+                <h2 className="text-lg font-semibold text-foreground">Optional initial authorization</h2>
                 <p className="text-sm leading-6 text-muted-foreground">
-                  Si ya tienes autorizacion, capturala ahora. Si no, el caso igual se abre y puedes documentar seguimiento.
+                  If you already have authorization, capture it now. If not, the case still opens and you can begin documenting follow-up.
                 </p>
               </div>
               <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -285,13 +285,13 @@ export default async function NewCasePage({
                     htmlFor="authorizationNumber"
                     className="text-sm font-medium text-foreground"
                   >
-                    Numero de autorizacion
+                    Authorization number
                   </label>
                   <Input id="authorizationNumber" name="authorizationNumber" placeholder="AUTH-12345" />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="approvedUnits" className="text-sm font-medium text-foreground">
-                    Unidades aprobadas
+                    Approved units
                   </label>
                   <Input id="approvedUnits" name="approvedUnits" type="number" min="1" placeholder="24" />
                 </div>
@@ -300,7 +300,7 @@ export default async function NewCasePage({
                     htmlFor="authorizationStartDate"
                     className="text-sm font-medium text-foreground"
                   >
-                    Inicio autorizacion
+                    Authorization start
                   </label>
                   <Input id="authorizationStartDate" name="authorizationStartDate" type="date" />
                 </div>
@@ -309,7 +309,7 @@ export default async function NewCasePage({
                     htmlFor="authorizationEndDate"
                     className="text-sm font-medium text-foreground"
                   >
-                    Fin autorizacion
+                    Authorization end
                   </label>
                   <Input id="authorizationEndDate" name="authorizationEndDate" type="date" />
                 </div>
@@ -318,10 +318,10 @@ export default async function NewCasePage({
 
             <div className="flex flex-wrap gap-3">
               <Button type="submit" size="lg">
-                Crear caso
+                Create case
               </Button>
               <Button type="button" asChild variant="outline" size="lg">
-                <Link href={`/clients/${client.id}`}>Cancelar</Link>
+                <Link href={`/clients/${client.id}`}>Cancel</Link>
               </Button>
             </div>
           </form>

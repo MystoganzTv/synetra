@@ -8,9 +8,9 @@ import { Button, tactilePressClassName } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 const roleLabels: Record<string, string> = {
-  "Platform Admin": "Administrador de plataforma",
-  "Revenue Operations": "Operaciones de ingresos",
-  TCM: "Care manager / TCM",
+  "Platform Admin": "Platform Admin",
+  "Revenue Operations": "Revenue Operations",
+  TCM: "Care Manager / TCM",
 };
 
 const demoPasswordsByEmail: Record<string, string> = {
@@ -59,13 +59,13 @@ export function LoginForm({
         </div>
         <div className="space-y-2">
           <label htmlFor="password" className="text-sm font-medium text-foreground">
-            Contraseña
+            Password
           </label>
           <Input
             id="password"
             name="password"
             type="password"
-            placeholder="Ingresa tu contraseña"
+            placeholder="Enter your password"
             required
             autoComplete="current-password"
           />
@@ -74,8 +74,8 @@ export function LoginForm({
         {error ? (
           <div className="rounded-[20px] border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
             {showDemoAccess
-              ? "El email o la contraseña no corresponden a este workspace demo."
-              : "El email o la contraseña no corresponden a este workspace."}
+              ? "That email or password does not match this demo workspace."
+              : "That email or password does not match this workspace."}
           </div>
         ) : null}
 
@@ -89,11 +89,11 @@ export function LoginForm({
           {isSubmitting ? (
             <>
               <LoaderCircle className="h-4 w-4 animate-spin" />
-              Ingresando...
+              Signing in...
             </>
           ) : (
             <>
-              Iniciar sesión
+              Sign in
               <ArrowRight className="h-4 w-4" />
             </>
           )}
@@ -101,7 +101,7 @@ export function LoginForm({
 
         {isSubmitting ? (
           <p className="text-center text-xs text-muted-foreground">
-            Estamos validando tus credenciales y preparando tu sesión.
+            We are validating your credentials and preparing your workspace.
           </p>
         ) : null}
       </form>
@@ -109,7 +109,7 @@ export function LoginForm({
       {showDemoAccess ? (
         <div className="rounded-[24px] border border-border bg-accent/50 p-5">
           <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
-            Acceso demo
+            Demo access
           </p>
           <div className="mt-4 space-y-3">
             {demoUsers.map((user) => (
@@ -120,7 +120,7 @@ export function LoginForm({
                 <p className="mt-1 text-sm text-muted-foreground">{user.name}</p>
                 <p className="mt-3 text-sm text-foreground">{user.email}</p>
                 <p className="text-sm text-foreground">
-                  {demoPasswordsByEmail[user.email] ?? "Credencial protegida"}
+                  {demoPasswordsByEmail[user.email] ?? "Protected credential"}
                 </p>
               </div>
             ))}
@@ -129,11 +129,10 @@ export function LoginForm({
       ) : (
         <div className="rounded-[24px] border border-border bg-accent/50 p-5">
           <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
-            Acceso del workspace
+            Workspace access
           </p>
           <p className="mt-3 text-sm leading-7 text-muted-foreground">
-            Si necesitas una cuenta nueva o restablecer credenciales, contacta al
-            administrador de tu workspace Synetra.
+            If you need a new account or a credential reset, contact your Synetra workspace administrator.
           </p>
         </div>
       )}
@@ -143,7 +142,7 @@ export function LoginForm({
         className={`flex items-center justify-center gap-2 rounded-[18px] border border-[#cdd9ff] bg-[#eef3ff] px-4 py-3 text-sm font-semibold text-[#1b2b67] transition-colors hover:border-[#b8c8ff] hover:bg-[#e6edff] hover:text-[#142257] ${tactilePressClassName}`}
       >
         <ArrowLeft className="h-4 w-4" />
-        Volver al inicio
+        Back to home
       </Link>
     </>
   );

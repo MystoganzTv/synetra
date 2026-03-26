@@ -4,80 +4,80 @@ const currencyFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
 
-const dateFormatter = new Intl.DateTimeFormat("es-US", {
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
   month: "short",
   day: "numeric",
   year: "numeric",
 });
 
-const dateTimeFormatter = new Intl.DateTimeFormat("es-US", {
+const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {
   month: "short",
   day: "numeric",
   hour: "numeric",
   minute: "2-digit",
 });
 
-const timeFormatter = new Intl.DateTimeFormat("es-US", {
+const timeFormatter = new Intl.DateTimeFormat("en-US", {
   hour: "numeric",
   minute: "2-digit",
 });
 
-const weekdayDateFormatter = new Intl.DateTimeFormat("es-US", {
+const weekdayDateFormatter = new Intl.DateTimeFormat("en-US", {
   weekday: "short",
   month: "short",
   day: "numeric",
 });
 
 const enumLabelMap: Record<string, string> = {
-  ACTIVE: "Activo",
-  INACTIVE: "Inactivo",
+  ACTIVE: "Active",
+  INACTIVE: "Inactive",
   LEAD: "Lead",
-  INTAKE: "Ingreso",
-  HOLD: "En espera",
-  ON_HOLD: "En pausa",
-  CLOSED: "Cerrado",
-  LOW: "Bajo",
-  MODERATE: "Moderado",
-  HIGH: "Alto",
+  INTAKE: "Intake",
+  HOLD: "On Hold",
+  ON_HOLD: "On Hold",
+  CLOSED: "Closed",
+  LOW: "Low",
+  MODERATE: "Moderate",
+  HIGH: "High",
   ABA: "ABA",
-  MENTAL_HEALTH: "Salud mental",
-  CARE_COORDINATION: "Coordinación de cuidado",
-  SCHOOL_SUPPORT: "Apoyo escolar",
-  THERAPY: "Terapia",
-  PSYCHIATRY: "Psiquiatría",
-  SKILLS_TRAINING: "Entrenamiento de habilidades",
-  REQUESTED: "Solicitada",
-  EXPIRING: "Por vencer",
-  EXPIRED: "Vencida",
-  DENIED: "Denegada",
-  UNITS: "Unidades",
-  HOURS: "Horas",
-  VISITS: "Visitas",
-  SCHEDULED: "Programada",
-  COMPLETED: "Completada",
-  CANCELLED_NO_SHOW: "Ausencia",
-  CANCELLED_LATE: "Cancelada tarde",
-  DOCUMENTATION_PENDING: "Documentación pendiente",
-  DRAFT: "Borrador",
-  PENDING_SIGNATURE: "Pendiente de firma",
-  SIGNED: "Firmada",
-  LOCKED: "Bloqueada",
-  READY: "Lista",
-  SUBMITTED: "Enviado",
-  PAID: "Pagado",
-  OPEN: "Abierto",
-  RESOLVED: "Resuelto",
-  WAIVED: "Exento",
-  CURRENT: "Vigente",
-  PENDING_REVIEW: "Pendiente de revisión",
-  PLANNING: "Planificación",
-  PENDING: "Pendiente",
-  COMPLETE: "Completo",
-  IN_PROGRESS: "En progreso",
-  NEEDS_REVIEW: "Requiere revisión",
-  NOT_STARTED: "Sin iniciar",
-  SENT: "Enviado",
-  PARTIAL: "Parcial",
+  MENTAL_HEALTH: "Mental Health",
+  CARE_COORDINATION: "Care Coordination",
+  SCHOOL_SUPPORT: "School Support",
+  THERAPY: "Therapy",
+  PSYCHIATRY: "Psychiatry",
+  SKILLS_TRAINING: "Skills Training",
+  REQUESTED: "Requested",
+  EXPIRING: "Expiring",
+  EXPIRED: "Expired",
+  DENIED: "Denied",
+  UNITS: "Units",
+  HOURS: "Hours",
+  VISITS: "Visits",
+  SCHEDULED: "Scheduled",
+  COMPLETED: "Completed",
+  CANCELLED_NO_SHOW: "No Show",
+  CANCELLED_LATE: "Late Cancel",
+  DOCUMENTATION_PENDING: "Documentation Pending",
+  DRAFT: "Draft",
+  PENDING_SIGNATURE: "Pending Signature",
+  SIGNED: "Signed",
+  LOCKED: "Locked",
+  READY: "Ready",
+  SUBMITTED: "Submitted",
+  PAID: "Paid",
+  OPEN: "Open",
+  RESOLVED: "Resolved",
+  WAIVED: "Waived",
+  CURRENT: "Current",
+  PENDING_REVIEW: "Pending Review",
+  PLANNING: "Planning",
+  PENDING: "Pending",
+  COMPLETE: "Complete",
+  IN_PROGRESS: "In Progress",
+  NEEDS_REVIEW: "Needs Review",
+  NOT_STARTED: "Not Started",
+  SENT: "Sent",
+  PARTIAL: "Partial",
 };
 
 export function formatCurrency(cents: number) {
@@ -85,22 +85,22 @@ export function formatCurrency(cents: number) {
 }
 
 export function formatDate(value: string | Date | null | undefined) {
-  if (!value) return "Sin fecha";
+  if (!value) return "No date";
   return dateFormatter.format(new Date(value));
 }
 
 export function formatDateTime(value: string | Date | null | undefined) {
-  if (!value) return "Sin programar";
+  if (!value) return "Not scheduled";
   return dateTimeFormatter.format(new Date(value));
 }
 
 export function formatTime(value: string | Date | null | undefined) {
-  if (!value) return "Sin hora";
+  if (!value) return "No time";
   return timeFormatter.format(new Date(value));
 }
 
 export function formatWeekdayDate(value: string | Date | null | undefined) {
-  if (!value) return "Sin fecha";
+  if (!value) return "No date";
   return weekdayDateFormatter.format(new Date(value));
 }
 
@@ -118,6 +118,22 @@ export function formatEnumLabel(value: string) {
 
 export function formatPercent(value: number) {
   return `${Math.round(value)}%`;
+}
+
+export function formatFileSize(bytes: number | null | undefined) {
+  if (!bytes || bytes <= 0) {
+    return "No file";
+  }
+
+  if (bytes >= 1024 * 1024) {
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  if (bytes >= 1024) {
+    return `${Math.round(bytes / 1024)} KB`;
+  }
+
+  return `${bytes} B`;
 }
 
 export function calculateAge(dateOfBirth: string | Date) {

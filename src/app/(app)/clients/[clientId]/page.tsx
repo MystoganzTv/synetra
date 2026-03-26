@@ -75,6 +75,7 @@ export default async function ClientDetailPage({
     )
     .reduce((sum, { billingRecord }) => sum + billingRecord.amountCents, 0);
   const wasCreated = query.created === "client";
+  const documentUploaded = query.created === "document";
 
   return (
     <div className="space-y-6">
@@ -82,11 +83,18 @@ export default async function ClientDetailPage({
         <Card className="border-emerald-200 bg-emerald-50">
           <CardContent className="flex flex-wrap items-center justify-between gap-3 p-5">
             <p className="text-sm text-emerald-700">
-              Cliente creado. El siguiente paso recomendado es abrir su primer caso.
+              Client created. The next recommended step is to open the first case.
             </p>
             <Button asChild size="sm">
-              <Link href={`/clients/${client.id}/cases/new`}>Crear primer caso</Link>
+              <Link href={`/clients/${client.id}/cases/new`}>Create first case</Link>
             </Button>
+          </CardContent>
+        </Card>
+      ) : null}
+      {documentUploaded ? (
+        <Card className="border-emerald-200 bg-emerald-50">
+          <CardContent className="p-5 text-sm text-emerald-700">
+            Document uploaded successfully.
           </CardContent>
         </Card>
       ) : null}
@@ -119,7 +127,10 @@ export default async function ClientDetailPage({
                 <Link href="/clients">Back to roster</Link>
               </Button>
               <Button asChild>
-                <Link href={`/clients/${client.id}/cases/new`}>Nuevo caso</Link>
+                <Link href={`/clients/${client.id}/cases/new`}>New case</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href={`/documents/new?clientId=${client.id}`}>Upload document</Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href="/cases">Open case operations</Link>
@@ -229,13 +240,13 @@ export default async function ClientDetailPage({
               ))
             ) : (
               <div className="rounded-[24px] border border-dashed border-border bg-accent/40 p-5">
-                <p className="text-lg font-semibold text-foreground">Todavia no hay casos abiertos</p>
+                <p className="text-lg font-semibold text-foreground">No open cases yet</p>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  Este cliente ya existe en cartera. El siguiente paso operativo es abrir el primer caso para empezar a documentar actividad.
+                  This client already exists in the roster. The next operational step is to open the first case and start documenting activity.
                 </p>
                 <div className="mt-4">
                   <Button asChild>
-                    <Link href={`/clients/${client.id}/cases/new`}>Crear primer caso</Link>
+                    <Link href={`/clients/${client.id}/cases/new`}>Create first case</Link>
                   </Button>
                 </div>
               </div>

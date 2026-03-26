@@ -72,36 +72,36 @@ export default async function AdminPage() {
           Admin panel
         </p>
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-          Control interno de usuarios, TCMs y pipeline entrante
+          Internal control for users, TCMs, and incoming pipeline
         </h1>
         <p className="max-w-4xl text-sm leading-7 text-muted-foreground">
-          Este panel sirve para operar Synetra por dentro: altas, roles, cartera asignada y leads entrantes. El CRM sigue siendo útil para ventas y seguimiento comercial, pero este panel es el lugar correcto para administrar a los TCMs que ya viven dentro del producto.
+          This panel operates Synetra from the inside: onboarding, roles, assigned rosters, and incoming leads. A CRM is still useful for sales and commercial follow-up, but this is the right place to manage TCMs who already live inside the product.
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-4">
         <MetricCard
-          title="Usuarios activos"
+          title="Active users"
           value={String(activeUsers)}
-          hint="Usuarios internos con acceso actual al workspace."
+          hint="Internal users with current workspace access."
           icon={ShieldCheck}
         />
         <MetricCard
-          title="TCMs registrados"
+          title="Registered TCMs"
           value={String(tcmUsers.length)}
-          hint="Usuarios con rol TCM listos para operar cartera propia."
+          hint="Users with the TCM role ready to operate their own roster."
           icon={UserRoundCog}
         />
         <MetricCard
-          title="Leads nuevos"
+          title="New leads"
           value={String(newLeads)}
-          hint="Entradas recientes del funnel comercial aun no atendidas."
+          hint="Recent funnel entries that have not yet been worked."
           icon={Mail}
         />
         <MetricCard
-          title="Clientes asignados"
+          title="Assigned clients"
           value={String(ownedClientCount)}
-          hint="Clientes ya vinculados a un owner dentro del producto."
+          hint="Clients already linked to an owner inside the product."
           icon={UsersRound}
         />
       </div>
@@ -109,9 +109,9 @@ export default async function AdminPage() {
       <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
         <Card className="bg-white/82">
           <CardHeader>
-            <CardTitle>Usuarios y control de acceso</CardTitle>
+            <CardTitle>Users and access control</CardTitle>
             <CardDescription>
-              Vista rápida de admins, revenue ops y TCMs dentro de Synetra.
+              Quick view of admins, revenue ops, and TCMs inside Synetra.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -133,7 +133,7 @@ export default async function AdminPage() {
                 <div className="mt-4 grid gap-3 md:grid-cols-3">
                   <div className="rounded-[20px] bg-accent/45 p-4">
                     <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                      Clientes propios
+                      Owned clients
                     </p>
                     <p className="mt-2 font-semibold text-foreground">
                       {clientCountByOwner.get(user.email) ?? 0}
@@ -141,13 +141,13 @@ export default async function AdminPage() {
                   </div>
                   <div className="rounded-[20px] bg-accent/45 p-4">
                     <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                      Rol actual
+                      Current role
                     </p>
                     <p className="mt-2 font-semibold text-foreground">{user.role}</p>
                   </div>
                   <div className="rounded-[20px] bg-accent/45 p-4">
                     <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                      Alta
+                      Created
                     </p>
                     <p className="mt-2 font-semibold text-foreground">
                       {user.createdAt.toISOString().slice(0, 10)}
@@ -162,9 +162,9 @@ export default async function AdminPage() {
         <div className="space-y-6">
           <Card className="bg-white/82">
             <CardHeader>
-              <CardTitle>Leads de contacto</CardTitle>
+              <CardTitle>Contact leads</CardTitle>
               <CardDescription>
-                Entrada comercial capturada desde la web antes de moverla a CRM.
+                Commercial intake captured from the website before moving to CRM.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -184,7 +184,7 @@ export default async function AdminPage() {
                     <div className="mt-4 grid gap-3 sm:grid-cols-2">
                       <div className="rounded-[20px] bg-accent/45 p-4">
                         <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                          Organización
+                          Organization
                         </p>
                         <p className="mt-2 font-semibold text-foreground">
                           {lead.organization}
@@ -192,10 +192,10 @@ export default async function AdminPage() {
                       </div>
                       <div className="rounded-[20px] bg-accent/45 p-4">
                         <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                          Tamaño / rol
+                          Team size / role
                         </p>
                         <p className="mt-2 font-semibold text-foreground">
-                          {[lead.teamSize, lead.role].filter(Boolean).join(" · ") || "Sin detalle"}
+                          {[lead.teamSize, lead.role].filter(Boolean).join(" · ") || "No detail"}
                         </p>
                       </div>
                     </div>
@@ -204,10 +204,10 @@ export default async function AdminPage() {
               ) : (
                 <div className="rounded-[24px] border border-dashed border-border bg-accent/35 p-5">
                   <p className="text-lg font-semibold text-foreground">
-                    Todavía no hay leads entrantes
+                    No inbound leads yet
                   </p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    Cuando empiecen a entrar formularios desde la web, esta cola te deja revisarlos antes de sincronizar con un CRM.
+                    Once forms start coming in from the website, this queue lets you review them before syncing to a CRM.
                   </p>
                 </div>
               )}
@@ -216,28 +216,28 @@ export default async function AdminPage() {
 
           <Card className="bg-white/82">
             <CardHeader>
-              <CardTitle>Cómo dividir Admin vs CRM</CardTitle>
+              <CardTitle>How to split Admin vs CRM</CardTitle>
               <CardDescription>
-                Recomendación operativa para Synetra.
+                Operating recommendation for Synetra.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 text-sm leading-7 text-muted-foreground">
               <div className="rounded-[24px] bg-accent/35 p-5">
-                <p className="font-semibold text-foreground">Admin panel interno</p>
+                <p className="font-semibold text-foreground">Internal admin panel</p>
                 <p className="mt-2">
-                  Úsalo para controlar usuarios, roles, cartera, acceso y operación real una vez que el TCM ya es parte del producto.
+                  Use it to control users, roles, roster, access, and real operations once the TCM is already part of the product.
                 </p>
               </div>
               <div className="rounded-[24px] bg-accent/35 p-5">
-                <p className="font-semibold text-foreground">CRM externo</p>
+                <p className="font-semibold text-foreground">External CRM</p>
                 <p className="mt-2">
-                  Úsalo para pipeline comercial, demos, seguimiento de ventas, nurture y cierre. No reemplaza el panel interno.
+                  Use it for sales pipeline, demos, follow-up, nurture, and closing. It does not replace the internal panel.
                 </p>
               </div>
               <div className="rounded-[24px] bg-accent/35 p-5">
-                <p className="font-semibold text-foreground">Lo correcto para Synetra</p>
+                <p className="font-semibold text-foreground">Best setup for Synetra</p>
                 <p className="mt-2">
-                  Tener ambos: CRM para pre-venta y admin panel para post-venta y operación del workspace.
+                  Use both: CRM for pre-sales and the admin panel for post-sales workspace operations.
                 </p>
               </div>
             </CardContent>

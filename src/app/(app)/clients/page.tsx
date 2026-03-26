@@ -46,26 +46,26 @@ export default async function ClientsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          Clientes
+          Clients
         </p>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Cartera de clientes con contexto operativo
+              Client roster with operational context
             </h1>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              Una vista moderna de la cartera con demografía, riesgo, próximo contacto e incidencias de utilización o cumplimiento que importan al equipo.
+              A modern roster view with demographics, risk, next touchpoint, and utilization or compliance signals that actually matter to the team.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Button asChild>
               <Link href="/clients/new">
-                Nuevo cliente
+                New client
                 <Plus className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline">
-              <Link href="/dashboard">Volver al panel</Link>
+              <Link href="/dashboard">Back to dashboard</Link>
             </Button>
           </div>
         </div>
@@ -73,27 +73,27 @@ export default async function ClientsPage() {
 
       <div className="grid gap-4 md:grid-cols-4">
         <MetricCard
-          title="Tamaño de cartera"
+          title="Roster size"
           value={String(clients.length)}
-          hint="Incluye clientes activos, en pausa y dados de alta en el workspace actual."
+          hint="Includes active, on-hold, and intake clients in the current workspace."
           icon={UsersRound}
         />
         <MetricCard
-          title="Riesgo moderado / alto"
+          title="Moderate / high risk"
           value={String(highRiskClients)}
-          hint="Clientes que requieren más seguimiento o visibilidad de escalamiento."
+          hint="Clients who need tighter follow-up or escalation visibility."
           icon={ShieldAlert}
         />
         <MetricCard
-          title="Segmentos pagadores"
+          title="Payer segments"
           value={String(payerSegments)}
-          hint="Mezcla de cobertura representada en el workspace actual."
+          hint="Coverage mix represented in the current workspace."
           icon={Wallet}
         />
         <MetricCard
-          title="Sin caso todavia"
+          title="No case yet"
           value={String(clientsWithoutCases)}
-          hint="Clientes en intake que aun no tienen un episodio abierto."
+          hint="Intake clients who do not have an open episode yet."
           icon={Plus}
         />
       </div>
@@ -103,21 +103,21 @@ export default async function ClientsPage() {
           <CardContent className="flex flex-col gap-4 p-8">
             <div className="space-y-2">
               <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                Aun no tienes clientes en cartera
+                You do not have clients in your roster yet
               </h2>
               <p className="max-w-2xl text-sm leading-7 text-muted-foreground">
-                Este workspace ya esta limpio para tu usuario. El siguiente paso es crear tu primer cliente manualmente y desde ahi abrir su caso, actividad y nota.
+                This workspace is now clean for your user. The next step is to create your first client manually and then open the case, activity, and note from there.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
               <Button asChild>
                 <Link href="/clients/new">
-                  Crear primer cliente
+                  Create first client
                   <Plus className="h-4 w-4" />
                 </Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/dashboard">Volver al panel</Link>
+                <Link href="/dashboard">Back to dashboard</Link>
               </Button>
             </div>
           </CardContent>
@@ -152,14 +152,14 @@ export default async function ClientsPage() {
                           <StatusBadge value={client.riskLevel} />
                         </div>
                         <p className="text-sm text-muted-foreground">
-                          {client.externalId} · {calculateAge(client.dateOfBirth)} años ·{" "}
+                          {client.externalId} · {calculateAge(client.dateOfBirth)} years old ·{" "}
                           {[client.city, client.state].filter(Boolean).join(", ")}
                         </p>
                       </div>
                     </div>
                     <Button asChild variant="ghost">
                       <Link href={`/clients/${client.id}`}>
-                        Abrir expediente
+                      Open chart
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                     </Button>
@@ -168,29 +168,29 @@ export default async function ClientsPage() {
                   <div className="grid gap-3 md:grid-cols-4">
                     <div className="rounded-[22px] bg-accent/70 p-4">
                       <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                        Diagnóstico
+                      Diagnosis
                       </p>
                       <p className="mt-2 font-semibold text-foreground">
-                        {client.primaryDiagnosisCode ?? "Pendiente"}
+                        {client.primaryDiagnosisCode ?? "Pending"}
                       </p>
                     </div>
                     <div className="rounded-[22px] bg-accent/70 p-4">
                       <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                        Casos activos
+                      Active cases
                       </p>
                       <p className="mt-2 font-semibold text-foreground">{activeCases}</p>
                     </div>
                     <div className="rounded-[22px] bg-accent/70 p-4">
                       <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                        Próxima sesión
+                      Next session
                       </p>
                       <p className="mt-2 text-sm font-semibold text-foreground">
-                        {nextSession ? formatDateTime(nextSession.scheduledStart) : "Sin visitas futuras"}
+                        {nextSession ? formatDateTime(nextSession.scheduledStart) : "No upcoming visits"}
                       </p>
                     </div>
                     <div className="rounded-[22px] bg-accent/70 p-4">
                       <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                        QA abierta
+                      Open QA
                       </p>
                       <p className="mt-2 font-semibold text-foreground">{openCompliance}</p>
                     </div>
@@ -210,7 +210,7 @@ export default async function ClientsPage() {
                     ) : (
                       <Button asChild size="sm">
                         <Link href={`/clients/${client.id}/cases/new`}>
-                          Crear primer caso
+                          Create first case
                           <ArrowRight className="h-4 w-4" />
                         </Link>
                       </Button>

@@ -13,11 +13,11 @@ import { noteStatusOptions } from "@/lib/ops-create";
 
 function getErrorMessage(error?: string) {
   if (error === "invalid") {
-    return "Completa las cuatro secciones de la nota para guardar la documentacion.";
+    return "Complete all four sections of the note before saving documentation.";
   }
 
   if (error === "unavailable") {
-    return "No pudimos guardar la nota ahora mismo.";
+    return "We could not save the note right now.";
   }
 
   return null;
@@ -47,22 +47,22 @@ export default async function NewProgressNotePage({
     <div className="space-y-6">
       <div className="flex flex-col gap-3">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          Nueva nota
+          New note
         </p>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Nota para {getClientDisplayName(record.client)}
+              Note for {getClientDisplayName(record.client)}
             </h1>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
               {formatDateTime(record.session.scheduledStart)} ·{" "}
               {record.service
                 ? `${record.service.serviceCode} ${record.service.title}`
-                : "Actividad sin servicio"}
+                : "Activity without service"}
             </p>
           </div>
           <Button asChild variant="outline">
-            <Link href={`/sessions/${record.session.id}`}>Volver a la actividad</Link>
+            <Link href={`/sessions/${record.session.id}`}>Back to activity</Link>
           </Button>
         </div>
       </div>
@@ -70,23 +70,23 @@ export default async function NewProgressNotePage({
       {record.session.progressNotes.length > 0 ? (
         <Card className="bg-white/82">
           <CardHeader>
-            <CardTitle>Esta actividad ya tiene nota</CardTitle>
+            <CardTitle>This activity already has a note</CardTitle>
             <CardDescription>
-              Por ahora dejamos una nota principal por actividad para mantener el flujo claro.
+              For now, we keep one primary note per activity to keep the workflow clear.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Button asChild>
-              <Link href={`/sessions/${record.session.id}`}>Volver a la actividad</Link>
+              <Link href={`/sessions/${record.session.id}`}>Back to activity</Link>
             </Button>
           </CardContent>
         </Card>
       ) : (
         <Card className="bg-white/82">
           <CardHeader>
-            <CardTitle>Documentacion clinica</CardTitle>
+            <CardTitle>Clinical documentation</CardTitle>
             <CardDescription>
-              Usa esta nota para cerrar seguimiento TCM, outreach, coordinacion con escuela o conferencia de cuidado.
+              Use this note to close out TCM follow-up, outreach, school coordination, or a care conference.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -102,7 +102,7 @@ export default async function NewProgressNotePage({
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <label htmlFor="authorName" className="text-sm font-medium text-foreground">
-                    Autor
+                    Author
                   </label>
                   <Input
                     id="authorName"
@@ -113,7 +113,7 @@ export default async function NewProgressNotePage({
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="status" className="text-sm font-medium text-foreground">
-                    Estado de la nota
+                    Note status
                   </label>
                   <select
                     id="status"
@@ -138,7 +138,7 @@ export default async function NewProgressNotePage({
                   <Textarea
                     id="subjective"
                     name="subjective"
-                    placeholder="Quien participo, que necesidad se reporto y cual fue el motivo del seguimiento."
+                    placeholder="Who participated, what need was reported, and why follow-up was needed."
                     required
                   />
                 </div>
@@ -149,7 +149,7 @@ export default async function NewProgressNotePage({
                   <Textarea
                     id="objective"
                     name="objective"
-                    placeholder="Acciones realizadas, outreach, coordinaciones, confirmaciones o barreras observadas."
+                    placeholder="Actions completed, outreach, coordination, confirmations, or barriers observed."
                     required
                   />
                 </div>
@@ -160,7 +160,7 @@ export default async function NewProgressNotePage({
                   <Textarea
                     id="assessment"
                     name="assessment"
-                    placeholder="Impacto del contacto, progreso, nivel de riesgo y si el caso requiere escalation."
+                    placeholder="Impact of the contact, progress, risk level, and whether the case needs escalation."
                     required
                   />
                 </div>
@@ -171,7 +171,7 @@ export default async function NewProgressNotePage({
                   <Textarea
                     id="plan"
                     name="plan"
-                    placeholder="Proximo paso, follow-up date, responsables y accion pendiente."
+                    placeholder="Next step, follow-up date, owners, and pending action."
                     required
                   />
                 </div>
@@ -183,15 +183,15 @@ export default async function NewProgressNotePage({
                   name="incidentReported"
                   className="h-4 w-4 rounded border-border"
                 />
-                Marcar si hubo incidente o situacion que deba elevarse a cumplimiento.
+                Mark this if there was an incident or situation that should be escalated to compliance.
               </label>
 
               <div className="flex flex-wrap gap-3">
                 <Button type="submit" size="lg">
-                  Guardar nota
+                  Save note
                 </Button>
                 <Button type="button" asChild variant="outline" size="lg">
-                  <Link href={`/sessions/${record.session.id}`}>Cancelar</Link>
+                  <Link href={`/sessions/${record.session.id}`}>Cancel</Link>
                 </Button>
               </div>
             </form>

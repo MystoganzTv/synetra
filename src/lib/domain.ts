@@ -249,6 +249,9 @@ export interface DocumentRecord {
   groupId?: string | null;
   formPacketId?: string | null;
   title: string;
+  fileName?: string | null;
+  fileMimeType?: string | null;
+  fileSizeBytes?: number | null;
   category: DocumentCategory;
   status: DocumentStatus;
   owner: string;

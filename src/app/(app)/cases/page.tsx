@@ -30,26 +30,26 @@ export default async function CasesPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-3">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          Casos
+          Cases
         </p>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Operación de casos entre atención y utilización
+              Case operations across care delivery and utilization
             </h1>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              Cada caso reúne diseño del programa, cobertura pagadora, liderazgo clínico, volumen de sesiones y exposición posterior de facturación o cumplimiento.
+              Each case brings together program design, payer coverage, clinical ownership, session volume, and downstream billing or compliance exposure.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Button asChild>
               <Link href="/clients">
-                Crear caso desde cliente
+                Create case from client
                 <Plus className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline">
-              <Link href="/dashboard">Volver al panel</Link>
+              <Link href="/dashboard">Back to dashboard</Link>
             </Button>
           </div>
         </div>
@@ -57,21 +57,21 @@ export default async function CasesPage() {
 
       <div className="grid gap-4 md:grid-cols-3">
         <MetricCard
-          title="Volumen de casos"
+          title="Case volume"
           value={String(cases.length)}
-          hint="Episodios abiertos e históricos dentro del tenant."
+          hint="Open and historical episodes inside the tenant."
           icon={ClipboardList}
         />
         <MetricCard
-          title="Activos / en pausa"
+          title="Active / on hold"
           value={`${activeCases} / ${holdCases}`}
-          hint="Mezcla operativa de episodios activos frente a pausados."
+          hint="Operational mix of active versus paused episodes."
           icon={ShieldAlert}
         />
         <MetricCard
-          title="Líderes clínicos"
+          title="Clinical leads"
           value={String(distinctLeads)}
-          hint="Responsables clínicos distintos representados en la cartera actual."
+          hint="Distinct clinical owners represented in the current panel."
           icon={Users2}
         />
       </div>
@@ -116,12 +116,12 @@ export default async function CasesPage() {
                       {caseRecord.payerName}
                     </p>
                     <p className="text-sm leading-6 text-muted-foreground">
-                      Responsable {caseRecord.clinicalLead} · {caseRecord.location}
+                      Lead {caseRecord.clinicalLead} · {caseRecord.location}
                     </p>
                   </div>
                   <Button asChild variant="ghost">
                     <Link href={`/cases/${caseRecord.id}`}>
-                      Abrir caso
+                      Open case
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
@@ -130,15 +130,15 @@ export default async function CasesPage() {
                 <div className="grid gap-3 md:grid-cols-3">
                   <div className="rounded-[22px] bg-accent/70 p-4">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Próxima sesión
+                      Next session
                     </p>
                     <p className="mt-2 text-sm font-semibold text-foreground">
-                      {nextSession ? formatDateTime(nextSession.scheduledStart) : "Sin sesión futura"}
+                      {nextSession ? formatDateTime(nextSession.scheduledStart) : "No upcoming session"}
                     </p>
                   </div>
                   <div className="rounded-[22px] bg-accent/70 p-4">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Cumplimiento abierto
+                      Open compliance
                     </p>
                     <p className="mt-2 text-sm font-semibold text-foreground">
                       {openCompliance}
@@ -146,28 +146,28 @@ export default async function CasesPage() {
                   </div>
                   <div className="rounded-[22px] bg-accent/70 p-4">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Mayor riesgo de autorización
+                      Highest authorization risk
                     </p>
                     <p className="mt-2 text-sm font-semibold text-foreground">
                       {highestAuthRisk
                         ? formatPercent(getAuthorizationUtilization(highestAuthRisk))
-                        : "Sin autorizaciones"}
+                        : "No authorizations"}
                     </p>
                   </div>
                   <div className="rounded-[22px] bg-accent/70 p-4 md:col-span-3">
                     <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                      Facturación de la próxima sesión
+                      Billing status for next session
                     </p>
                     <div className="mt-2 flex items-center justify-between gap-3">
                       <p className="text-sm font-semibold text-foreground">
-                        {nextSession ? formatDateTime(nextSession.scheduledStart) : "Sin sesión futura"}
+                        {nextSession ? formatDateTime(nextSession.scheduledStart) : "No upcoming session"}
                       </p>
                       {nextSessionContext ? (
                         <SessionBillingStatusBadge
                           status={validateSession(nextSessionContext).billingStatus}
                         />
                       ) : (
-                        <span className="text-sm text-muted-foreground">Sin sesión</span>
+                        <span className="text-sm text-muted-foreground">No session</span>
                       )}
                     </div>
                   </div>
@@ -175,7 +175,7 @@ export default async function CasesPage() {
 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Utilización general de autorizaciones</span>
+                    <span className="text-muted-foreground">Overall authorization utilization</span>
                     <span className="font-medium text-foreground">
                       {formatPercent(utilization)}
                     </span>

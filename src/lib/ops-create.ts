@@ -5,6 +5,8 @@ import type {
   CaseStatus,
   CaseType,
   ClientStatus,
+  DocumentCategory,
+  DocumentStatus,
   NoteStatus,
   RiskLevel,
   SessionStatus,
@@ -26,6 +28,21 @@ export const sessionStatusOptions = [
   "DOCUMENTATION_PENDING",
 ] as const satisfies readonly SessionStatus[];
 export const noteStatusOptions = ["DRAFT", "PENDING_SIGNATURE", "SIGNED"] as const satisfies readonly NoteStatus[];
+export const documentCategoryOptions = [
+  "ASSESSMENT",
+  "PLAN",
+  "CONSENT",
+  "ID",
+  "AUTHORIZATION",
+  "CLINICAL",
+  "LEGAL",
+] as const satisfies readonly DocumentCategory[];
+export const documentStatusOptions = [
+  "CURRENT",
+  "PENDING_REVIEW",
+  "DRAFT",
+  "EXPIRING",
+] as const satisfies readonly DocumentStatus[];
 
 function pad(value: number) {
   return String(value).padStart(2, "0");

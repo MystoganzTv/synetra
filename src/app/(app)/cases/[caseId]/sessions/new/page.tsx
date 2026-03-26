@@ -12,11 +12,11 @@ import { formatDateTimeLocalInput, sessionStatusOptions } from "@/lib/ops-create
 
 function getErrorMessage(error?: string) {
   if (error === "invalid") {
-    return "Selecciona un servicio y completa fecha, ubicacion y estado de la actividad.";
+    return "Select a service and complete the date, location, and activity status.";
   }
 
   if (error === "unavailable") {
-    return "No pudimos guardar la actividad ahora mismo.";
+    return "We could not save the activity right now.";
   }
 
   return null;
@@ -63,20 +63,20 @@ export default async function NewSessionPage({
     <div className="space-y-6">
       <div className="flex flex-col gap-3">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          Nueva actividad
+          New activity
         </p>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-2">
             <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-              Actividad para {record.caseRecord.programName}
+              Activity for {record.caseRecord.programName}
             </h1>
             <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              Registra llamada, outreach, conferencia de cuidado o seguimiento para{" "}
+              Capture a call, outreach, care conference, or follow-up for{" "}
               {getClientDisplayName(record.client)}.
             </p>
           </div>
           <Button asChild variant="outline">
-            <Link href={`/cases/${record.caseRecord.id}`}>Volver al caso</Link>
+            <Link href={`/cases/${record.caseRecord.id}`}>Back to case</Link>
           </Button>
         </div>
       </div>
@@ -89,9 +89,9 @@ export default async function NewSessionPage({
 
       <Card className="bg-white/82">
         <CardHeader>
-          <CardTitle>Actividad / encuentro</CardTitle>
+          <CardTitle>Activity / encounter</CardTitle>
           <CardDescription>
-            Cada actividad crea una sesion operativa que luego puede documentarse con nota.
+            Each activity creates an operational session that can then be documented with a note.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -102,7 +102,7 @@ export default async function NewSessionPage({
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               <div className="space-y-2">
                 <label htmlFor="serviceId" className="text-sm font-medium text-foreground">
-                  Servicio
+                  Service
                 </label>
                 <select
                   id="serviceId"
@@ -119,7 +119,7 @@ export default async function NewSessionPage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="authorizationId" className="text-sm font-medium text-foreground">
-                  Autorizacion
+                  Authorization
                 </label>
                 <select
                   id="authorizationId"
@@ -127,7 +127,7 @@ export default async function NewSessionPage({
                   defaultValue=""
                   className="flex h-11 w-full rounded-2xl border border-border bg-white/75 px-4 text-sm text-foreground outline-none transition-colors focus-visible:border-primary/50 focus-visible:ring-2 focus-visible:ring-primary/20"
                 >
-                  <option value="">Sin autorizacion por ahora</option>
+                  <option value="">No authorization yet</option>
                   {record.caseRecord.services.flatMap((service) =>
                     service.authorizations.map((authorization) => (
                       <option key={authorization.id} value={authorization.id}>
@@ -139,7 +139,7 @@ export default async function NewSessionPage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="employeeId" className="text-sm font-medium text-foreground">
-                  Responsable
+                  Owner
                 </label>
                 <select
                   id="employeeId"
@@ -147,7 +147,7 @@ export default async function NewSessionPage({
                   defaultValue={currentEmployee?.id ?? ""}
                   className="flex h-11 w-full rounded-2xl border border-border bg-white/75 px-4 text-sm text-foreground outline-none transition-colors focus-visible:border-primary/50 focus-visible:ring-2 focus-visible:ring-primary/20"
                 >
-                  <option value="">Sin asignar</option>
+                  <option value="">Unassigned</option>
                   {activeEmployees.map((employee) => (
                     <option key={employee.id} value={employee.id}>
                       {employee.displayName} · {employee.title}
@@ -157,7 +157,7 @@ export default async function NewSessionPage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="scheduledStart" className="text-sm font-medium text-foreground">
-                  Inicio
+                  Start
                 </label>
                 <Input
                   id="scheduledStart"
@@ -169,7 +169,7 @@ export default async function NewSessionPage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="scheduledEnd" className="text-sm font-medium text-foreground">
-                  Fin
+                  End
                 </label>
                 <Input
                   id="scheduledEnd"
@@ -183,7 +183,7 @@ export default async function NewSessionPage({
                   htmlFor="documentationDueAt"
                   className="text-sm font-medium text-foreground"
                 >
-                  Vencimiento de nota
+                  Note due
                 </label>
                 <Input
                   id="documentationDueAt"
@@ -194,22 +194,22 @@ export default async function NewSessionPage({
               </div>
               <div className="space-y-2">
                 <label htmlFor="location" className="text-sm font-medium text-foreground">
-                  Ubicacion
+                  Location
                 </label>
-                <Input id="location" name="location" defaultValue="Telefono / virtual" required />
+                <Input id="location" name="location" defaultValue="Phone / virtual" required />
               </div>
               <div className="space-y-2">
                 <label htmlFor="sessionType" className="text-sm font-medium text-foreground">
-                  Tipo de actividad
+                  Activity type
                 </label>
-                <Input id="sessionType" name="sessionType" defaultValue="Seguimiento TCM" required />
+                <Input id="sessionType" name="sessionType" defaultValue="TCM follow-up" required />
               </div>
               <div className="space-y-2">
                 <label
                   htmlFor="attendanceStatus"
                   className="text-sm font-medium text-foreground"
                 >
-                  Estado
+                  Status
                 </label>
                 <select
                   id="attendanceStatus"

@@ -141,6 +141,7 @@ export default async function CaseDetailPage({
     (document) => document.status === "EXPIRING" || document.status === "EXPIRED",
   ).length;
   const wasCreated = query.created === "case";
+  const documentUploaded = query.created === "document";
 
   return (
     <div className="space-y-6">
@@ -148,11 +149,18 @@ export default async function CaseDetailPage({
         <Card className="border-emerald-200 bg-emerald-50">
           <CardContent className="flex flex-wrap items-center justify-between gap-3 p-5">
             <p className="text-sm text-emerald-700">
-              Caso creado. Ahora puedes registrar la primera actividad y luego su nota.
+              Case created. You can now log the first activity and then document its note.
             </p>
             <Button asChild size="sm">
-              <Link href={`/cases/${caseRecord.id}/sessions/new`}>Agregar actividad</Link>
+              <Link href={`/cases/${caseRecord.id}/sessions/new`}>Add activity</Link>
             </Button>
+          </CardContent>
+        </Card>
+      ) : null}
+      {documentUploaded ? (
+        <Card className="border-emerald-200 bg-emerald-50">
+          <CardContent className="p-5 text-sm text-emerald-700">
+            Document uploaded successfully.
           </CardContent>
         </Card>
       ) : null}
@@ -187,7 +195,12 @@ export default async function CaseDetailPage({
                 <Link href="/cases">Back to cases</Link>
               </Button>
               <Button asChild>
-                <Link href={`/cases/${caseRecord.id}/sessions/new`}>Nueva actividad</Link>
+                <Link href={`/cases/${caseRecord.id}/sessions/new`}>New activity</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href={`/documents/new?clientId=${client.id}&caseId=${caseRecord.id}`}>
+                  Upload document
+                </Link>
               </Button>
               <Button asChild variant="outline">
                 <Link href={`/clients/${client.id}`}>Open client</Link>
@@ -518,14 +531,14 @@ export default async function CaseDetailPage({
       {sessionFlow.length === 0 ? (
         <Card className="bg-white/82">
           <CardHeader>
-            <CardTitle>Sin actividad todavia</CardTitle>
+            <CardTitle>No activity yet</CardTitle>
             <CardDescription>
-              El caso ya existe y el servicio base esta listo. Registra la primera llamada, outreach o coordinacion para empezar la documentacion.
+              The case already exists and the base service is ready. Log the first call, outreach, or coordination touchpoint to begin documentation.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Button asChild>
-              <Link href={`/cases/${caseRecord.id}/sessions/new`}>Agregar primera actividad</Link>
+              <Link href={`/cases/${caseRecord.id}/sessions/new`}>Add first activity</Link>
             </Button>
           </CardContent>
         </Card>
